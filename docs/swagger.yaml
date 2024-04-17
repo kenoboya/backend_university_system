@@ -1,0 +1,199 @@
+definitions:
+  model.CreateStudentInput:
+    properties:
+      age:
+        type: integer
+      email:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+      surname:
+        type: string
+    type: object
+  model.Student:
+    properties:
+      age:
+        type: integer
+      email:
+        type: string
+      id:
+        type: integer
+      last_visit_at:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+      registered_at:
+        type: string
+      surname:
+        type: string
+    type: object
+  model.UpdateStudentInput:
+    properties:
+      age:
+        type: integer
+      email:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+      surname:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: REST API for test.
+  title: Student Swagger API
+  version: "2.0"
+paths:
+  /students:
+    get:
+      consumes:
+      - application/json
+      description: Get all students via http request
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Accepted
+          schema:
+            items:
+              $ref: '#/definitions/model.Student'
+            type: array
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get students
+      tags:
+      - students
+    post:
+      consumes:
+      - application/json
+      description: Create student via http request
+      parameters:
+      - description: Data for creating student
+        in: body
+        name: student
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateStudentInput'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            type: string
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Create student
+      tags:
+      - students
+  /students/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete student via http request
+      parameters:
+      - description: ID for deleting student
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Delete student
+      tags:
+      - students
+    get:
+      consumes:
+      - application/json
+      description: Get student by id via http request
+      parameters:
+      - description: ID for getting student
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/model.Student'
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get student
+      tags:
+      - students
+    patch:
+      consumes:
+      - application/json
+      description: Update student via HTTP request
+      parameters:
+      - description: ID for updating student
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: New information for update
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateStudentInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Update student
+      tags:
+      - students
+swagger: "2.0"
