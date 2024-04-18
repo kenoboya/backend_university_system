@@ -5,99 +5,118 @@ CREATE TABLE users(
 	password TEXT NOT NULL,
 	registered_at TIMESTAMP DEFAULT NOW(),
 	last_visit_at TIMESTAMP DEFAULT NOW(),
-	CONSTRAINT pk_users_user_id PRIMARY KEY(user_id)
+	CONSTRAINT pk_users_user_id PRIMARY KEY(user_id),
 	CONSTRAINT chk_users_username CHECK (LENGTH(username) > 5),
 	CONSTRAINT chk_users_email CHECK(email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$')
-)
+);
+
 CREATE TABLE people(
 	person_id INTEGER GENERATED ALWAYS AS IDENTITY,
+	user_id INTEGER UNIQUE,
 	name VARCHAR(35) NOT NULL,
 	surname VARCHAR(35) NOT NULL,
 	birth_date DATE NOT NULL,
 	phone VARCHAR(13) UNIQUE,
 	address VARCHAR(120),
 	photo BYTEA,
-	photo_path VARCHAR(255),
 	notes TEXT,
-	CONSTRAINT pk_people_person_id PRIMARY KEY(person_id)
+	CONSTRAINT pk_people_person_id PRIMARY KEY(person_id),
+	CONSTRAINT fk_people_users FOREIGN KEY (user_id) REFERENCES users(user_id),
 	CONSTRAINT chk_people_name CHECK (LENGTH(name) > 1),
 	CONSTRAINT chk_people_surname CHECK (LENGTH(surname) > 1),
-	CONSTRAINT chk_people_age CHECK (age > 13)
-)
+	CONSTRAINT chk_people_age CHECK (age > 13),
+	CONSTRAINT chk_people_phone CHECK (phone_number ~ '^\\+')
+);
+
 CREATE TABLE students(
 	student_id INTEGER GENERATED ALWAYS AS IDENTITY,
-	user_id INTEGER NOT NULL,
-	person_id INTEGER NOT NULL,
-	group_id INTEGER NOT NULL,
+	person_id INTEGER UNIQUE,
+	group_id VARCHAR(25) NOT NULL,
 	CONSTRAINT pk_students_student_id PRIMARY KEY(student_id),
-	CONSTRAINT fk_students_users FOREIGN KEY (user_id) REFERENCES users(user_id),
 	CONSTRAINT fk_students_people FOREIGN KEY (person_id) REFERENCES people(person_id),
 	CONSTRAINT fk_students_groups FOREIGN KEY (group_id) REFERENCES groups(group_id)
-)
+);
+
 CREATE TABLE employees(
 	employee_id INTEGER GENERATED ALWAYS AS IDENTITY,
-	user_id INTEGER NOT NULL,
 	person_id INTEGER NOT NULL,
 	title VARCHAR(70) NOT NULL,
 	salary DOUBLE,
 	hire_date DATE,
 	CONSTRAINT pk_employees_employee_id PRIMARY KEY(employee_id),
-	CONSTRAINT fk_students_users FOREIGN KEY (user_id) REFERENCES users(user_id),
-	CONSTRAINT fk_students_people FOREIGN KEY (person_id) REFERENCES people(person_id),
-)
+	CONSTRAINT fk_employees_people FOREIGN KEY (person_id) REFERENCES people(person_id),
+);
+
 CREATE TABLE teachers(
 	teacher_id INTEGER GENERATED ALWAYS AS IDENTITY,
 	employee_id INTEGER NOT NULL,
-	-------subject
 	CONSTRAINT pk_teachers_teacher_id PRIMARY KEY(teacher_id),
 	CONSTRAINT fk_teachers_employees FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
-)
+);
+
+CREATE TABLE faculties(
+	faculty_id VARCHAR(10) UNIQUE,
+	full_name VARCHAR (175) UNIQUE,
+	CONSTRAINT pk_faculties_faculty_id PRIMARY KEY (faculty_id)
+);
+
+CREATE TABLE specialties (
+	specialty_id INTEGER UNIQUE,
+	faculty_id VARCHAR(10) NOT NULL,
+	full_name VARCHAR(175) UNIQUE,
+	CONSTRAINT pk_specialties_specialty_id PRIMARY KEY(specialty_id),
+	CONSTRAINT fk_specialties_faculties FOREIGN KEY(faculty_id) REFERENCES faculties(faculty_id)
+);
+
+CREATE TYPE educational_level AS enum(
+	'bachelor', 'master', 'doctor'
+);
 CREATE TABLE groups(
-	group_id INTEGER GENERATED ALWAYS AS IDENTITY,
-	specialization_id  INTEGER NOT NULL,
-	name VARCHAR(70) UNIQUE,
+	group_id VARCHAR(25) UNIQUE,
+	specialty_id  INTEGER NOT NULL,
+	full_name VARCHAR(125) UNIQUE,
+	educational_level educational_level NOT NULL,
 	start_year DATE NOT NULL,
 	end_year DATE NOT NULL,
 	CONSTRAINT pk_groups_group_id PRIMARY KEY (group_id),
-	CONSTRAINT fk_groups_specializations  FOREIGN KEY(specialization_id ) REFERENCES specializations(specialization_id)
-)
-CREATE TABLE dekanat(
-	dekanat_id INTEGER GENERATED ALWAYS AS IDENTITY,
-	faculty_id INTEGER NOT NULL,
-	employee_id INTEGER NOT NULL,
-	CONSTRAINT pk_dekanat_dekanat_id PRIMARY KEY (dekanat_id),
-	CONSTRAINT fk_dekanat_faculties FOREIGN KEY(faculty_id) REFERENCES faculties(faculty_id),
-	CONSTRAINT fk_dekanat_employee FOREIGN KEY(employee_id) REFERENCES employees(employee_id)
-)
-CREATE TABLE specializations (
-	specialization_id UNIQUE,
-	faculty_id INTEGER NOT NULL,
-	full_name VARCHAR(175) UNIQUE,
-	CONSTRAINT pk_specializations_specialization_id PRIMARY KEY(specialization_id),
-	CONSTRAINT fk_specializations_faculties FOREIGN KEY(faculty_id) REFERENCES faculties(faculty_id)
-)
-CREATE TABLE faculties(
-	faculty_id VARCHAR(10) UNIQUE,
-	dekanant_id INTEGER UNIQUE,
-	full_name VARCHAR (175) UNIQUE,
-	CONSTRAINT pk_faculties_faculty_id PRIMARY KEY (faculty_id)
-)
+	CONSTRAINT fk_groups_specialties FOREIGN KEY(specialty_id) REFERENCES specialties(specialty_id)
+);
+
 CREATE TABLE subjects(
 	subject_id INTEGER GENERATED ALWAYS AS IDENTITY,
-	specialization_id INTEGER,
+	specialty_id INTEGER,
 	name VARCHAR(70) UNIQUE,
 	CONSTRAINT pk_subjects_subject_id PRIMARY KEY(subject_id),
-	CONSTRAINT fk_subjects_specialization FOREIGN KEY(specialization_id) REFERENCES specializations(specialization_id)
-)
+	CONSTRAINT fk_subjects_specialties FOREIGN KEY(specialty_id) REFERENCES specialties(specialty_id)
+);
+
+CREATE TYPE lesson_type AS enum
+(
+	'Lecture','Laboratory','Practical','Session'
+);
 CREATE TABLE lessons(
-	lesson_id INTEGER GENERATED ALWAYS AS IDENTITY,
+	lesson_id BIGINT GENERATED ALWAYS AS IDENTITY,
 	teacher_id INTEGER NOT NULL,
 	subject_id INTEGER NOT NULL,
-	lecture_room VARCHAR(15) NOT NULL,
+	group_id VARCHAR(25) NOT NULL,
+	lecture_room VARCHAR(25) NOT NULL,
 	time_start TIMESTAMP NOT NULL,
 	time_end TIMESTAMP NOT NULL,
-	lesson_type VARCHAR(30), -- Скорее всего создать тип: лекция, практичная, сессия, лабораторная
+	lesson_type lesson_type NOT NULL,
 	CONSTRAINT pk_lessons_lesson_id PRIMARY KEY(lesson_id),
 	CONSTRAINT fk_lessons_teachers FOREIGN KEY(teacher_id) REFERENCES teachers(teacher_id),
-	CONSTRAINT fk_lessons_subjects FOREIGN KEY(subject_id) REFERENCES subjects(subject_id)
+	CONSTRAINT fk_lessons_subjects FOREIGN KEY(subject_id) REFERENCES subjects(subject_id),
+	CONSTRAINT fk_lessons_groups FOREIGN KEY(group_id) REFERENCES groups(group_id)
 )
+
+CREATE TABLE faculties_employees(
+	faculty_id VARCHAR(10) REFERENCES faculties(faculty_id),
+	employee_id INTEGER REFERENCES employees(employee_id),
+	CONSTRAINT ck_faculties_employees PRIMARY KEY(faculties_id, employee_id)
+);
+
+CREATE TABLE teachers_subjects (
+    teacher_id INTEGER REFERENCES teachers(teacher_id),
+    subject_id INTEGER REFERENCES subjects(subject_id),
+    CONSTRAINT ck_faculties_employees PRIMARY KEY(faculties_id, employee_id)
+);

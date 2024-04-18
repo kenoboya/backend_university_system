@@ -4,7 +4,7 @@ import (
 	"test-crud/internal/app"
 )
 
-var configDir = "../../configs/"
+const configDir = "../../configs/"
 
 // @title Student Swagger API
 // @version 2.0
