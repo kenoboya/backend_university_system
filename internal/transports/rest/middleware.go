@@ -1,14 +1,18 @@
 package rest
 
 import (
-	"log"
 	"net/http"
-	"time"
+	"test-crud/pkg/logger"
+
+	"go.uber.org/zap"
 )
 
 func loggingMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		log.Printf("Method: [%s] URL: %s Time: %s", r.Method, r.URL, time.Now().Format(time.RFC1123))
+		logger.Info(
+			zap.String("method", r.Method),
+			zap.String("request_url", r.RequestURI),
+		)
 		next.ServeHTTP(w, r)
 	})
 }

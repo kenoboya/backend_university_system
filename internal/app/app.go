@@ -1,29 +1,37 @@
 package app
 
 import (
-	"fmt"
-	"log"
-
 	"net/http"
 	config "test-crud/internal/config"
 	"test-crud/internal/repository/psql"
 	"test-crud/internal/service"
 	"test-crud/internal/transports/rest"
 	database "test-crud/pkg/database/psql"
-	"time"
+	"test-crud/pkg/logger"
 
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
+	"go.uber.org/zap"
 )
 
 func Run(configPath string) {
+	log := logger.CreateLogger()
+	zap.ReplaceGlobals(log)
+	defer log.Sync()
+
 	config, err := config.Init(configPath)
-	fmt.Println(config)
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(
+			zap.String("package", "internal/app"),
+			zap.String("file", "app.go"),
+			zap.String("function", "config.Init()"),
+			zap.Error(err),
+		)
 	}
+
 	db := connectToDatabase(*config)
 	defer db.Close()
+
 	repositories := psql.NewRepositories(*psql.NewStudents(db))
 	services := service.NewServices(*service.NewStudents(&repositories.Students))
 	handler := rest.NewHandler(services)
@@ -35,15 +43,25 @@ func Run(configPath string) {
 		MaxHeaderBytes: config.ServerConfig.MaxHeaderBytes,
 		Handler:        handler.InitRouter(),
 	}
-	log.Println("Server started at ", time.Now().Format(time.RFC3339))
+	logger.Infof("Server started at ")
 	if err := srv.ListenAndServe(); err != nil {
-		log.Fatal(err)
+		logger.Fatal(
+			zap.String("package", "internal/app"),
+			zap.String("file", "app.go"),
+			zap.String("function", "srv.ListenAndServe()"),
+			zap.Error(err),
+		)
 	}
 }
 func connectToDatabase(cfg config.Config) *sqlx.DB {
 	db, err := database.NewPostgresConnection(cfg.PSQlConfig)
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(
+			zap.String("package", "internal/app"),
+			zap.String("file", "app.go"),
+			zap.String("function", "connectToDatabase()"),
+			zap.Error(err),
+		)
 	}
 	return db
 }
