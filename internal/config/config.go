@@ -1,37 +1,60 @@
 package config
 
 import (
-	"os"
-	"path/filepath"
 	database "test-crud/pkg/database/psql"
-	"test-crud/pkg/server"
+	"time"
 
-	"gopkg.in/yaml.v2"
+	"github.com/kelseyhightower/envconfig"
+	"github.com/spf13/viper"
+	"github.com/subosito/gotenv"
 )
 
-func ReadServerConfig(configDir string) (server.ServerConfig, error) {
-	filepath := filepath.Join(configDir, "server.yml")
-	var config server.ServerConfig
-	content, err := os.ReadFile(filepath)
-	if err != nil {
-		return config, err
-	}
-	err = yaml.Unmarshal(content, &config)
-	if err != nil {
-		return config, err
-	}
-	return config, nil
+type Config struct {
+	ServerConfig ServerConfig
+	PSQlConfig   database.PSQlConfig
 }
-func ReadDatabaseConfig(configDir string) (database.PSQlConfig, error) {
-	filepath := filepath.Join(configDir, "database.yml")
-	var config database.PSQlConfig
-	content, err := os.ReadFile(filepath)
-	if err != nil {
-		return config, err
+type ServerConfig struct {
+	Addr           string        `mapstructure:"port"`
+	MaxHeaderBytes int           `mapstructure:"maxHeaderBytes"`
+	ReadTimeout    time.Duration `mapstructure:"readTimeout"`
+	WriteTimeout   time.Duration `mapstructure:"writeTimeout"`
+}
+
+func Init(configDir string) (*Config, error) {
+	if err := parseConfigFile(configDir); err != nil {
+		return nil, err
 	}
-	err = yaml.Unmarshal(content, &config)
-	if err != nil {
-		return config, err
+	var cfg Config
+	if err := unmarshal(&cfg); err != nil {
+		return nil, err
 	}
-	return config, nil
+	if err := setFromEnv(&cfg); err != nil {
+		return nil, err
+	}
+	return &cfg, nil
+}
+
+func setFromEnv(config *Config) error {
+	if err := gotenv.Load("../../.env"); err != nil {
+		return err
+	}
+	// database
+	if err := envconfig.Process("DB", &config.PSQlConfig); err != nil {
+		return err
+	}
+	return nil
+}
+func unmarshal(config *Config) error {
+	if err := viper.UnmarshalKey("http", &config.ServerConfig); err != nil {
+		return err
+	}
+	return nil
+}
+func parseConfigFile(folder string) error {
+	viper.AddConfigPath(folder)
+	viper.SetConfigName("server")
+	if err := viper.ReadInConfig(); err != nil {
+		return err
+	}
+	return viper.MergeInConfig()
 }
