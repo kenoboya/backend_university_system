@@ -31,9 +31,11 @@ func Run(configPath string) {
 
 	db := connectToDatabase(*config)
 	defer db.Close()
-
-	repositories := psql.NewRepositories(*psql.NewStudents(db))
-	services := service.NewServices(*service.NewStudents(&repositories.Students))
+	repositories := psql.NewRepositories(db)
+	deps := service.Deps{
+		Repos: *repositories,
+	}
+	services := service.NewServices(deps)
 	handler := rest.NewHandler(services)
 
 	srv := &http.Server{
