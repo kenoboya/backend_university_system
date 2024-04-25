@@ -4,25 +4,25 @@ import (
 	"context"
 	"test-crud/internal/model"
 	"test-crud/internal/repository/psql"
+	"test-crud/pkg/auth"
+	"test-crud/pkg/hash"
 	"time"
 )
 
 type UsersService struct {
-	repo psql.Users
-	//hasher     hash.PasswordHasher
-	//hmacSecret []byte
-	//tokenTtl   time.Duration
+	repo         psql.Users
+	hasher       hash.PasswordHasher
+	tokenManager auth.TokenManager
+
+	accessTokenTTL  time.Duration
+	refreshTokenTTL time.Duration
 }
 
-func NewUsersService(repo psql.Users,
-
-// hasher hash.PasswordHasher, secret []byte, ttl time.Duration
-) *UsersService {
+func NewUsersService(repo psql.Users, hasher hash.PasswordHasher, tokenManager auth.TokenManager) *UsersService {
 	return &UsersService{
-		repo: repo,
-		// hasher:     hasher,
-		// hmacSecret: secret,
-		// tokenTtl:   ttl,
+		repo:         repo,
+		hasher:       hasher,
+		tokenManager: tokenManager,
 	}
 }
 
@@ -56,5 +56,22 @@ func (s *UsersService) SignIn(ctx context.Context, input model.UserSignInInput) 
 	return s.createSession(ctx, user.ID)
 }
 func (s *UsersService) createSession(ctx context.Context, userID int64) (Tokens, error) {
-	// todo
+	var (
+		res Tokens
+		err error
+	)
+	res.AccessToken, err = s.tokenManager.NewJWT(userID, s.accessTokenTTL)
+	if err != nil {
+		return res, err
+	}
+	res.RefreshToken, err = s.tokenManager.NewRefreshToken()
+	if err != nil {
+		return res, err
+	}
+	session := model.Session{
+		RefreshToken: res.RefreshToken,
+		ExpiresAt:    time.Now().Add(s.refreshTokenTTL),
+	}
+	err = s.repo.SetSession(ctx, userID, session)
+	return res, err
 }

@@ -12,12 +12,22 @@ import (
 type Config struct {
 	ServerConfig ServerConfig
 	PSQlConfig   database.PSQlConfig
+	AuthConfig   AuthConfig
 }
 type ServerConfig struct {
 	Addr           string        `mapstructure:"port"`
 	MaxHeaderBytes int           `mapstructure:"maxHeaderBytes"`
 	ReadTimeout    time.Duration `mapstructure:"readTimeout"`
 	WriteTimeout   time.Duration `mapstructure:"writeTimeout"`
+}
+type AuthConfig struct {
+	JWT          JWTConfig
+	PasswordSalt string
+}
+type JWTConfig struct {
+	AccessTokenTTL  time.Duration
+	RefreshTokenTTL time.Duration
+	SecretKey       string
 }
 
 func Init(configDir string) (*Config, error) {
@@ -38,8 +48,10 @@ func setFromEnv(config *Config) error {
 	if err := gotenv.Load("../../.env"); err != nil {
 		return err
 	}
-	// database
 	if err := envconfig.Process("DB", &config.PSQlConfig); err != nil {
+		return err
+	}
+	if err := envconfig.Process("AUTH", &config.AuthConfig); err != nil {
 		return err
 	}
 	return nil

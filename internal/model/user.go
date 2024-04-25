@@ -2,11 +2,7 @@ package model
 
 import (
 	"time"
-
-	"github.com/go-playground/validator/v10"
 )
-
-var validate *validator.Validate
 
 type User struct {
 	ID           int64      `db:"person_id" json:"person_id"`
@@ -21,22 +17,14 @@ type User struct {
 }
 
 type UserSignUpInput struct {
-	Username string `json:"username" validate:"required, min=5, max=70"`
-	Email    string `json:"email" validate:"required, min=3"`
-	Password string `json:"password" validate:"required, gte=6"`
-}
-
-func (i UserSignUpInput) Validator() error {
-	return validate.Struct(i)
+	Username string `json:"username" validate:"required,min=5,max=70"`
+	Email    string `json:"email" validate:"required,email"`
+	Password string `json:"password" validate:"required,gte=6"`
 }
 
 type UserSignInInput struct {
-	Login    string `json:"login" validate:"required, min=3"`
-	Password string `json:"password" validate:"required, gte=6"`
+	Login    string `json:"login" validate:"required,min=3"`
+	Password string `json:"password" validate:"required,gte=6"`
 	// Verified bool `json:"verified"`
 	// Blocked bool `json:"blocked"`
-}
-
-func (i UserSignInInput) Validator() error {
-	return validate.Struct(i)
 }

@@ -6,7 +6,9 @@ import (
 	"test-crud/internal/repository/psql"
 	"test-crud/internal/service"
 	"test-crud/internal/transports/rest"
+	"test-crud/pkg/auth"
 	database "test-crud/pkg/database/psql"
+	"test-crud/pkg/hash"
 	"test-crud/pkg/logger"
 
 	"github.com/jmoiron/sqlx"
@@ -31,9 +33,23 @@ func Run(configPath string) {
 
 	db := connectToDatabase(*config)
 	defer db.Close()
+
+	hasher := hash.NewSHA1Hasher(config.AuthConfig.PasswordSalt)
+	tokenManager, err := auth.NewManager(config.AuthConfig.JWT.SecretKey)
+	if err != nil {
+		logger.Fatal(
+			zap.String("package", "internal/app"),
+			zap.String("file", "app.go"),
+			zap.String("function", "srv.ListenAndServe()"),
+			zap.Error(err),
+		)
+	}
+
 	repositories := psql.NewRepositories(db)
 	deps := service.Deps{
-		Repos: *repositories,
+		Repos:        *repositories,
+		Hasher:       hasher,
+		TokenManager: tokenManager,
 	}
 	services := service.NewServices(deps)
 	handler := rest.NewHandler(services)

@@ -8,7 +8,7 @@ import (
 )
 
 type Repositories struct {
-	Students    Students
+	//Students    Students
 	Users       Users
 	Teachers    Teachers
 	Employees   Employees
@@ -21,7 +21,7 @@ type Repositories struct {
 
 func NewRepositories(db *sqlx.DB) *Repositories {
 	return &Repositories{
-		Students:    NewStudentsRepository(db),
+		//Students:    NewStudentsRepository(db),
 		Users:       NewUsersRepository(db),
 		Teachers:    NewTeachersRepository(db),
 		Employees:   NewEmployeesRepository(db),
@@ -45,6 +45,7 @@ type Users interface {
 	Create(ctx context.Context, user model.User) error
 	GetByEmailCredentials(ctx context.Context, login, password string) (model.User, error)
 	GetByUsernameCredentials(ctx context.Context, login, password string) (model.User, error)
+	SetSession(ctx context.Context, id int64, session model.Session) error
 }
 type Teachers interface {
 	// todo

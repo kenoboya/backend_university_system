@@ -15,10 +15,10 @@ func NewFacultiesHandler(service service.Faculties) *FacultiesHandler {
 }
 
 func (h *FacultiesHandler) initRoutes(router *mux.Router) {
-	faculties := router.PathPrefix("/faculties").Subrouter()
-	{
-		// todo
-	}
+	// faculties := router.PathPrefix("/faculties").Subrouter()
+	// {
+	// 	// todo
+	// }
 }
 
 type SpecialtiesHandler struct {
@@ -30,10 +30,10 @@ func NewSpecialtiesHandler(service service.Specialties) *SpecialtiesHandler {
 }
 
 func (h *SpecialtiesHandler) initRoutes(router *mux.Router) {
-	specialties := router.PathPrefix("/specialties").Subrouter()
-	{
-		// todo
-	}
+	// specialties := router.PathPrefix("/specialties").Subrouter()
+	// {
+	// 	// todo
+	// }
 }
 
 type GroupsHandler struct {
@@ -45,8 +45,8 @@ func NewGroupsHandler(service service.Groups) *GroupsHandler {
 }
 
 func (h *GroupsHandler) initRoutes(router *mux.Router) {
-	groups := router.PathPrefix("/groups").Subrouter()
-	{
-		// todo
-	}
+	// groups := router.PathPrefix("/groups").Subrouter()
+	// {
+	// 	// todo
+	// }
 }

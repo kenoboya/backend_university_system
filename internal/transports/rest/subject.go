@@ -15,10 +15,10 @@ func NewSubjectsHandler(service service.Subjects) *SubjectsHandler {
 }
 
 func (h *SubjectsHandler) initRoutes(router *mux.Router) {
-	subjects := router.PathPrefix("/subjects").Subrouter()
-	{
-		// todo
-	}
+	// subjects := router.PathPrefix("/subjects").Subrouter()
+	// {
+	// 	// todo
+	// }
 }
 
 type LessonsHandler struct {
@@ -30,8 +30,8 @@ func NewLessonsHandler(service service.Lessons) *LessonsHandler {
 }
 
 func (h *LessonsHandler) initRoutes(router *mux.Router) {
-	lessons := router.PathPrefix("/lessons").Subrouter()
-	{
-		// todo
-	}
+	// lessons := router.PathPrefix("/lessons").Subrouter()
+	// {
+	// 	// todo
+	// }
 }

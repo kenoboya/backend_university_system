@@ -4,10 +4,12 @@ import (
 	"context"
 	"test-crud/internal/model"
 	"test-crud/internal/repository/psql"
+	"test-crud/pkg/auth"
+	"test-crud/pkg/hash"
 )
 
 type Services struct {
-	Students    Students
+	//Students    Students
 	Users       Users
 	Teachers    Teachers
 	Employees   Employees
@@ -18,13 +20,15 @@ type Services struct {
 	Groups      Groups
 }
 type Deps struct {
-	Repos psql.Repositories
+	Repos        psql.Repositories
+	Hasher       hash.PasswordHasher
+	TokenManager auth.TokenManager
 }
 
 func NewServices(deps Deps) *Services {
 	return &Services{
-		Students:    NewStudentsService(deps.Repos.Students),
-		Users:       NewUsersService(deps.Repos.Users),
+		//Students:    NewStudentsService(deps.Repos.Students),
+		Users:       NewUsersService(deps.Repos.Users, deps.Hasher, deps.TokenManager),
 		Teachers:    NewTeachersService(deps.Repos.Teachers),
 		Employees:   NewEmployeesService(deps.Repos.Employees),
 		Subjects:    NewSubjectsService(deps.Repos.Subjects),
@@ -66,4 +70,8 @@ type Faculties interface {
 }
 type Groups interface {
 	// todo
+}
+type Tokens struct {
+	AccessToken  string
+	RefreshToken string
 }

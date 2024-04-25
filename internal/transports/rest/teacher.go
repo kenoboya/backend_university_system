@@ -15,8 +15,8 @@ func NewTeachersHandler(service service.Employees) *TeachersHandler {
 }
 
 func (h *TeachersHandler) initRoutes(router *mux.Router) {
-	teachers := router.PathPrefix("/teachers").Subrouter()
-	{
-		// todo
-	}
+	// teachers := router.PathPrefix("/teachers").Subrouter()
+	// {
+	// 	// todo
+	// }
 }
