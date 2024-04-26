@@ -1,7 +1,9 @@
 package rest
 
 import (
+	"errors"
 	"net/http"
+	"strconv"
 	_ "test-crud/docs"
 	"test-crud/internal/service"
 
@@ -22,6 +24,7 @@ type Handler struct {
 	Faculties   Faculties
 	Specialties Specialties
 	Groups      Groups
+	Admins      Admins
 }
 
 func NewHandler(services *service.Services) *Handler {
@@ -35,6 +38,7 @@ func NewHandler(services *service.Services) *Handler {
 		Faculties:   NewFacultiesHandler(services.Faculties),
 		Specialties: NewSpecialtiesHandler(services.Specialties),
 		Groups:      NewGroupsHandler(services.Groups),
+		Admins:      NewAdminsHandler(*services),
 	}
 }
 
@@ -71,33 +75,89 @@ type Users interface {
 }
 type Students interface {
 	Routers
-	// todo
+	// Crud
+}
+type Crud interface {
+	create(w http.ResponseWriter, r *http.Request)
+	getAll(w http.ResponseWriter, r *http.Request)
+	getById(w http.ResponseWriter, r *http.Request)
+	update(w http.ResponseWriter, r *http.Request)
+	delete(w http.ResponseWriter, r *http.Request)
 }
 type Teachers interface {
 	Routers
-	// todo
+	// Crud
 }
 type Employees interface {
 	Routers
-	// todo
+	//Crud
 }
 type Subjects interface {
 	Routers
-	// todo
+	// Crud
 }
 type Lessons interface {
 	Routers
-	// todo
+	// Crud
 }
 type Specialties interface {
 	Routers
-	// todo
+	// Crud
 }
 type Faculties interface {
 	Routers
-	// todo
+	// Crud
 }
 type Groups interface {
 	Routers
-	// todo
+	// Crud
+}
+type Admins interface {
+	createStudent(w http.ResponseWriter, r *http.Request)
+	getStudents(w http.ResponseWriter, r *http.Request)
+	getStudent(w http.ResponseWriter, r *http.Request)
+	updateStudent(w http.ResponseWriter, r *http.Request)
+	deleteStudent(w http.ResponseWriter, r *http.Request)
+
+	createTeacher(w http.ResponseWriter, r *http.Request)
+	getTeachers(w http.ResponseWriter, r *http.Request)
+	getTeacher(w http.ResponseWriter, r *http.Request)
+	updateTeacher(w http.ResponseWriter, r *http.Request)
+	deleteTeacher(w http.ResponseWriter, r *http.Request)
+
+	createLesson(w http.ResponseWriter, r *http.Request)
+	getLessons(w http.ResponseWriter, r *http.Request)
+	getLesson(w http.ResponseWriter, r *http.Request)
+	updateLesson(w http.ResponseWriter, r *http.Request)
+	deleteLesson(w http.ResponseWriter, r *http.Request)
+
+	createFaculty(w http.ResponseWriter, r *http.Request)
+	getFaculties(w http.ResponseWriter, r *http.Request)
+	getFaculty(w http.ResponseWriter, r *http.Request)
+	updateFaculty(w http.ResponseWriter, r *http.Request)
+	deleteFaculty(w http.ResponseWriter, r *http.Request)
+
+	createSpecialty(w http.ResponseWriter, r *http.Request)
+	getSpecialties(w http.ResponseWriter, r *http.Request)
+	getSpecialty(w http.ResponseWriter, r *http.Request)
+	updateSpecialty(w http.ResponseWriter, r *http.Request)
+	deleteSpecialty(w http.ResponseWriter, r *http.Request)
+
+	createGroup(w http.ResponseWriter, r *http.Request)
+	getGroups(w http.ResponseWriter, r *http.Request)
+	getGroup(w http.ResponseWriter, r *http.Request)
+	updateGroup(w http.ResponseWriter, r *http.Request)
+	deleteGroup(w http.ResponseWriter, r *http.Request)
+}
+
+func getIdFromRequest(r *http.Request) (int64, error) {
+	vars := mux.Vars(r)
+	id, err := strconv.ParseInt(vars["id"], 10, 64)
+	if err != nil {
+		return 0, err
+	}
+	if id == 0 {
+		return 0, errors.New("Id couldn't be zero")
+	}
+	return id, nil
 }

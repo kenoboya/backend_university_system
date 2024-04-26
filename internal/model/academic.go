@@ -20,7 +20,7 @@ type Group struct {
 	Specialty        Specialty
 }
 
-type CreateOrUpdateFacultyInput struct {
+type CreateFacultyInput struct {
 	FullName string `db:"full_name" json:"full_name"`
 }
 
@@ -29,7 +29,8 @@ type CreateSpecialtyInput struct {
 	FullName  string `db:"full_name" json:"full_name"`
 }
 type UpdateSpecialtyInput struct {
-	FullName string `db:"full_name" json:"full_name"`
+	FacultyID string `db:"faculty_id" json:"faculty_id"`
+	FullName  string `db:"full_name" json:"full_name"`
 }
 
 type CreateGroupInput struct {

@@ -3,6 +3,7 @@ package model
 type Student struct {
 	ID     int64 `db:"student_id" json:"student_id"`
 	Person Person
+	Group  Group
 }
 
 type CreateStudentInput struct {
@@ -10,8 +11,6 @@ type CreateStudentInput struct {
 	GroupID  int64 `db:"group_id" json:"group_id"`
 }
 
-// IN DEVELOPING
-// type UpdateStudentInput struct {
-// 	ID      int64  `db:"student_id" json:"student_id"`
-// 	Person Person
-// }
+type UpdateStudentInput struct {
+	GroupID int64 `db:"group_id" json:"group_id"`
+}

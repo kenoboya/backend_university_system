@@ -23,11 +23,12 @@ type CreateSubjectInput struct {
 	SpecialtyID *int64 `db:"specialty_id" json:"specialty_id"`
 	Name        string `db:"name" json:"name"`
 }
-type UpdateStudentInput struct {
-	Name string `db:"name" json:"name"`
+type UpdateSubjectInput struct {
+	SpecialtyID *int64 `db:"specialty_id" json:"specialty_id"`
+	Name        string `db:"name" json:"name"`
 }
 
-type CreateOrUpdateLessonInput struct {
+type CreateLessonInput struct {
 	TeacherID   int64     `db:"teacher_id" json:"teacher_id"`
 	SubjectID   int64     `db:"subject_id" json:"subject_id"`
 	GroupID     string    `db:"group_id" json:"group_id"`

@@ -10,7 +10,7 @@ import (
 type TokenManager interface {
 	NewJWT(user_ID int64, ttl time.Duration) (string, error)
 	VerifyToken(accessToken string) error
-	// NewRefreshToken() (string, error)
+	NewRefreshToken() (string, error)
 }
 
 type Manager struct {

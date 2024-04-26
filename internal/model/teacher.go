@@ -11,8 +11,8 @@ type CreateTeacherInput struct {
 	// Subject_id []int64 `db:"subject_id" json:"subject_id"`
 }
 
-// IN DEVELOPING
-// type UpdateTeacherInput struct {
-// 	SEPARATE TABLE?
-// 	Subject_id []int64 `db:"subject_id" json:"subject_id"`
-// }
+type UpdateTeacherInput struct {
+	EmployeeID int64 `db:"employee_id" json:"employee_id"`
+	// SEPARATE TABLE?
+	// Subject_id []int64 `db:"subject_id" json:"subject_id"`
+}

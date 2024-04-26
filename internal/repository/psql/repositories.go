@@ -8,7 +8,7 @@ import (
 )
 
 type Repositories struct {
-	//Students    Students
+	Students    Students
 	Users       Users
 	Teachers    Teachers
 	Employees   Employees
@@ -17,11 +17,12 @@ type Repositories struct {
 	Faculties   Faculties
 	Specialties Specialties
 	Groups      Groups
+	Admins      Admins
 }
 
 func NewRepositories(db *sqlx.DB) *Repositories {
 	return &Repositories{
-		//Students:    NewStudentsRepository(db),
+		Students:    NewStudentsRepository(db),
 		Users:       NewUsersRepository(db),
 		Teachers:    NewTeachersRepository(db),
 		Employees:   NewEmployeesRepository(db),
@@ -30,16 +31,16 @@ func NewRepositories(db *sqlx.DB) *Repositories {
 		Faculties:   NewFacultiesRepository(db),
 		Specialties: NewSpecialtiesRepository(db),
 		Groups:      NewGroupsRepository(db),
+		Admins:      NewAdminsRepository(db),
 	}
 }
 
-// AdminService
 type Students interface {
 	Create(ctx context.Context, student model.CreateStudentInput) error
-	Delete(ctx context.Context, id int64) error
-	Update(ctx context.Context, id int64, student model.UpdateStudentInput) error
-	GetById(ctx context.Context, id int64) (model.Student, error)
 	GetAll(ctx context.Context) ([]model.Student, error)
+	GetById(ctx context.Context, id int64) (model.Student, error)
+	Update(ctx context.Context, id int64, student model.UpdateStudentInput) error
+	Delete(ctx context.Context, id int64) error
 }
 type Users interface {
 	Create(ctx context.Context, user model.User) error
@@ -47,24 +48,52 @@ type Users interface {
 	GetByUsernameCredentials(ctx context.Context, login, password string) (model.User, error)
 	SetSession(ctx context.Context, id int64, session model.Session) error
 }
-type Teachers interface {
+type Admins interface {
 	// todo
+}
+type Teachers interface {
+	Create(ctx context.Context, teacher model.CreateTeacherInput) error
+	GetAll(ctx context.Context) ([]model.Teacher, error)
+	GetById(ctx context.Context, id int64) (model.Teacher, error)
+	Update(ctx context.Context, id int64, teacher model.UpdateTeacherInput) error
+	Delete(ctx context.Context, id int64) error
 }
 type Employees interface {
-	// todo
+	Create(ctx context.Context, employee model.CreateEmployeeInput) error
+	GetAll(ctx context.Context) ([]model.Employee, error)
+	GetById(ctx context.Context, id int64) (model.Employee, error)
+	Update(ctx context.Context, id int64, teacher model.UpdateEmployeeInput) error
+	Delete(ctx context.Context, id int64) error
 }
 type Subjects interface {
-	// todo
+	Create(ctx context.Context, subject model.CreateSubjectInput) error
+	GetAll(ctx context.Context) ([]model.Subject, error)
+	GetById(ctx context.Context, id int64) (model.Subject, error)
+	Update(ctx context.Context, id int64, subject model.UpdateSubjectInput) error
+	Delete(ctx context.Context, id int64) error
 }
 type Lessons interface {
-	// todo
-}
-type Specialties interface {
-	// todo
-}
-type Groups interface {
-	// todo
+	Create(ctx context.Context, lesson model.CreateLessonInput) error
+	GetAll(ctx context.Context) ([]model.Lesson, error)
+	GetById(ctx context.Context, id int64) (model.Lesson, error)
+	Delete(ctx context.Context, id int64) error
 }
 type Faculties interface {
-	// todo
+	Create(ctx context.Context, faculty model.CreateFacultyInput) error
+	GetAll(ctx context.Context) ([]model.Faculty, error)
+	GetById(ctx context.Context, id int64) (model.Faculty, error)
+	Delete(ctx context.Context, id int64) error
+}
+type Specialties interface {
+	Create(ctx context.Context, specialty model.CreateSpecialtyInput) error
+	GetAll(ctx context.Context) ([]model.Specialty, error)
+	GetById(ctx context.Context, id int64) (model.Specialty, error)
+	Update(ctx context.Context, id int64, specialty model.UpdateSpecialtyInput) error
+	Delete(ctx context.Context, id int64) error
+}
+type Groups interface {
+	Create(ctx context.Context, group model.CreateGroupInput) error
+	GetAll(ctx context.Context) ([]model.Group, error)
+	GetById(ctx context.Context, id int64) (model.Group, error)
+	Delete(ctx context.Context, id int64) error
 }

@@ -39,5 +39,6 @@ func (r *UsersRepository) GetByUsernameCredentials(ctx context.Context, username
 	return user, nil
 }
 func (r *UsersRepository) SetSession(ctx context.Context, userID int64, session model.Session) error {
-	// TODO
+	// todo
+	return nil
 }
