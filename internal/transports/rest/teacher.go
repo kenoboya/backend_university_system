@@ -2,8 +2,6 @@ package rest
 
 import (
 	"test-crud/internal/service"
-
-	"github.com/gorilla/mux"
 )
 
 type TeachersHandler struct {
@@ -12,11 +10,4 @@ type TeachersHandler struct {
 
 func NewTeachersHandler(service service.Teachers) *TeachersHandler {
 	return &TeachersHandler{service: service}
-}
-
-func (h *TeachersHandler) initRoutes(router *mux.Router) {
-	// teachers := router.PathPrefix("/teachers").Subrouter()
-	// {
-
-	// }
 }

@@ -33,7 +33,7 @@ func (r *TeachersRepository) GetAll(ctx context.Context) ([]model.Teacher, error
 
 func (r *TeachersRepository) GetById(ctx context.Context, id int64) (model.Teacher, error) {
 	var teacher model.Teacher
-	err := r.db.Get(&teacher, "SELECT * FROM teachers WHERE teacher_id=$1 JOIN employees USING(employee_id)", id)
+	err := r.db.Get(&teacher, "SELECT * FROM teachers JOIN employees USING(employee_id) WHERE teacher_id=$1", id)
 	if err != nil {
 		return teacher, err
 	}

@@ -251,12 +251,24 @@ definitions:
         type: string
       password:
         type: string
-      person_id:
-        type: integer
       registered_at:
         type: string
+      user_id:
+        type: integer
       username:
         type: string
+    type: object
+  model.UserSignInInput:
+    properties:
+      login:
+        minLength: 3
+        type: string
+      password:
+        minLength: 6
+        type: string
+    required:
+    - login
+    - password
     type: object
   model.UserSignUpInput:
     properties:
@@ -273,6 +285,13 @@ definitions:
     - email
     - password
     - username
+    type: object
+  service.Tokens:
+    properties:
+      accessToken:
+        type: string
+      refreshToken:
+        type: string
     type: object
 host: localhost:8080
 info:
@@ -1484,6 +1503,57 @@ paths:
       summary: Update person
       tags:
       - people
+  /users/refresh:
+    get:
+      description: Refresh access token using refresh token stored in cookie
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/service.Tokens'
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Refresh Access Token
+      tags:
+      - auth
+  /users/sign-in:
+    post:
+      consumes:
+      - application/json
+      description: Sign in a user and generate access token
+      parameters:
+      - description: Data for signing in user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserSignInInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/service.Tokens'
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Sign In User
+      tags:
+      - auth
   /users/sign-up:
     post:
       consumes:
@@ -1499,7 +1569,7 @@ paths:
       produces:
       - application/json
       responses:
-        "201":
+        "200":
           description: Registered
           schema:
             type: string
@@ -1513,5 +1583,5 @@ paths:
             type: string
       summary: User registration
       tags:
-      - users
+      - auth
 swagger: "2.0"

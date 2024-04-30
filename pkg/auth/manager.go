@@ -2,6 +2,8 @@ package auth
 
 import (
 	"errors"
+	"fmt"
+	"math/rand"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -45,16 +47,23 @@ func (m *Manager) VerifyToken(accessToken string) (string, error) {
 		return "", err
 	}
 	if !token.Valid {
-		return "", errors.New("Invalid token")
+		return "", errors.New("invalid token")
 	}
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok {
-		return "", errors.New("Error get user claims from token")
+		return "", errors.New("error get user claims from token")
 	}
 	return claims["sub"].(string), nil
 }
 
-// TODO
 func (m *Manager) NewRefreshToken() (string, error) {
-	return "", nil
+	b := make([]byte, 32)
+	s := rand.NewSource(time.Now().Unix())
+	r := rand.New(s)
+
+	if _, err := r.Read(b); err != nil {
+		return "", err
+	}
+
+	return fmt.Sprintf("%x", b), nil
 }

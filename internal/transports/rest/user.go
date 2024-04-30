@@ -3,13 +3,13 @@ package rest
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"test-crud/internal/model"
 	"test-crud/internal/service"
 
 	"github.com/go-playground/validator/v10"
-	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 )
 
@@ -25,26 +25,9 @@ func NewUsersHandler(usersService service.Users, peopleService service.People) *
 	}
 }
 
-func (h *UsersHandler) initRoutes(router *mux.Router) {
-	users := router.PathPrefix("/users").Subrouter()
-	{
-		users.HandleFunc("/sign-up", h.signUp).Methods(http.MethodPost)
-		users.HandleFunc("/sign-in", h.signIn).Methods(http.MethodPost)
-
-		people := router.PathPrefix("/people").Subrouter()
-		{
-			people.HandleFunc("", h.createPerson).Methods(http.MethodPost)
-			people.HandleFunc("", h.getPeople).Methods(http.MethodGet)
-			people.HandleFunc("/{id:[0-9]+}", h.getPerson).Methods(http.MethodPost)
-			people.HandleFunc("/{id:[0-9]+}", h.updatePerson).Methods(http.MethodPatch)
-			people.HandleFunc("/{id:[0-9]+}", h.deletePerson).Methods(http.MethodDelete)
-		}
-	}
-}
-
 // @Summary User registration
 // @Description User registration
-// @Tags users
+// @Tags auth
 // @Accept json
 // @Produce json
 // @Param user body model.UserSignUpInput true "Data for registration user"
@@ -98,6 +81,17 @@ func (h *UsersHandler) signUp(w http.ResponseWriter, r *http.Request) {
 	}
 	w.WriteHeader(http.StatusOK)
 }
+
+// @Summary Sign In User
+// @Description Sign in a user and generate access token
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param user body model.UserSignInInput true "Data for signing in user"
+// @Success 200 {object} service.Tokens "Successful operation"
+// @Failure 400 {string} string "Bad request"
+// @Failure 500 {string} string "Internal server error"
+// @Router /users/sign-in [post]
 func (h *UsersHandler) signIn(w http.ResponseWriter, r *http.Request) {
 	reqBytes, err := io.ReadAll(r.Body)
 	if err != nil {
@@ -156,6 +150,56 @@ func (h *UsersHandler) signIn(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+	w.Header().Add("Set-Cookie", fmt.Sprintf("refresh-token=%s; HttpOnly", token.RefreshToken))
+	w.Header().Add("Content-Type", "application/json")
+	w.Write(response)
+}
+
+// @Summary Refresh Access Token
+// @Description Refresh access token using refresh token stored in cookie
+// @Tags auth
+// @Produce json
+// @Success 200 {object} service.Tokens "Successful operation"
+// @Failure 400 {string} string "Bad request"
+// @Failure 500 {string} string "Internal server error"
+// @Router /users/refresh [get]
+func (h *UsersHandler) refresh(w http.ResponseWriter, r *http.Request) {
+	cookie, err := r.Cookie("refresh-token")
+	if err != nil {
+		zap.S().Error(
+			zap.String("package", "internal/transport/rest"),
+			zap.String("file", "user.go"),
+			zap.String("function", "refresh()"),
+			zap.Error(err),
+		)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	token, err := h.usersService.Refresh(context.TODO(), cookie.Value)
+	if err != nil {
+		zap.S().Error(
+			zap.String("package", "internal/transport/rest"),
+			zap.String("file", "user.go"),
+			zap.String("function", "refresh()"),
+			zap.Error(err),
+		)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	response, err := json.Marshal(map[string]string{
+		"token": token.AccessToken,
+	})
+	if err != nil {
+		zap.S().Error(
+			zap.String("package", "internal/transport/rest"),
+			zap.String("file", "user.go"),
+			zap.String("function", "refresh()"),
+			zap.Error(err),
+		)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.Header().Add("Set-Cookie", fmt.Sprintf("refresh-token=%s; HttpOnly", token.RefreshToken))
 	w.Header().Add("Content-Type", "application/json")
 	w.Write(response)
 }

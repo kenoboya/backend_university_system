@@ -49,6 +49,7 @@ type Users interface {
 	GetByEmailCredentials(ctx context.Context, login, password string) (model.User, error)
 	GetByUsernameCredentials(ctx context.Context, login, password string) (model.User, error)
 	SetSession(ctx context.Context, id int64, session model.Session) error
+	GetByRefreshToken(ctx context.Context, refreshToken string) (model.User, error)
 }
 type Admins interface {
 	// todo

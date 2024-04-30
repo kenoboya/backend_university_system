@@ -53,7 +53,7 @@ type Students interface {
 type Users interface {
 	SignUp(ctx context.Context, input model.UserSignUpInput) error
 	SignIn(ctx context.Context, input model.UserSignInInput) (Tokens, error)
-	GetTokenManager() auth.TokenManager
+	Refresh(ctx context.Context, refreshToken string) (Tokens, error)
 }
 type Teachers interface {
 	Create(ctx context.Context, teacher model.CreateTeacherInput) error

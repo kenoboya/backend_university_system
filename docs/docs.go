@@ -1833,6 +1833,84 @@ const docTemplate = `{
                 }
             }
         },
+        "/users/refresh": {
+            "get": {
+                "description": "Refresh access token using refresh token stored in cookie",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Refresh Access Token",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/service.Tokens"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/sign-in": {
+            "post": {
+                "description": "Sign in a user and generate access token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Sign In User",
+                "parameters": [
+                    {
+                        "description": "Data for signing in user",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserSignInInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/service.Tokens"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/users/sign-up": {
             "post": {
                 "description": "User registration",
@@ -1843,7 +1921,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "users"
+                    "auth"
                 ],
                 "summary": "User registration",
                 "parameters": [
@@ -1858,7 +1936,7 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "201": {
+                    "200": {
                         "description": "Registered",
                         "schema": {
                             "type": "string"
@@ -2271,14 +2349,31 @@ const docTemplate = `{
                 "password": {
                     "type": "string"
                 },
-                "person_id": {
-                    "type": "integer"
-                },
                 "registered_at": {
                     "type": "string"
                 },
+                "user_id": {
+                    "type": "integer"
+                },
                 "username": {
                     "type": "string"
+                }
+            }
+        },
+        "model.UserSignInInput": {
+            "type": "object",
+            "required": [
+                "login",
+                "password"
+            ],
+            "properties": {
+                "login": {
+                    "type": "string",
+                    "minLength": 3
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 6
                 }
             }
         },
@@ -2301,6 +2396,17 @@ const docTemplate = `{
                     "type": "string",
                     "maxLength": 70,
                     "minLength": 5
+                }
+            }
+        },
+        "service.Tokens": {
+            "type": "object",
+            "properties": {
+                "accessToken": {
+                    "type": "string"
+                },
+                "refreshToken": {
+                    "type": "string"
                 }
             }
         }

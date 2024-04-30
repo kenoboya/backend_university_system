@@ -5,6 +5,7 @@ import (
 	"test-crud/internal/model"
 
 	"github.com/jmoiron/sqlx"
+	"github.com/lib/pq"
 )
 
 type UsersRepository struct {
@@ -38,7 +39,25 @@ func (r *UsersRepository) GetByUsernameCredentials(ctx context.Context, username
 	}
 	return user, nil
 }
+func (r *UsersRepository) GetByRefreshToken(ctx context.Context, refreshToken string) (model.User, error) {
+	var user model.User
+	if err := r.db.Get(&user, "SELECT user_id, username, email, password, registered_at, last_visit_at FROM refresh_tokens JOIN users USING(user_id) WHERE token=$1 AND expires_at > NOW()", refreshToken); err != nil {
+		return user, err
+	}
+	return user, nil
+}
+
 func (r *UsersRepository) SetSession(ctx context.Context, userID int64, session model.Session) error {
-	// todo
+	_, err := r.db.Exec("INSERT INTO refresh_tokens (user_id, token, expires_at) VALUES($1, $2, $3)", userID, session.RefreshToken, session.ExpiresAt)
+	if err != nil {
+		if pqErr, ok := err.(*pq.Error); ok && pqErr.Code.Name() == "unique_violation" {
+			_, updateErr := r.db.Exec("UPDATE refresh_tokens SET token = $1, expires_at = $2 WHERE user_id = $3", session.RefreshToken, session.ExpiresAt, userID)
+			if updateErr != nil {
+				return updateErr
+			}
+			return nil
+		}
+		return err
+	}
 	return nil
 }

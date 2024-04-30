@@ -34,7 +34,7 @@ func (r *PeopleRepository) GetAll(ctx context.Context) ([]model.Person, error) {
 
 func (r *PeopleRepository) GetById(ctx context.Context, id int64) (model.Person, error) {
 	var person model.Person
-	err := r.db.Get(&person, "SELECT * FROM people WHERE person_id=$1 JOIN users USING(user_id)", id)
+	err := r.db.Get(&person, "SELECT * FROM people JOIN users USING(user_id) WHERE person_id=$1", id)
 	if err != nil {
 		return person, err
 	}

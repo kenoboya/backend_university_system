@@ -80,7 +80,7 @@ func (r SpecialtiesRepository) GetAll(ctx context.Context) ([]model.Specialty, e
 }
 func (r SpecialtiesRepository) GetById(ctx context.Context, id int64) (model.Specialty, error) {
 	var specialty model.Specialty
-	err := r.db.Get(&specialty, "SELECT * FROM specialties WHERE specialty_id = $1 JOIN faculties USING(faculty_id)", id)
+	err := r.db.Get(&specialty, "SELECT * FROM specialties JOIN faculties USING(faculty_id) WHERE specialty_id = $1", id)
 	if err != nil {
 		return specialty, err
 	}
@@ -119,7 +119,7 @@ func (r GroupsRepository) GetAll(ctx context.Context) ([]model.Group, error) {
 }
 func (r GroupsRepository) GetById(ctx context.Context, id int64) (model.Group, error) {
 	var group model.Group
-	err := r.db.Get(&group, "SELECT * FROM faculties WHERE group_id = $1 JOIN specialties USING(specialty_id)", id)
+	err := r.db.Get(&group, "SELECT * FROM faculties JOIN specialties USING(specialty_id) WHERE group_id = $1", id)
 	if err != nil {
 		return group, err
 	}

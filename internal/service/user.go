@@ -25,9 +25,6 @@ func NewUsersService(repo psql.Users, hasher hash.PasswordHasher, tokenManager a
 		tokenManager: tokenManager,
 	}
 }
-func (s *UsersService) GetTokenManager() auth.TokenManager {
-	return s.tokenManager
-}
 func (s *UsersService) SignUp(ctx context.Context, input model.UserSignUpInput) error {
 	passwordHash, err := s.hasher.Hash(input.Password)
 	if err != nil {
@@ -54,6 +51,14 @@ func (s *UsersService) SignIn(ctx context.Context, input model.UserSignInInput) 
 			return Tokens{}, err
 		}
 		s.createSession(ctx, user.ID)
+	}
+	return s.createSession(ctx, user.ID)
+}
+
+func (s *UsersService) Refresh(ctx context.Context, refreshToken string) (Tokens, error) {
+	user, err := s.repo.GetByRefreshToken(ctx, refreshToken)
+	if err != nil {
+		return Tokens{}, err
 	}
 	return s.createSession(ctx, user.ID)
 }

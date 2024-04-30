@@ -40,7 +40,7 @@ func (r SubjectsRepository) GetAll(ctx context.Context) ([]model.Subject, error)
 }
 func (r SubjectsRepository) GetById(ctx context.Context, id int64) (model.Subject, error) {
 	var subject model.Subject
-	err := r.db.Get(&subject, "SELECT * FROM subjects WHERE subject_id = $1 JOIN specialties USING(specialty_id)", id)
+	err := r.db.Get(&subject, "SELECT * FROM subjects JOIN specialties USING(specialty_id) WHERE subject_id = $1", id)
 	if err != nil {
 		return subject, err
 	}
@@ -79,7 +79,7 @@ func (r LessonsRepository) GetAll(ctx context.Context) ([]model.Lesson, error) {
 }
 func (r LessonsRepository) GetById(ctx context.Context, id int64) (model.Lesson, error) {
 	var lesson model.Lesson
-	err := r.db.Get(&lesson, "SELECT * FROM lessons WHERE lesson_id = $1 JOIN teachers USING(teacher_id) JOIN subjects USING(subjects_id) JOIN groups USING(group_id)", id)
+	err := r.db.Get(&lesson, "SELECT * FROM lessons JOIN teachers USING(teacher_id) JOIN subjects USING(subjects_id) JOIN groups USING(group_id) WHERE lesson_id = $1", id)
 	if err != nil {
 		return lesson, err
 	}

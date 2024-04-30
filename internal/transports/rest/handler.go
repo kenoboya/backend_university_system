@@ -6,36 +6,39 @@ import (
 	"strconv"
 	_ "test-crud/docs"
 	"test-crud/internal/service"
+	"test-crud/pkg/auth"
 
 	"github.com/gorilla/mux"
 	httpSwagger "github.com/swaggo/http-swagger"
 )
 
 type Handler struct {
-	Students    Students
-	Users       Users
-	Teachers    Teachers
-	Employees   Employees
-	Subjects    Subjects
-	Lessons     Lessons
-	Faculties   Faculties
-	Specialties Specialties
-	Groups      Groups
-	Admins      Admins
+	Students     Students
+	Users        Users
+	Teachers     Teachers
+	Employees    Employees
+	Subjects     Subjects
+	Lessons      Lessons
+	Faculties    Faculties
+	Specialties  Specialties
+	Groups       Groups
+	Admins       Admins
+	tokenManager auth.TokenManager
 }
 
-func NewHandler(services *service.Services) *Handler {
+func NewHandler(services *service.Services, tokenManager auth.Manager) *Handler {
 	return &Handler{
-		Students:    NewStudentsHandler(services.Students),
-		Users:       NewUsersHandler(services.Users, services.People),
-		Teachers:    NewTeachersHandler(services.Teachers),
-		Employees:   NewEmployeesHandler(services.Employees),
-		Subjects:    NewSubjectsHandler(services.Subjects),
-		Lessons:     NewLessonsHandler(services.Lessons),
-		Faculties:   NewFacultiesHandler(services.Faculties),
-		Specialties: NewSpecialtiesHandler(services.Specialties),
-		Groups:      NewGroupsHandler(services.Groups),
-		Admins:      NewAdminsHandler(*services),
+		tokenManager: &tokenManager,
+		Students:     NewStudentsHandler(services.Students),
+		Users:        NewUsersHandler(services.Users, services.People),
+		Teachers:     NewTeachersHandler(services.Teachers),
+		Employees:    NewEmployeesHandler(services.Employees),
+		Subjects:     NewSubjectsHandler(services.Subjects),
+		Lessons:      NewLessonsHandler(services.Lessons),
+		Faculties:    NewFacultiesHandler(services.Faculties),
+		Specialties:  NewSpecialtiesHandler(services.Specialties),
+		Groups:       NewGroupsHandler(services.Groups),
+		Admins:       NewAdminsHandler(*services),
 	}
 }
 
@@ -45,17 +48,72 @@ func (h *Handler) InitRouter() *mux.Router {
 	router.PathPrefix("/swagger/").Handler(httpSwagger.Handler(
 		httpSwagger.URL("http://localhost:8080/swagger/doc.json"), // URL для Swagger JSON
 	))
-	h.Users.initRoutes(router)
-	h.Admins.initRoutes(router)
+
+	users := router.PathPrefix("/users").Subrouter()
+	{
+		users.HandleFunc("/sign-up", h.Users.signUp).Methods(http.MethodPost)
+		users.HandleFunc("/sign-in", h.Users.signIn).Methods(http.MethodPost)
+		users.HandleFunc("/refresh", h.Users.refresh).Methods(http.MethodGet)
+
+		users.HandleFunc("", h.Users.createPerson).Methods(http.MethodPost)
+		users.HandleFunc("", h.Users.getPeople).Methods(http.MethodGet)
+		users.HandleFunc("/{id:[0-9]+}", h.Users.getPerson).Methods(http.MethodPost)
+		users.HandleFunc("/{id:[0-9]+}", h.Users.updatePerson).Methods(http.MethodPatch)
+		users.HandleFunc("/{id:[0-9]+}", h.Users.deletePerson).Methods(http.MethodDelete)
+	}
+
+	admin := router.PathPrefix("/admin").Subrouter()
+	{
+		admin.Use(h.authMiddleware)
+		admin.HandleFunc("/students", h.Admins.createStudent).Methods(http.MethodPost)
+		admin.HandleFunc("/students", h.Admins.getStudents).Methods(http.MethodGet)
+		admin.HandleFunc("/students/{id:[0-9]+}", h.Admins.getStudent).Methods(http.MethodPost)
+		admin.HandleFunc("/students/{id:[0-9]+}", h.Admins.updateStudent).Methods(http.MethodPatch)
+		admin.HandleFunc("/students/{id:[0-9]+}", h.Admins.deleteStudent).Methods(http.MethodDelete)
+
+		admin.HandleFunc("/teachers", h.Admins.createTeacher).Methods(http.MethodPost)
+		admin.HandleFunc("/teachers", h.Admins.getTeachers).Methods(http.MethodGet)
+		admin.HandleFunc("/teachers/{id:[0-9]+}", h.Admins.getTeacher).Methods(http.MethodPost)
+		admin.HandleFunc("/teachers/{id:[0-9]+}", h.Admins.updateTeacher).Methods(http.MethodPatch)
+		admin.HandleFunc("/teachers/{id:[0-9]+}", h.Admins.deleteTeacher).Methods(http.MethodDelete)
+
+		admin.HandleFunc("/employees", h.Admins.createEmployee).Methods(http.MethodPost)
+		admin.HandleFunc("/employees", h.Admins.getEmployees).Methods(http.MethodGet)
+		admin.HandleFunc("/employees/{id:[0-9]+}", h.Admins.getEmployee).Methods(http.MethodPost)
+		admin.HandleFunc("/employees/{id:[0-9]+}", h.Admins.updateEmployee).Methods(http.MethodPatch)
+		admin.HandleFunc("/employees/{id:[0-9]+}", h.Admins.deleteEmployee).Methods(http.MethodDelete)
+
+		admin.HandleFunc("/subjects", h.Admins.createSubject).Methods(http.MethodPost)
+		admin.HandleFunc("/subjects", h.Admins.getSubject).Methods(http.MethodGet)
+		admin.HandleFunc("/subjects/{id:[0-9]+}", h.Admins.getSubject).Methods(http.MethodPost)
+		admin.HandleFunc("/subjects/{id:[0-9]+}", h.Admins.updateSubject).Methods(http.MethodPatch)
+		admin.HandleFunc("/subjects/{id:[0-9]+}", h.Admins.deleteSubject).Methods(http.MethodDelete)
+
+		admin.HandleFunc("/lessons", h.Admins.createLesson).Methods(http.MethodPost)
+		admin.HandleFunc("/lessons", h.Admins.getLessons).Methods(http.MethodGet)
+		admin.HandleFunc("/lessons/{id:[0-9]+}", h.Admins.getLesson).Methods(http.MethodPost)
+		admin.HandleFunc("/lessons/{id:[0-9]+}", h.Admins.deleteLesson).Methods(http.MethodDelete)
+
+		admin.HandleFunc("/faculties", h.Admins.createFaculty).Methods(http.MethodPost)
+		admin.HandleFunc("/faculties", h.Admins.getFaculties).Methods(http.MethodGet)
+		admin.HandleFunc("/faculties/{id:[0-9]+}", h.Admins.getFaculty).Methods(http.MethodPost)
+		admin.HandleFunc("/faculties/{id:[0-9]+}", h.Admins.deleteFaculty).Methods(http.MethodDelete)
+
+		admin.HandleFunc("/specialties", h.Admins.createSpecialty).Methods(http.MethodPost)
+		admin.HandleFunc("/specialties", h.Admins.getSpecialty).Methods(http.MethodGet)
+		admin.HandleFunc("/specialties/{id:[0-9]+}", h.Admins.getSpecialty).Methods(http.MethodPost)
+		admin.HandleFunc("/specialties/{id:[0-9]+}", h.Admins.updateSpecialty).Methods(http.MethodPatch)
+		admin.HandleFunc("/specialties/{id:[0-9]+}", h.Admins.deleteSpecialty).Methods(http.MethodDelete)
+
+		admin.HandleFunc("/groups", h.Admins.createGroup).Methods(http.MethodPost)
+		admin.HandleFunc("/groups", h.Admins.getGroups).Methods(http.MethodGet)
+		admin.HandleFunc("/groups/{id:[0-9]+}", h.Admins.getGroups).Methods(http.MethodPost)
+		admin.HandleFunc("/groups/{id:[0-9]+}", h.Admins.deleteGroup).Methods(http.MethodDelete)
+	}
 	return router
 }
 
-type Routers interface {
-	initRoutes(router *mux.Router)
-}
-
 type Admins interface {
-	Routers
 	AdminStudents
 	AdminTeachers
 	AdminEmployees
@@ -119,9 +177,9 @@ type AdminGroups interface {
 	deleteGroup(w http.ResponseWriter, r *http.Request)
 }
 type Users interface {
-	Routers
 	signUp(w http.ResponseWriter, r *http.Request)
 	signIn(w http.ResponseWriter, r *http.Request)
+	refresh(w http.ResponseWriter, r *http.Request)
 	UserPeople
 }
 type UserPeople interface {

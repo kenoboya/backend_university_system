@@ -24,27 +24,17 @@ CREATE TABLE people(
 	CONSTRAINT fk_people_users FOREIGN KEY (user_id) REFERENCES users(user_id),
 	CONSTRAINT chk_people_name CHECK (LENGTH(name) > 1),
 	CONSTRAINT chk_people_surname CHECK (LENGTH(surname) > 1),
-	CONSTRAINT chk_people_age CHECK (age > 13),
-	CONSTRAINT chk_people_phone CHECK (phone_number ~ '^\\+')
-);
-
-CREATE TABLE students(
-	student_id INTEGER GENERATED ALWAYS AS IDENTITY,
-	person_id INTEGER UNIQUE,
-	group_id VARCHAR(25) NOT NULL,
-	CONSTRAINT pk_students_student_id PRIMARY KEY(student_id),
-	CONSTRAINT fk_students_people FOREIGN KEY (person_id) REFERENCES people(person_id),
-	CONSTRAINT fk_students_groups FOREIGN KEY (group_id) REFERENCES groups(group_id)
+	CONSTRAINT chk_people_phone CHECK (phone ~ '^\\+')
 );
 
 CREATE TABLE employees(
 	employee_id INTEGER GENERATED ALWAYS AS IDENTITY,
 	person_id INTEGER NOT NULL,
 	title VARCHAR(70) NOT NULL,
-	salary DOUBLE,
+	salary NUMERIC,
 	hire_date DATE,
 	CONSTRAINT pk_employees_employee_id PRIMARY KEY(employee_id),
-	CONSTRAINT fk_employees_people FOREIGN KEY (person_id) REFERENCES people(person_id),
+	CONSTRAINT fk_employees_people FOREIGN KEY (person_id) REFERENCES people(person_id)
 );
 
 CREATE TABLE teachers(
@@ -82,6 +72,15 @@ CREATE TABLE groups(
 	CONSTRAINT fk_groups_specialties FOREIGN KEY(specialty_id) REFERENCES specialties(specialty_id)
 );
 
+CREATE TABLE students(
+	student_id INTEGER GENERATED ALWAYS AS IDENTITY,
+	person_id INTEGER UNIQUE,
+	group_id VARCHAR(25) NOT NULL,
+	CONSTRAINT pk_students_student_id PRIMARY KEY(student_id),
+	CONSTRAINT fk_students_people FOREIGN KEY (person_id) REFERENCES people(person_id),
+	CONSTRAINT fk_students_groups FOREIGN KEY (group_id) REFERENCES groups(group_id)
+);
+
 CREATE TABLE subjects(
 	subject_id INTEGER GENERATED ALWAYS AS IDENTITY,
 	specialty_id INTEGER,
@@ -94,6 +93,7 @@ CREATE TYPE lesson_type AS enum
 (
 	'Lecture','Laboratory','Practical','Session'
 );
+
 CREATE TABLE lessons(
 	lesson_id BIGINT GENERATED ALWAYS AS IDENTITY,
 	teacher_id INTEGER NOT NULL,
@@ -107,16 +107,25 @@ CREATE TABLE lessons(
 	CONSTRAINT fk_lessons_teachers FOREIGN KEY(teacher_id) REFERENCES teachers(teacher_id),
 	CONSTRAINT fk_lessons_subjects FOREIGN KEY(subject_id) REFERENCES subjects(subject_id),
 	CONSTRAINT fk_lessons_groups FOREIGN KEY(group_id) REFERENCES groups(group_id)
-)
+);
 
 CREATE TABLE faculties_employees(
 	faculty_id VARCHAR(10) REFERENCES faculties(faculty_id),
 	employee_id INTEGER REFERENCES employees(employee_id),
-	CONSTRAINT ck_faculties_employees PRIMARY KEY(faculties_id, employee_id)
+	CONSTRAINT ck_faculties_employees PRIMARY KEY(faculty_id, employee_id)
 );
 
 CREATE TABLE teachers_subjects (
     teacher_id INTEGER REFERENCES teachers(teacher_id),
     subject_id INTEGER REFERENCES subjects(subject_id),
-    CONSTRAINT ck_faculties_employees PRIMARY KEY(faculties_id, employee_id)
+    CONSTRAINT ck_teachers_subjects PRIMARY KEY(teacher_id, subject_id)
 );
+
+CREATE TABLE refresh_tokens(
+	refresh_token_id INTEGER GENERATED ALWAYS AS IDENTITY,
+	user_id INTEGER UNIQUE,
+	token VARCHAR(255) NOT NULL UNIQUE,
+	expires_at TIMESTAMP NOT NULL,
+	CONSTRAINT pk_refresh_tokens_refresh_token_id PRIMARY KEY(refresh_token_id),
+	CONSTRAINT fk_refresh_tokens_users FOREIGN KEY(user_id) REFERENCES users(user_id)
+)

@@ -10,12 +10,14 @@ import (
 	"go.uber.org/zap"
 )
 
+type CtxValue int
+
 const (
-	authorizationHeader = "Authorization"
-	userCtx             = "userId"
+	ctxUserID           CtxValue = iota
+	authorizationHeader          = "Authorization"
 )
 
-func (h *UsersHandler) authMiddleware(next http.Handler) http.Handler {
+func (h *Handler) authMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		token, err := getTokenFromRequest(r)
 		if err != nil {
@@ -27,7 +29,7 @@ func (h *UsersHandler) authMiddleware(next http.Handler) http.Handler {
 			w.WriteHeader(http.StatusUnauthorized)
 			return
 		}
-		user_id, err := h.usersService.GetTokenManager().VerifyToken(token)
+		user_id, err := h.tokenManager.VerifyToken(token)
 		if err != nil {
 			logger.Error(
 				zap.String("method", r.Method),
@@ -35,7 +37,7 @@ func (h *UsersHandler) authMiddleware(next http.Handler) http.Handler {
 				zap.String("error", err.Error()),
 			)
 		}
-		ctx := context.WithValue(r.Context(), userCtx, user_id)
+		ctx := context.WithValue(r.Context(), ctxUserID, user_id)
 		r = r.WithContext(ctx)
 		next.ServeHTTP(w, r)
 	})

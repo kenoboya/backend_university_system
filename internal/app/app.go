@@ -52,7 +52,7 @@ func Run(configPath string) {
 		TokenManager: tokenManager,
 	}
 	services := service.NewServices(deps)
-	handler := rest.NewHandler(services)
+	handler := rest.NewHandler(services, *tokenManager)
 
 	srv := &http.Server{
 		Addr:           config.ServerConfig.Addr,

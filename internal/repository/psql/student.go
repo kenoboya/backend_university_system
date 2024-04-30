@@ -32,7 +32,7 @@ func (r StudentsRepository) GetAll(ctx context.Context) ([]model.Student, error)
 }
 func (r StudentsRepository) GetById(ctx context.Context, id int64) (model.Student, error) {
 	var student model.Student
-	err := r.db.Get(&student, "SELECT * FROM students WHERE student_id = $1 JOIN people USING(person_id) JOIN groups USING(group_id)", id)
+	err := r.db.Get(&student, "SELECT * FROM students JOIN people USING(person_id) JOIN groups USING(group_id) WHERE student_id = $1", id)
 	if err != nil {
 		return student, err
 	}
