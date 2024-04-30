@@ -14,11 +14,15 @@ import (
 )
 
 type UsersHandler struct {
-	service service.Users
+	usersService  service.Users
+	peopleService service.People
 }
 
-func NewUsersHandler(service service.Users) *UsersHandler {
-	return &UsersHandler{service: service}
+func NewUsersHandler(usersService service.Users, peopleService service.People) *UsersHandler {
+	return &UsersHandler{
+		usersService:  usersService,
+		peopleService: peopleService,
+	}
 }
 
 func (h *UsersHandler) initRoutes(router *mux.Router) {
@@ -26,6 +30,15 @@ func (h *UsersHandler) initRoutes(router *mux.Router) {
 	{
 		users.HandleFunc("/sign-up", h.signUp).Methods(http.MethodPost)
 		users.HandleFunc("/sign-in", h.signIn).Methods(http.MethodPost)
+
+		people := router.PathPrefix("/people").Subrouter()
+		{
+			people.HandleFunc("", h.createPerson).Methods(http.MethodPost)
+			people.HandleFunc("", h.getPeople).Methods(http.MethodGet)
+			people.HandleFunc("/{id:[0-9]+}", h.getPerson).Methods(http.MethodPost)
+			people.HandleFunc("/{id:[0-9]+}", h.updatePerson).Methods(http.MethodPatch)
+			people.HandleFunc("/{id:[0-9]+}", h.deletePerson).Methods(http.MethodDelete)
+		}
 	}
 }
 
@@ -73,7 +86,7 @@ func (h *UsersHandler) signUp(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	if err := h.service.SignUp(context.TODO(), user); err != nil {
+	if err := h.usersService.SignUp(context.TODO(), user); err != nil {
 		zap.S().Error(
 			zap.String("package", "internal/transport/rest"),
 			zap.String("file", "user.go"),
@@ -119,7 +132,7 @@ func (h *UsersHandler) signIn(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	token, err := h.service.SignIn(context.TODO(), user)
+	token, err := h.usersService.SignIn(context.TODO(), user)
 	if err != nil {
 		zap.S().Error(
 			zap.String("package", "internal/transport/rest"),

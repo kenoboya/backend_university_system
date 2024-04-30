@@ -18,6 +18,7 @@ type Repositories struct {
 	Specialties Specialties
 	Groups      Groups
 	Admins      Admins
+	People      People
 }
 
 func NewRepositories(db *sqlx.DB) *Repositories {
@@ -32,6 +33,7 @@ func NewRepositories(db *sqlx.DB) *Repositories {
 		Specialties: NewSpecialtiesRepository(db),
 		Groups:      NewGroupsRepository(db),
 		Admins:      NewAdminsRepository(db),
+		People:      NewPeopleRepository(db),
 	}
 }
 
@@ -50,6 +52,13 @@ type Users interface {
 }
 type Admins interface {
 	// todo
+}
+type People interface {
+	Create(ctx context.Context, person model.CreatePersonInput) error
+	GetAll(ctx context.Context) ([]model.Person, error)
+	GetById(ctx context.Context, id int64) (model.Person, error)
+	Update(ctx context.Context, id int64, person model.UpdatePersonInput) error
+	Delete(ctx context.Context, id int64) error
 }
 type Teachers interface {
 	Create(ctx context.Context, teacher model.CreateTeacherInput) error

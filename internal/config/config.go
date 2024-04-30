@@ -1,6 +1,7 @@
 package config
 
 import (
+	"os"
 	database "test-crud/pkg/database/psql"
 	"time"
 
@@ -25,8 +26,8 @@ type AuthConfig struct {
 	PasswordSalt string
 }
 type JWTConfig struct {
-	AccessTokenTTL  time.Duration
-	RefreshTokenTTL time.Duration
+	AccessTokenTTL  time.Duration `mapstructure:"accessTokenTTL"`
+	RefreshTokenTTL time.Duration `mapstructure:"refreshTokenTTL"`
 	SecretKey       string
 }
 
@@ -51,13 +52,15 @@ func setFromEnv(config *Config) error {
 	if err := envconfig.Process("DB", &config.PSQlConfig); err != nil {
 		return err
 	}
-	if err := envconfig.Process("AUTH", &config.AuthConfig); err != nil {
-		return err
-	}
+	config.AuthConfig.PasswordSalt = os.Getenv("PASSWORD_SALT")
+	config.AuthConfig.JWT.SecretKey = os.Getenv("SECRET_KEY")
 	return nil
 }
 func unmarshal(config *Config) error {
 	if err := viper.UnmarshalKey("http", &config.ServerConfig); err != nil {
+		return err
+	}
+	if err := viper.UnmarshalKey("auth", &config.ServerConfig); err != nil {
 		return err
 	}
 	return nil

@@ -19,13 +19,13 @@ import (
 // @Success 202 {string} string "Accepted"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /students [post]
+// @Router /admin/students [post]
 func (h *AdminsHandler) createStudent(w http.ResponseWriter, r *http.Request) {
 	reqBytes, err := io.ReadAll(r.Body)
 	if err != nil {
 		zap.S().Error(
 			zap.String("package", "transport/rest"),
-			zap.String("file", "admin_students.go"),
+			zap.String("file", "admin_student.go"),
 			zap.String("function", "createStudent()"),
 			zap.Error(err),
 		)
@@ -59,14 +59,14 @@ func (h *AdminsHandler) createStudent(w http.ResponseWriter, r *http.Request) {
 }
 
 // @Summary Get students
-// @Description get all students
+// @Description get students
 // @Tags students
 // @Accept json
 // @Produce json
 // @Success 200 {array} model.Student "Accepted"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /students [get]
+// @Router /admin/students [get]
 func (h *AdminsHandler) getStudents(w http.ResponseWriter, r *http.Request) {
 	students, err := h.services.Students.GetAll(context.TODO())
 	if err != nil {
@@ -84,7 +84,7 @@ func (h *AdminsHandler) getStudents(w http.ResponseWriter, r *http.Request) {
 		zap.S().Error(
 			zap.String("package", "transport/rest"),
 			zap.String("file", "admin_student.go"),
-			zap.String("function", "getAllStudents()"),
+			zap.String("function", "getStudents()"),
 			zap.Error(err),
 		)
 		w.WriteHeader(http.StatusInternalServerError)
@@ -103,13 +103,13 @@ func (h *AdminsHandler) getStudents(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} model.Student "Accepted"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /students/{id} [get]
+// @Router /admin/students/{id} [get]
 func (h *AdminsHandler) getStudent(w http.ResponseWriter, r *http.Request) {
 	id, err := getIdFromRequest(r)
 	if err != nil {
 		zap.S().Error(
 			zap.String("package", "transport/rest"),
-			zap.String("file", "admin_students.go"),
+			zap.String("file", "admin_student.go"),
 			zap.String("function", "getStudent"),
 			zap.Error(err),
 		)
@@ -120,7 +120,7 @@ func (h *AdminsHandler) getStudent(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		zap.S().Error(
 			zap.String("package", "transport/rest"),
-			zap.String("file", "admin_students.go"),
+			zap.String("file", "admin_student.go"),
 			zap.String("function", "getStudent"),
 			zap.Error(err),
 		)
@@ -131,7 +131,7 @@ func (h *AdminsHandler) getStudent(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		zap.S().Error(
 			zap.String("package", "transport/rest"),
-			zap.String("file", "admin_students.go"),
+			zap.String("file", "admin_student.go"),
 			zap.String("function", "getStudent"),
 			zap.Error(err),
 		)
@@ -152,13 +152,13 @@ func (h *AdminsHandler) getStudent(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {string} string "OK"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /students/{id} [patch]
+// @Router /admin/students/{id} [patch]
 func (h *AdminsHandler) updateStudent(w http.ResponseWriter, r *http.Request) {
 	id, err := getIdFromRequest(r)
 	if err != nil {
 		zap.S().Error(
 			zap.String("package", "transport/rest"),
-			zap.String("file", "admin_students.go"),
+			zap.String("file", "admin_student.go"),
 			zap.String("function", "updateStudent()"),
 			zap.Error(err),
 		)
@@ -169,7 +169,7 @@ func (h *AdminsHandler) updateStudent(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		zap.S().Error(
 			zap.String("package", "transport/rest"),
-			zap.String("file", "admin_students.go"),
+			zap.String("file", "admin_student.go"),
 			zap.String("function", "updateStudent()"),
 			zap.Error(err),
 		)
@@ -180,7 +180,7 @@ func (h *AdminsHandler) updateStudent(w http.ResponseWriter, r *http.Request) {
 	if err := json.Unmarshal(reqBytes, &student); err != nil {
 		zap.S().Error(
 			zap.String("package", "transport/rest"),
-			zap.String("file", "admin_students.go"),
+			zap.String("file", "admin_student.go"),
 			zap.String("function", "updateStudent()"),
 			zap.Error(err),
 		)
@@ -191,8 +191,43 @@ func (h *AdminsHandler) updateStudent(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		zap.S().Error(
 			zap.String("package", "transport/rest"),
-			zap.String("file", "admin_students.go"),
+			zap.String("file", "admin_student.go"),
 			zap.String("function", "updateStudent()"),
+			zap.Error(err),
+		)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+}
+
+// @Summary Delete student
+// @Description delete student
+// @Tags students
+// @Accept json
+// @Produce json
+// @Param id path int true "ID for deleting student"
+// @Success 200 {string} string "OK"
+// @Failure 400 {string} string "Bad request"
+// @Failure 500 {string} string "Internal Server Error"
+// @Router /admin/students/{id} [delete]
+func (h *AdminsHandler) deleteStudent(w http.ResponseWriter, r *http.Request) {
+	id, err := getIdFromRequest(r)
+	if err != nil {
+		zap.S().Error(
+			zap.String("package", "transport/rest"),
+			zap.String("file", "admin_student.go"),
+			zap.String("function", "deleteStudent()"),
+			zap.Error(err),
+		)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	if err := h.services.Students.Delete(context.TODO(), id); err != nil {
+		zap.S().Error(
+			zap.String("package", "transport/rest"),
+			zap.String("file", "admin_student.go"),
+			zap.String("function", "deleteStudent()"),
 			zap.Error(err),
 		)
 		w.WriteHeader(http.StatusInternalServerError)

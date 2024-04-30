@@ -25,7 +25,9 @@ func NewUsersService(repo psql.Users, hasher hash.PasswordHasher, tokenManager a
 		tokenManager: tokenManager,
 	}
 }
-
+func (s *UsersService) GetTokenManager() auth.TokenManager {
+	return s.tokenManager
+}
 func (s *UsersService) SignUp(ctx context.Context, input model.UserSignUpInput) error {
 	passwordHash, err := s.hasher.Hash(input.Password)
 	if err != nil {

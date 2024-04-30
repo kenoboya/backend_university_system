@@ -26,7 +26,6 @@ type CreatePersonInput struct {
 	Surname   string    `db:"surname" json:"surname"`
 	BirthDate time.Time `db:"birth_date" json:"birth_date"`
 	Phone     string    `db:"phone" json:"phone"`
-	User      User
 }
 type UpdatePersonInput struct {
 	Name       string    `db:"name" json:"name"`

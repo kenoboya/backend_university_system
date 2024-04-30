@@ -41,10 +41,3 @@ type CreateGroupInput struct {
 	// From their will be depend EndYear -> processing will be in the service
 	// EndYear   time.Time `db:"end_year" json:"end_year"`
 }
-type UpdateGroupInput struct {
-	FullName  string    `db:"full_name" json:"full_name"`
-	StartYear time.Time `db:"start_year" json:"start_year"`
-	// Most likely there will be different degrees of education (types or enums): bachelor, master, doctor,
-	// From their will be depend EndYear -> processing will be in the service
-	// EndYear   time.Time `db:"end_year" json:"end_year"`
-}

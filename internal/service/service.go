@@ -19,6 +19,7 @@ type Services struct {
 	Specialties Specialties
 	Groups      Groups
 	Admins      Admins
+	People      People
 }
 type Deps struct {
 	Repos        psql.Repositories
@@ -38,6 +39,7 @@ func NewServices(deps Deps) *Services {
 		Specialties: NewSpecialtiesService(deps.Repos.Specialties),
 		Groups:      NewGroupsService(deps.Repos.Groups),
 		Admins:      NewAdminsService(deps.Repos.Admins),
+		People:      NewPeopleService(deps.Repos.People),
 	}
 }
 
@@ -51,6 +53,7 @@ type Students interface {
 type Users interface {
 	SignUp(ctx context.Context, input model.UserSignUpInput) error
 	SignIn(ctx context.Context, input model.UserSignInInput) (Tokens, error)
+	GetTokenManager() auth.TokenManager
 }
 type Teachers interface {
 	Create(ctx context.Context, teacher model.CreateTeacherInput) error
@@ -60,8 +63,13 @@ type Teachers interface {
 	Delete(ctx context.Context, id int64) error
 }
 
-///
-
+type People interface {
+	Create(ctx context.Context, person model.CreatePersonInput) error
+	GetAll(ctx context.Context) ([]model.Person, error)
+	GetById(ctx context.Context, id int64) (model.Person, error)
+	Update(ctx context.Context, id int64, person model.UpdatePersonInput) error
+	Delete(ctx context.Context, id int64) error
+}
 type Admins interface {
 	// todo
 }

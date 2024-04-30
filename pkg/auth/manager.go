@@ -9,7 +9,7 @@ import (
 
 type TokenManager interface {
 	NewJWT(user_ID int64, ttl time.Duration) (string, error)
-	VerifyToken(accessToken string) error
+	VerifyToken(accessToken string) (string, error)
 	NewRefreshToken() (string, error)
 }
 
@@ -37,15 +37,24 @@ func (m *Manager) NewJWT(user_ID int64, ttl time.Duration) (string, error) {
 	return tokenString, nil
 }
 
-func (m *Manager) VerifyToken(accessToken string) error {
+func (m *Manager) VerifyToken(accessToken string) (string, error) {
 	token, err := jwt.Parse(accessToken, func(token *jwt.Token) (interface{}, error) {
 		return []byte(m.secretKey), nil
 	})
 	if err != nil {
-		return err
+		return "", err
 	}
 	if !token.Valid {
-		return errors.New("Invalid token")
+		return "", errors.New("Invalid token")
 	}
-	return nil
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		return "", errors.New("Error get user claims from token")
+	}
+	return claims["sub"].(string), nil
+}
+
+// TODO
+func (m *Manager) NewRefreshToken() (string, error) {
+	return "", nil
 }
