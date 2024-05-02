@@ -11,11 +11,11 @@ import (
 )
 
 type Config struct {
-	ServerConfig ServerConfig
-	PSQlConfig   database.PSQlConfig
-	AuthConfig   AuthConfig
+	HTTP HTTPConfig
+	PSQl database.PSQlConfig
+	Auth AuthConfig
 }
-type ServerConfig struct {
+type HTTPConfig struct {
 	Addr           string        `mapstructure:"port"`
 	MaxHeaderBytes int           `mapstructure:"maxHeaderBytes"`
 	ReadTimeout    time.Duration `mapstructure:"readTimeout"`
@@ -49,18 +49,18 @@ func setFromEnv(config *Config) error {
 	if err := gotenv.Load("../../.env"); err != nil {
 		return err
 	}
-	if err := envconfig.Process("DB", &config.PSQlConfig); err != nil {
+	if err := envconfig.Process("DB", &config.PSQl); err != nil {
 		return err
 	}
-	config.AuthConfig.PasswordSalt = os.Getenv("PASSWORD_SALT")
-	config.AuthConfig.JWT.SecretKey = os.Getenv("SECRET_KEY")
+	config.Auth.PasswordSalt = os.Getenv("PASSWORD_SALT")
+	config.Auth.JWT.SecretKey = os.Getenv("SECRET_KEY")
 	return nil
 }
 func unmarshal(config *Config) error {
-	if err := viper.UnmarshalKey("http", &config.ServerConfig); err != nil {
+	if err := viper.UnmarshalKey("http", &config.HTTP); err != nil {
 		return err
 	}
-	if err := viper.UnmarshalKey("auth", &config.ServerConfig); err != nil {
+	if err := viper.UnmarshalKey("auth", &config.Auth.JWT); err != nil {
 		return err
 	}
 	return nil

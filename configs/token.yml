@@ -1,3 +1,0 @@
-token:
-  accessTokenTTL: 15m
-  refreshTokenTTL: 1h

@@ -59,7 +59,7 @@ func getTokenFromRequest(r *http.Request) (string, error) {
 		return "", errors.New("auth header is empty")
 	}
 
-	headerParts := strings.Split(header, "")
+	headerParts := strings.Split(header, " ")
 	if len(headerParts) != 2 || headerParts[0] != "Bearer" {
 		return "", errors.New("invalid auth header")
 	}

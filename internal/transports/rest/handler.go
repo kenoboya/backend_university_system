@@ -73,41 +73,41 @@ func (h *Handler) InitRouter() *mux.Router {
 
 		admin.HandleFunc("/teachers", h.Admins.createTeacher).Methods(http.MethodPost)
 		admin.HandleFunc("/teachers", h.Admins.getTeachers).Methods(http.MethodGet)
-		admin.HandleFunc("/teachers/{id:[0-9]+}", h.Admins.getTeacher).Methods(http.MethodPost)
+		admin.HandleFunc("/teachers/{id:[0-9]+}", h.Admins.getTeacher).Methods(http.MethodGet)
 		admin.HandleFunc("/teachers/{id:[0-9]+}", h.Admins.updateTeacher).Methods(http.MethodPatch)
 		admin.HandleFunc("/teachers/{id:[0-9]+}", h.Admins.deleteTeacher).Methods(http.MethodDelete)
 
 		admin.HandleFunc("/employees", h.Admins.createEmployee).Methods(http.MethodPost)
 		admin.HandleFunc("/employees", h.Admins.getEmployees).Methods(http.MethodGet)
-		admin.HandleFunc("/employees/{id:[0-9]+}", h.Admins.getEmployee).Methods(http.MethodPost)
+		admin.HandleFunc("/employees/{id:[0-9]+}", h.Admins.getEmployee).Methods(http.MethodGet)
 		admin.HandleFunc("/employees/{id:[0-9]+}", h.Admins.updateEmployee).Methods(http.MethodPatch)
 		admin.HandleFunc("/employees/{id:[0-9]+}", h.Admins.deleteEmployee).Methods(http.MethodDelete)
 
 		admin.HandleFunc("/subjects", h.Admins.createSubject).Methods(http.MethodPost)
 		admin.HandleFunc("/subjects", h.Admins.getSubject).Methods(http.MethodGet)
-		admin.HandleFunc("/subjects/{id:[0-9]+}", h.Admins.getSubject).Methods(http.MethodPost)
+		admin.HandleFunc("/subjects/{id:[0-9]+}", h.Admins.getSubject).Methods(http.MethodGet)
 		admin.HandleFunc("/subjects/{id:[0-9]+}", h.Admins.updateSubject).Methods(http.MethodPatch)
 		admin.HandleFunc("/subjects/{id:[0-9]+}", h.Admins.deleteSubject).Methods(http.MethodDelete)
 
 		admin.HandleFunc("/lessons", h.Admins.createLesson).Methods(http.MethodPost)
 		admin.HandleFunc("/lessons", h.Admins.getLessons).Methods(http.MethodGet)
-		admin.HandleFunc("/lessons/{id:[0-9]+}", h.Admins.getLesson).Methods(http.MethodPost)
+		admin.HandleFunc("/lessons/{id:[0-9]+}", h.Admins.getLesson).Methods(http.MethodGet)
 		admin.HandleFunc("/lessons/{id:[0-9]+}", h.Admins.deleteLesson).Methods(http.MethodDelete)
 
 		admin.HandleFunc("/faculties", h.Admins.createFaculty).Methods(http.MethodPost)
 		admin.HandleFunc("/faculties", h.Admins.getFaculties).Methods(http.MethodGet)
-		admin.HandleFunc("/faculties/{id:[0-9]+}", h.Admins.getFaculty).Methods(http.MethodPost)
+		admin.HandleFunc("/faculties/{id:[0-9]+}", h.Admins.getFaculty).Methods(http.MethodGet)
 		admin.HandleFunc("/faculties/{id:[0-9]+}", h.Admins.deleteFaculty).Methods(http.MethodDelete)
 
 		admin.HandleFunc("/specialties", h.Admins.createSpecialty).Methods(http.MethodPost)
 		admin.HandleFunc("/specialties", h.Admins.getSpecialty).Methods(http.MethodGet)
-		admin.HandleFunc("/specialties/{id:[0-9]+}", h.Admins.getSpecialty).Methods(http.MethodPost)
+		admin.HandleFunc("/specialties/{id:[0-9]+}", h.Admins.getSpecialty).Methods(http.MethodGet)
 		admin.HandleFunc("/specialties/{id:[0-9]+}", h.Admins.updateSpecialty).Methods(http.MethodPatch)
 		admin.HandleFunc("/specialties/{id:[0-9]+}", h.Admins.deleteSpecialty).Methods(http.MethodDelete)
 
 		admin.HandleFunc("/groups", h.Admins.createGroup).Methods(http.MethodPost)
 		admin.HandleFunc("/groups", h.Admins.getGroups).Methods(http.MethodGet)
-		admin.HandleFunc("/groups/{id:[0-9]+}", h.Admins.getGroups).Methods(http.MethodPost)
+		admin.HandleFunc("/groups/{id:[0-9]+}", h.Admins.getGroups).Methods(http.MethodGet)
 		admin.HandleFunc("/groups/{id:[0-9]+}", h.Admins.deleteGroup).Methods(http.MethodDelete)
 	}
 	return router

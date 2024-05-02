@@ -6,6 +6,7 @@ import (
 	"test-crud/internal/repository/psql"
 	"test-crud/pkg/auth"
 	"test-crud/pkg/hash"
+	"time"
 )
 
 type Services struct {
@@ -22,15 +23,17 @@ type Services struct {
 	People      People
 }
 type Deps struct {
-	Repos        psql.Repositories
-	Hasher       hash.PasswordHasher
-	TokenManager auth.TokenManager
+	Repos           psql.Repositories
+	Hasher          hash.PasswordHasher
+	TokenManager    auth.TokenManager
+	AccessTokenTTL  time.Duration
+	RefreshTokenTTL time.Duration
 }
 
 func NewServices(deps Deps) *Services {
 	return &Services{
 		Students:    NewStudentsService(deps.Repos.Students),
-		Users:       NewUsersService(deps.Repos.Users, deps.Hasher, deps.TokenManager),
+		Users:       NewUsersService(deps.Repos.Users, deps.Hasher, deps.TokenManager, deps.AccessTokenTTL, deps.RefreshTokenTTL),
 		Teachers:    NewTeachersService(deps.Repos.Teachers),
 		Employees:   NewEmployeesService(deps.Repos.Employees),
 		Subjects:    NewSubjectsService(deps.Repos.Subjects),

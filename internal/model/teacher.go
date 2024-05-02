@@ -1,8 +1,8 @@
 package model
 
 type Teacher struct {
-	ID       int64 `db:"teacher_id" json:"teacher_id"`
-	Employee Employee
+	TeacherID int64 `db:"teacher_id" json:"teacher_id"`
+	Employee
 	// Subjects []Subject
 }
 type CreateTeacherInput struct {

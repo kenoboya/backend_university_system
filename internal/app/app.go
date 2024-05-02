@@ -34,8 +34,8 @@ func Run(configPath string) {
 	db := connectToDatabase(*config)
 	defer db.Close()
 
-	hasher := hash.NewSHA1Hasher(config.AuthConfig.PasswordSalt)
-	tokenManager, err := auth.NewManager(config.AuthConfig.JWT.SecretKey)
+	hasher := hash.NewSHA256Hasher(config.Auth.PasswordSalt)
+	tokenManager, err := auth.NewManager(config.Auth.JWT.SecretKey)
 	if err != nil {
 		logger.Fatal(
 			zap.String("package", "internal/app"),
@@ -47,18 +47,20 @@ func Run(configPath string) {
 
 	repositories := psql.NewRepositories(db)
 	deps := service.Deps{
-		Repos:        *repositories,
-		Hasher:       hasher,
-		TokenManager: tokenManager,
+		Repos:           *repositories,
+		Hasher:          hasher,
+		TokenManager:    tokenManager,
+		AccessTokenTTL:  config.Auth.JWT.AccessTokenTTL,
+		RefreshTokenTTL: config.Auth.JWT.RefreshTokenTTL,
 	}
 	services := service.NewServices(deps)
 	handler := rest.NewHandler(services, *tokenManager)
 
 	srv := &http.Server{
-		Addr:           config.ServerConfig.Addr,
-		ReadTimeout:    config.ServerConfig.ReadTimeout,
-		WriteTimeout:   config.ServerConfig.WriteTimeout,
-		MaxHeaderBytes: config.ServerConfig.MaxHeaderBytes,
+		Addr:           config.HTTP.Addr,
+		ReadTimeout:    config.HTTP.ReadTimeout,
+		WriteTimeout:   config.HTTP.WriteTimeout,
+		MaxHeaderBytes: config.HTTP.MaxHeaderBytes,
 		Handler:        handler.InitRouter(),
 	}
 	logger.Infof("Server started at ")
@@ -72,7 +74,7 @@ func Run(configPath string) {
 	}
 }
 func connectToDatabase(cfg config.Config) *sqlx.DB {
-	db, err := database.NewPostgresConnection(cfg.PSQlConfig)
+	db, err := database.NewPostgresConnection(cfg.PSQl)
 	if err != nil {
 		logger.Fatal(
 			zap.String("package", "internal/app"),

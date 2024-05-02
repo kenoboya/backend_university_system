@@ -1,9 +1,9 @@
 package model
 
 type Student struct {
-	ID     int64 `db:"student_id" json:"student_id"`
-	Person Person
-	Group  Group
+	StudentID int64 `db:"student_id" json:"student_id"`
+	Person
+	Group
 }
 
 type CreateStudentInput struct {

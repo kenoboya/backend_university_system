@@ -11,7 +11,7 @@ import (
 
 type TokenManager interface {
 	NewJWT(user_ID int64, ttl time.Duration) (string, error)
-	VerifyToken(accessToken string) (string, error)
+	VerifyToken(accessToken string) (int64, error)
 	NewRefreshToken() (string, error)
 }
 
@@ -21,7 +21,7 @@ type Manager struct {
 
 func NewManager(secretKey string) (*Manager, error) {
 	if secretKey == "" {
-		return nil, errors.New("Secret key is empty")
+		return nil, errors.New("secret key is empty")
 	}
 	return &Manager{
 		secretKey: secretKey,
@@ -39,21 +39,26 @@ func (m *Manager) NewJWT(user_ID int64, ttl time.Duration) (string, error) {
 	return tokenString, nil
 }
 
-func (m *Manager) VerifyToken(accessToken string) (string, error) {
+func (m *Manager) VerifyToken(accessToken string) (int64, error) {
 	token, err := jwt.Parse(accessToken, func(token *jwt.Token) (interface{}, error) {
 		return []byte(m.secretKey), nil
 	})
 	if err != nil {
-		return "", err
+		return -1, err
 	}
 	if !token.Valid {
-		return "", errors.New("invalid token")
+		return -1, errors.New("invalid token")
 	}
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok {
-		return "", errors.New("error get user claims from token")
+		return -1, errors.New("error get user claims from token")
 	}
-	return claims["sub"].(string), nil
+	userIDFloat, ok := claims["user_id"].(float64)
+	if !ok {
+		return 0, errors.New("user_id claim is not a valid float64")
+	}
+	userID := int64(userIDFloat)
+	return userID, nil
 }
 
 func (m *Manager) NewRefreshToken() (string, error) {

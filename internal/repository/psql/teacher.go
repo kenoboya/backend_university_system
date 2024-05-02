@@ -24,7 +24,7 @@ func (r *TeachersRepository) Create(ctx context.Context, teacher model.CreateTea
 }
 func (r *TeachersRepository) GetAll(ctx context.Context) ([]model.Teacher, error) {
 	teachers := []model.Teacher{}
-	err := r.db.Select(&teachers, "SELECT * FROM teachers JOIN employees USING(employee_Id)")
+	err := r.db.Select(&teachers, "SELECT * FROM teachers JOIN employees USING (employee_id)")
 	if err != nil {
 		return teachers, err
 	}

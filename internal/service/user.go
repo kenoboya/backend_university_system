@@ -18,11 +18,14 @@ type UsersService struct {
 	refreshTokenTTL time.Duration
 }
 
-func NewUsersService(repo psql.Users, hasher hash.PasswordHasher, tokenManager auth.TokenManager) *UsersService {
+func NewUsersService(repo psql.Users, hasher hash.PasswordHasher, tokenManager auth.TokenManager,
+	accessTokenTTL time.Duration, refreshTokenTTL time.Duration) *UsersService {
 	return &UsersService{
-		repo:         repo,
-		hasher:       hasher,
-		tokenManager: tokenManager,
+		repo:            repo,
+		hasher:          hasher,
+		tokenManager:    tokenManager,
+		accessTokenTTL:  accessTokenTTL,
+		refreshTokenTTL: refreshTokenTTL,
 	}
 }
 func (s *UsersService) SignUp(ctx context.Context, input model.UserSignUpInput) error {
@@ -50,9 +53,9 @@ func (s *UsersService) SignIn(ctx context.Context, input model.UserSignInInput) 
 		if err != nil {
 			return Tokens{}, err
 		}
-		s.createSession(ctx, user.ID)
+		return s.createSession(ctx, user.UserID)
 	}
-	return s.createSession(ctx, user.ID)
+	return s.createSession(ctx, user.UserID)
 }
 
 func (s *UsersService) Refresh(ctx context.Context, refreshToken string) (Tokens, error) {
@@ -60,7 +63,7 @@ func (s *UsersService) Refresh(ctx context.Context, refreshToken string) (Tokens
 	if err != nil {
 		return Tokens{}, err
 	}
-	return s.createSession(ctx, user.ID)
+	return s.createSession(ctx, user.UserID)
 }
 func (s *UsersService) createSession(ctx context.Context, userID int64) (Tokens, error) {
 	var (

@@ -1,24 +1,25 @@
 package hash
 
 import (
-	"crypto/sha1"
 	"fmt"
+
+	"golang.org/x/crypto/sha3"
 )
 
 type PasswordHasher interface {
 	Hash(password string) (string, error)
 }
 
-type SHA1Hasher struct {
+type SHA256Hasher struct {
 	salt string
 }
 
-func NewSHA1Hasher(salt string) *SHA1Hasher {
-	return &SHA1Hasher{salt}
+func NewSHA256Hasher(salt string) *SHA256Hasher {
+	return &SHA256Hasher{salt}
 }
 
-func (h *SHA1Hasher) Hash(password string) (string, error) {
-	hash := sha1.New()
+func (h *SHA256Hasher) Hash(password string) (string, error) {
+	hash := sha3.New256()
 	if _, err := hash.Write([]byte(password)); err != nil {
 		return "", err
 	}
