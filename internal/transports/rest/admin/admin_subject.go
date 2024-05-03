@@ -1,4 +1,4 @@
-package rest
+package admin
 
 import (
 	"context"
@@ -6,19 +6,20 @@ import (
 	"io"
 	"net/http"
 	"test-crud/internal/model"
+	"test-crud/internal/transports/rest/common"
 
 	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 )
 
-func (h *Handler) initAdminSubjectsRoutes(admin *mux.Router) {
+func (h *AdminsHandler) InitAdminSubjectsRoutes(admin *mux.Router) {
 	subjects := admin.PathPrefix("/subjects").Subrouter()
 	{
-		subjects.HandleFunc("", h.Admins.createSubject).Methods(http.MethodPost)
-		subjects.HandleFunc("", h.Admins.getSubject).Methods(http.MethodGet)
-		subjects.HandleFunc("/{id:[0-9]+}", h.Admins.getSubject).Methods(http.MethodGet)
-		subjects.HandleFunc("/{id:[0-9]+}", h.Admins.updateSubject).Methods(http.MethodPatch)
-		subjects.HandleFunc("/{id:[0-9]+}", h.Admins.deleteSubject).Methods(http.MethodDelete)
+		subjects.HandleFunc("", h.CreateSubject).Methods(http.MethodPost)
+		subjects.HandleFunc("", h.GetSubject).Methods(http.MethodGet)
+		subjects.HandleFunc("/{id:[0-9]+}", h.GetSubject).Methods(http.MethodGet)
+		subjects.HandleFunc("/{id:[0-9]+}", h.UpdateSubject).Methods(http.MethodPatch)
+		subjects.HandleFunc("/{id:[0-9]+}", h.DeleteSubject).Methods(http.MethodDelete)
 	}
 }
 
@@ -32,11 +33,11 @@ func (h *Handler) initAdminSubjectsRoutes(admin *mux.Router) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/subjects [post]
-func (h *AdminsHandler) createSubject(w http.ResponseWriter, r *http.Request) {
+func (h *AdminsHandler) CreateSubject(w http.ResponseWriter, r *http.Request) {
 	reqBytes, err := io.ReadAll(r.Body)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_subject.go"),
 			zap.String("function", "createSubject()"),
 			zap.Error(err),
@@ -49,7 +50,7 @@ func (h *AdminsHandler) createSubject(w http.ResponseWriter, r *http.Request) {
 
 	if err = json.Unmarshal(reqBytes, &subject); err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_subject.go"),
 			zap.String("function", "createSubject()"),
 			zap.Error(err),
@@ -59,7 +60,7 @@ func (h *AdminsHandler) createSubject(w http.ResponseWriter, r *http.Request) {
 	}
 	if err := h.services.Subjects.Create(context.TODO(), subject); err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_subject.go"),
 			zap.String("function", "createSubject()"),
 			zap.Error(err),
@@ -79,11 +80,11 @@ func (h *AdminsHandler) createSubject(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/subjects [get]
-func (h *AdminsHandler) getSubjects(w http.ResponseWriter, r *http.Request) {
+func (h *AdminsHandler) GetSubjects(w http.ResponseWriter, r *http.Request) {
 	subjects, err := h.services.Subjects.GetAll(context.TODO())
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_subject.go"),
 			zap.String("function", "getSubjects()"),
 			zap.Error(err),
@@ -94,7 +95,7 @@ func (h *AdminsHandler) getSubjects(w http.ResponseWriter, r *http.Request) {
 	response, err := json.Marshal(subjects)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_subject.go"),
 			zap.String("function", "getSubjects()"),
 			zap.Error(err),
@@ -116,11 +117,11 @@ func (h *AdminsHandler) getSubjects(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/subjects/{id} [get]
-func (h *AdminsHandler) getSubject(w http.ResponseWriter, r *http.Request) {
-	id, err := getIdFromRequest(r)
+func (h *AdminsHandler) GetSubject(w http.ResponseWriter, r *http.Request) {
+	id, err := common.GetIdFromRequest(r)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_subject.go"),
 			zap.String("function", "getSubject()"),
 			zap.Error(err),
@@ -131,7 +132,7 @@ func (h *AdminsHandler) getSubject(w http.ResponseWriter, r *http.Request) {
 	subject, err := h.services.Subjects.GetById(context.TODO(), id)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_subject.go"),
 			zap.String("function", "getSubject()"),
 			zap.Error(err),
@@ -142,7 +143,7 @@ func (h *AdminsHandler) getSubject(w http.ResponseWriter, r *http.Request) {
 	response, err := json.Marshal(subject)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_subject.go"),
 			zap.String("function", "getSubject()"),
 			zap.Error(err),
@@ -165,11 +166,11 @@ func (h *AdminsHandler) getSubject(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/subjects/{id} [patch]
-func (h *AdminsHandler) updateSubject(w http.ResponseWriter, r *http.Request) {
-	id, err := getIdFromRequest(r)
+func (h *AdminsHandler) UpdateSubject(w http.ResponseWriter, r *http.Request) {
+	id, err := common.GetIdFromRequest(r)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_subject.go"),
 			zap.String("function", "updateSubject()"),
 			zap.Error(err),
@@ -180,7 +181,7 @@ func (h *AdminsHandler) updateSubject(w http.ResponseWriter, r *http.Request) {
 	reqBytes, err := io.ReadAll(r.Body)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_subject.go"),
 			zap.String("function", "updateSubject()"),
 			zap.Error(err),
@@ -191,7 +192,7 @@ func (h *AdminsHandler) updateSubject(w http.ResponseWriter, r *http.Request) {
 	var subject model.UpdateSubjectInput
 	if err := json.Unmarshal(reqBytes, &subject); err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_subject.go"),
 			zap.String("function", "updateSubject()"),
 			zap.Error(err),
@@ -202,7 +203,7 @@ func (h *AdminsHandler) updateSubject(w http.ResponseWriter, r *http.Request) {
 	err = h.services.Subjects.Update(context.TODO(), id, subject)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_subject.go"),
 			zap.String("function", "updateSubject()"),
 			zap.Error(err),
@@ -223,11 +224,11 @@ func (h *AdminsHandler) updateSubject(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/subjects/{id} [delete]
-func (h *AdminsHandler) deleteSubject(w http.ResponseWriter, r *http.Request) {
-	id, err := getIdFromRequest(r)
+func (h *AdminsHandler) DeleteSubject(w http.ResponseWriter, r *http.Request) {
+	id, err := common.GetIdFromRequest(r)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_subject.go"),
 			zap.String("function", "deleteSubject()"),
 			zap.Error(err),
@@ -237,7 +238,7 @@ func (h *AdminsHandler) deleteSubject(w http.ResponseWriter, r *http.Request) {
 	}
 	if err := h.services.Subjects.Delete(context.TODO(), id); err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_subject.go"),
 			zap.String("function", "deleteSubject()"),
 			zap.Error(err),

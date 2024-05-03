@@ -1,12 +1,12 @@
 package rest
 
 import (
-	"errors"
 	"fmt"
 	"net/http"
-	"strconv"
 	_ "test-crud/docs"
 	"test-crud/internal/service"
+	"test-crud/internal/transports/rest/admin"
+	"test-crud/internal/transports/rest/student"
 	"test-crud/pkg/auth"
 
 	"github.com/gorilla/mux"
@@ -25,13 +25,14 @@ type Handler struct {
 }
 
 func NewHandler(services *service.Services, tokenManager auth.Manager) *Handler {
+
 	return &Handler{
 		tokenManager: &tokenManager,
-		Students:     NewStudentsHandler(services.Students),
+		Students:     student.NewStudentsHandler(services.Students),
 		Users:        NewUsersHandler(services.Users),
 		Teachers:     NewTeachersHandler(services.Teachers),
 		Employees:    NewEmployeesHandler(services.Employees),
-		Admins:       NewAdminsHandler(*services),
+		Admins:       admin.NewAdminsHandler(*services),
 	}
 }
 
@@ -60,73 +61,93 @@ type Admins interface {
 	AdminSpecialties
 	AdminGroups
 	AdminPeople
+	AdminComplaints
+	AdminRoutes
+}
+type AdminRoutes interface {
+	InitAdminPeopleRoutes(hubs *mux.Router)
+	InitAdminTeachersRoutes(hubs *mux.Router)
+	InitAdminStudentsRoutes(hubs *mux.Router)
+	InitAdminEmployeesRoutes(hubs *mux.Router)
+	InitAdminSubjectsRoutes(hubs *mux.Router)
+	InitAdminLessonsRoutes(hubs *mux.Router)
+	InitAdminFacultiesRoutes(hubs *mux.Router)
+	InitAdminSpecialtiesRoutes(hubs *mux.Router)
+	InitAdminGroupsRoutes(hubs *mux.Router)
+	InitAdminComplaintsRoutes(hubs *mux.Router)
+}
+type AdminComplaints interface {
+	GetComplaints(w http.ResponseWriter, r *http.Request)
+	GetComplaint(w http.ResponseWriter, r *http.Request)
+	ResponseToComplaint(w http.ResponseWriter, r *http.Request)
 }
 type AdminPeople interface {
-	createPerson(w http.ResponseWriter, r *http.Request)
-	getPeople(w http.ResponseWriter, r *http.Request)
-	getPerson(w http.ResponseWriter, r *http.Request)
-	updatePerson(w http.ResponseWriter, r *http.Request)
-	deletePerson(w http.ResponseWriter, r *http.Request)
+	CreatePerson(w http.ResponseWriter, r *http.Request)
+	GetPeople(w http.ResponseWriter, r *http.Request)
+	GetPerson(w http.ResponseWriter, r *http.Request)
+	UpdatePerson(w http.ResponseWriter, r *http.Request)
+	DeletePerson(w http.ResponseWriter, r *http.Request)
 }
 type AdminStudents interface {
-	createStudent(w http.ResponseWriter, r *http.Request)
-	getStudents(w http.ResponseWriter, r *http.Request)
-	getStudent(w http.ResponseWriter, r *http.Request)
-	updateStudent(w http.ResponseWriter, r *http.Request)
-	deleteStudent(w http.ResponseWriter, r *http.Request)
+	CreateStudent(w http.ResponseWriter, r *http.Request)
+	GetStudents(w http.ResponseWriter, r *http.Request)
+	GetStudent(w http.ResponseWriter, r *http.Request)
+	UpdateStudent(w http.ResponseWriter, r *http.Request)
+	DeleteStudent(w http.ResponseWriter, r *http.Request)
 }
 type AdminTeachers interface {
-	createTeacher(w http.ResponseWriter, r *http.Request)
-	getTeachers(w http.ResponseWriter, r *http.Request)
-	getTeacher(w http.ResponseWriter, r *http.Request)
-	updateTeacher(w http.ResponseWriter, r *http.Request)
-	deleteTeacher(w http.ResponseWriter, r *http.Request)
+	CreateTeacher(w http.ResponseWriter, r *http.Request)
+	GetTeachers(w http.ResponseWriter, r *http.Request)
+	GetTeacher(w http.ResponseWriter, r *http.Request)
+	UpdateTeacher(w http.ResponseWriter, r *http.Request)
+	DeleteTeacher(w http.ResponseWriter, r *http.Request)
 }
 type AdminEmployees interface {
-	createEmployee(w http.ResponseWriter, r *http.Request)
-	getEmployees(w http.ResponseWriter, r *http.Request)
-	getEmployee(w http.ResponseWriter, r *http.Request)
-	updateEmployee(w http.ResponseWriter, r *http.Request)
-	deleteEmployee(w http.ResponseWriter, r *http.Request)
+	CreateEmployee(w http.ResponseWriter, r *http.Request)
+	GetEmployees(w http.ResponseWriter, r *http.Request)
+	GetEmployee(w http.ResponseWriter, r *http.Request)
+	UpdateEmployee(w http.ResponseWriter, r *http.Request)
+	DeleteEmployee(w http.ResponseWriter, r *http.Request)
 }
 type AdminSubjects interface {
-	createSubject(w http.ResponseWriter, r *http.Request)
-	getSubjects(w http.ResponseWriter, r *http.Request)
-	getSubject(w http.ResponseWriter, r *http.Request)
-	updateSubject(w http.ResponseWriter, r *http.Request)
-	deleteSubject(w http.ResponseWriter, r *http.Request)
+	CreateSubject(w http.ResponseWriter, r *http.Request)
+	GetSubjects(w http.ResponseWriter, r *http.Request)
+	GetSubject(w http.ResponseWriter, r *http.Request)
+	UpdateSubject(w http.ResponseWriter, r *http.Request)
+	DeleteSubject(w http.ResponseWriter, r *http.Request)
 }
 type AdminLessons interface {
-	createLesson(w http.ResponseWriter, r *http.Request)
-	getLessons(w http.ResponseWriter, r *http.Request)
-	getLesson(w http.ResponseWriter, r *http.Request)
-	deleteLesson(w http.ResponseWriter, r *http.Request)
+	CreateLesson(w http.ResponseWriter, r *http.Request)
+	GetLessons(w http.ResponseWriter, r *http.Request)
+	GetLesson(w http.ResponseWriter, r *http.Request)
+	DeleteLesson(w http.ResponseWriter, r *http.Request)
 }
 type AdminFaculties interface {
-	createFaculty(w http.ResponseWriter, r *http.Request)
-	getFaculties(w http.ResponseWriter, r *http.Request)
-	getFaculty(w http.ResponseWriter, r *http.Request)
-	deleteFaculty(w http.ResponseWriter, r *http.Request)
+	CreateFaculty(w http.ResponseWriter, r *http.Request)
+	GetFaculties(w http.ResponseWriter, r *http.Request)
+	GetFaculty(w http.ResponseWriter, r *http.Request)
+	DeleteFaculty(w http.ResponseWriter, r *http.Request)
 }
 type AdminSpecialties interface {
-	createSpecialty(w http.ResponseWriter, r *http.Request)
-	getSpecialties(w http.ResponseWriter, r *http.Request)
-	getSpecialty(w http.ResponseWriter, r *http.Request)
-	updateSpecialty(w http.ResponseWriter, r *http.Request)
-	deleteSpecialty(w http.ResponseWriter, r *http.Request)
+	CreateSpecialty(w http.ResponseWriter, r *http.Request)
+	GetSpecialties(w http.ResponseWriter, r *http.Request)
+	GetSpecialty(w http.ResponseWriter, r *http.Request)
+	UpdateSpecialty(w http.ResponseWriter, r *http.Request)
+	DeleteSpecialty(w http.ResponseWriter, r *http.Request)
 }
 type AdminGroups interface {
-	createGroup(w http.ResponseWriter, r *http.Request)
-	getGroups(w http.ResponseWriter, r *http.Request)
-	getGroup(w http.ResponseWriter, r *http.Request)
-	deleteGroup(w http.ResponseWriter, r *http.Request)
+	CreateGroup(w http.ResponseWriter, r *http.Request)
+	GetGroups(w http.ResponseWriter, r *http.Request)
+	GetGroup(w http.ResponseWriter, r *http.Request)
+	DeleteGroup(w http.ResponseWriter, r *http.Request)
 }
 type Users interface {
 	signUp(w http.ResponseWriter, r *http.Request)
 	signIn(w http.ResponseWriter, r *http.Request)
 	refresh(w http.ResponseWriter, r *http.Request)
-}
 
+	SubmitComplaint(w http.ResponseWriter, r *http.Request)
+}
 type Students interface {
 	// DELETE?
 }
@@ -145,16 +166,4 @@ type Specialties interface {
 type Faculties interface {
 	// getFaculties(w http.ResponseWriter, r *http.Request)
 	// getFaculty(w http.ResponseWriter, r *http.Request)
-}
-
-func getIdFromRequest(r *http.Request) (int64, error) {
-	vars := mux.Vars(r)
-	id, err := strconv.ParseInt(vars["id"], 10, 64)
-	if err != nil {
-		return 0, err
-	}
-	if id == 0 {
-		return 0, errors.New("id couldn't be zero")
-	}
-	return id, nil
 }

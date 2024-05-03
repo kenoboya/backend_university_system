@@ -1,4 +1,4 @@
-package rest
+package admin
 
 import (
 	"context"
@@ -6,18 +6,19 @@ import (
 	"io"
 	"net/http"
 	"test-crud/internal/model"
+	"test-crud/internal/transports/rest/common"
 
 	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 )
 
-func (h *Handler) initAdminFacultiesRoutes(admin *mux.Router) {
+func (h *AdminsHandler) InitAdminFacultiesRoutes(admin *mux.Router) {
 	faculties := admin.PathPrefix("/faculties").Subrouter()
 	{
-		faculties.HandleFunc("", h.Admins.createFaculty).Methods(http.MethodPost)
-		faculties.HandleFunc("", h.Admins.getFaculties).Methods(http.MethodGet)
-		faculties.HandleFunc("/{id:[0-9]+}", h.Admins.getFaculty).Methods(http.MethodGet)
-		faculties.HandleFunc("/{id:[0-9]+}", h.Admins.deleteFaculty).Methods(http.MethodDelete)
+		faculties.HandleFunc("", h.CreateFaculty).Methods(http.MethodPost)
+		faculties.HandleFunc("", h.GetFaculties).Methods(http.MethodGet)
+		faculties.HandleFunc("/{id:[0-9]+}", h.GetFaculty).Methods(http.MethodGet)
+		faculties.HandleFunc("/{id:[0-9]+}", h.DeleteFaculty).Methods(http.MethodDelete)
 	}
 }
 
@@ -31,11 +32,11 @@ func (h *Handler) initAdminFacultiesRoutes(admin *mux.Router) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/faculties [post]
-func (h *AdminsHandler) createFaculty(w http.ResponseWriter, r *http.Request) {
+func (h *AdminsHandler) CreateFaculty(w http.ResponseWriter, r *http.Request) {
 	reqBytes, err := io.ReadAll(r.Body)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_faculty.go"),
 			zap.String("function", "createFaculty()"),
 			zap.Error(err),
@@ -47,7 +48,7 @@ func (h *AdminsHandler) createFaculty(w http.ResponseWriter, r *http.Request) {
 	var faculty model.CreateFacultyInput
 	if err := json.Unmarshal(reqBytes, &faculty); err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_faculty.go"),
 			zap.String("function", "createFaculty()"),
 			zap.Error(err),
@@ -57,7 +58,7 @@ func (h *AdminsHandler) createFaculty(w http.ResponseWriter, r *http.Request) {
 	}
 	if err := h.services.Faculties.Create(context.TODO(), faculty); err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_faculty.go"),
 			zap.String("function", "createFaculty()"),
 			zap.Error(err),
@@ -77,7 +78,7 @@ func (h *AdminsHandler) createFaculty(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/faculties [get]
-func (h *AdminsHandler) getFaculties(w http.ResponseWriter, r *http.Request) {
+func (h *AdminsHandler) GetFaculties(w http.ResponseWriter, r *http.Request) {
 	faculties, err := h.services.Faculties.GetAll(context.TODO())
 	if err != nil {
 		zap.S().Error(
@@ -92,7 +93,7 @@ func (h *AdminsHandler) getFaculties(w http.ResponseWriter, r *http.Request) {
 	response, err := json.Marshal(faculties)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_faculty.go"),
 			zap.String("function", "getFaculties()"),
 			zap.Error(err),
@@ -114,11 +115,11 @@ func (h *AdminsHandler) getFaculties(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/faculties/{id} [get]
-func (h *AdminsHandler) getFaculty(w http.ResponseWriter, r *http.Request) {
-	id, err := getIdFromRequest(r)
+func (h *AdminsHandler) GetFaculty(w http.ResponseWriter, r *http.Request) {
+	id, err := common.GetIdFromRequest(r)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_faculty.go"),
 			zap.String("function", "getFaculty()"),
 			zap.Error(err),
@@ -130,7 +131,7 @@ func (h *AdminsHandler) getFaculty(w http.ResponseWriter, r *http.Request) {
 	faculty, err := h.services.Faculties.GetById(context.TODO(), id)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_faculty.go"),
 			zap.String("function", "getFaculty()"),
 			zap.Error(err),
@@ -142,7 +143,7 @@ func (h *AdminsHandler) getFaculty(w http.ResponseWriter, r *http.Request) {
 	response, err := json.Marshal(faculty)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_faculty.go"),
 			zap.String("function", "getFaculty()"),
 			zap.Error(err),
@@ -164,11 +165,11 @@ func (h *AdminsHandler) getFaculty(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/faculties/{id} [delete]
-func (h *AdminsHandler) deleteFaculty(w http.ResponseWriter, r *http.Request) {
-	id, err := getIdFromRequest(r)
+func (h *AdminsHandler) DeleteFaculty(w http.ResponseWriter, r *http.Request) {
+	id, err := common.GetIdFromRequest(r)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_faculty.go"),
 			zap.String("function", "deleteFaculty()"),
 			zap.Error(err),
@@ -178,7 +179,7 @@ func (h *AdminsHandler) deleteFaculty(w http.ResponseWriter, r *http.Request) {
 	}
 	if err := h.services.Faculties.Delete(context.TODO(), id); err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_faculty.go"),
 			zap.String("function", "deleteFaculty()"),
 			zap.Error(err),

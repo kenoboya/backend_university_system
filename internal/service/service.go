@@ -21,6 +21,7 @@ type Services struct {
 	Groups      Groups
 	Admins      Admins
 	People      People
+	Complaints  Complaints
 }
 type Deps struct {
 	Repos           psql.Repositories
@@ -74,9 +75,15 @@ type People interface {
 	Delete(ctx context.Context, id int64) error
 }
 type Admins interface {
-	// todo
+	TryBlockUser(ctx context.Context, response model.ResponseComplaintInput) error
+	UnblockUser(ctx context.Context, userID int64) error
 }
-
+type Complaints interface {
+	Create(ctx context.Context, reportingUserID int64, complaint model.CreateComplaintInput) error
+	GetAll(ctx context.Context) ([]model.Complaint, error)
+	GetById(ctx context.Context, id int64) (model.Complaint, error)
+	Response(ctx context.Context, complaintID int64, response model.ResponseComplaintInput) error
+}
 type Employees interface {
 	Create(ctx context.Context, employee model.CreateEmployeeInput) error
 	GetAll(ctx context.Context) ([]model.Employee, error)

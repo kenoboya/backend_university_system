@@ -1,4 +1,4 @@
-package rest
+package admin
 
 import (
 	"context"
@@ -6,19 +6,20 @@ import (
 	"io"
 	"net/http"
 	"test-crud/internal/model"
+	"test-crud/internal/transports/rest/common"
 
 	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 )
 
-func (h *Handler) initAdminEmployeesRoutes(admin *mux.Router) {
+func (h *AdminsHandler) InitAdminEmployeesRoutes(admin *mux.Router) {
 	employees := admin.PathPrefix("/employees").Subrouter()
 	{
-		employees.HandleFunc("", h.Admins.createEmployee).Methods(http.MethodPost)
-		employees.HandleFunc("", h.Admins.getEmployees).Methods(http.MethodGet)
-		employees.HandleFunc("/{id:[0-9]+}", h.Admins.getEmployee).Methods(http.MethodGet)
-		employees.HandleFunc("/{id:[0-9]+}", h.Admins.updateEmployee).Methods(http.MethodPatch)
-		employees.HandleFunc("/{id:[0-9]+}", h.Admins.deleteEmployee).Methods(http.MethodDelete)
+		employees.HandleFunc("", h.CreateEmployee).Methods(http.MethodPost)
+		employees.HandleFunc("", h.GetEmployees).Methods(http.MethodGet)
+		employees.HandleFunc("/{id:[0-9]+}", h.GetEmployee).Methods(http.MethodGet)
+		employees.HandleFunc("/{id:[0-9]+}", h.UpdateEmployee).Methods(http.MethodPatch)
+		employees.HandleFunc("/{id:[0-9]+}", h.DeleteEmployee).Methods(http.MethodDelete)
 	}
 }
 
@@ -32,13 +33,13 @@ func (h *Handler) initAdminEmployeesRoutes(admin *mux.Router) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/employees [post]
-func (h *AdminsHandler) createEmployee(w http.ResponseWriter, r *http.Request) {
+func (h *AdminsHandler) CreateEmployee(w http.ResponseWriter, r *http.Request) {
 	reqBytes, err := io.ReadAll(r.Body)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_employee.go"),
-			zap.String("function", "createEmployee()"),
+			zap.String("function", "сreateEmployee()"),
 			zap.Error(err),
 		)
 		w.WriteHeader(http.StatusBadRequest)
@@ -49,7 +50,7 @@ func (h *AdminsHandler) createEmployee(w http.ResponseWriter, r *http.Request) {
 
 	if err = json.Unmarshal(reqBytes, &employee); err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_employee.go"),
 			zap.String("function", "createEmployee()"),
 			zap.Error(err),
@@ -59,7 +60,7 @@ func (h *AdminsHandler) createEmployee(w http.ResponseWriter, r *http.Request) {
 	}
 	if err := h.services.Employees.Create(context.TODO(), employee); err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_employee.go"),
 			zap.String("function", "createEmployee()"),
 			zap.Error(err),
@@ -79,11 +80,11 @@ func (h *AdminsHandler) createEmployee(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/employees [get]
-func (h *AdminsHandler) getEmployees(w http.ResponseWriter, r *http.Request) {
+func (h *AdminsHandler) GetEmployees(w http.ResponseWriter, r *http.Request) {
 	employees, err := h.services.Employees.GetAll(context.TODO())
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_employee.go"),
 			zap.String("function", "getEmployees()"),
 			zap.Error(err),
@@ -94,7 +95,7 @@ func (h *AdminsHandler) getEmployees(w http.ResponseWriter, r *http.Request) {
 	response, err := json.Marshal(employees)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_employee.go"),
 			zap.String("function", "getEmployees()"),
 			zap.Error(err),
@@ -116,11 +117,11 @@ func (h *AdminsHandler) getEmployees(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/employees/{id} [get]
-func (h *AdminsHandler) getEmployee(w http.ResponseWriter, r *http.Request) {
-	id, err := getIdFromRequest(r)
+func (h *AdminsHandler) GetEmployee(w http.ResponseWriter, r *http.Request) {
+	id, err := common.GetIdFromRequest(r)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_employee.go"),
 			zap.String("function", "getEmployee()"),
 			zap.Error(err),
@@ -131,7 +132,7 @@ func (h *AdminsHandler) getEmployee(w http.ResponseWriter, r *http.Request) {
 	employee, err := h.services.Employees.GetById(context.TODO(), id)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_employee.go"),
 			zap.String("function", "getEmployee()"),
 			zap.Error(err),
@@ -142,7 +143,7 @@ func (h *AdminsHandler) getEmployee(w http.ResponseWriter, r *http.Request) {
 	response, err := json.Marshal(employee)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_employee.go"),
 			zap.String("function", "getEmployee()"),
 			zap.Error(err),
@@ -165,11 +166,11 @@ func (h *AdminsHandler) getEmployee(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/employees/{id} [patch]
-func (h *AdminsHandler) updateEmployee(w http.ResponseWriter, r *http.Request) {
-	id, err := getIdFromRequest(r)
+func (h *AdminsHandler) UpdateEmployee(w http.ResponseWriter, r *http.Request) {
+	id, err := common.GetIdFromRequest(r)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_employee.go"),
 			zap.String("function", "updateEmployee()"),
 			zap.Error(err),
@@ -180,7 +181,7 @@ func (h *AdminsHandler) updateEmployee(w http.ResponseWriter, r *http.Request) {
 	reqBytes, err := io.ReadAll(r.Body)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_employee.go"),
 			zap.String("function", "updateEmployee()"),
 			zap.Error(err),
@@ -191,7 +192,7 @@ func (h *AdminsHandler) updateEmployee(w http.ResponseWriter, r *http.Request) {
 	var employee model.UpdateEmployeeInput
 	if err := json.Unmarshal(reqBytes, &employee); err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_employee.go"),
 			zap.String("function", "updateEmployee()"),
 			zap.Error(err),
@@ -202,7 +203,7 @@ func (h *AdminsHandler) updateEmployee(w http.ResponseWriter, r *http.Request) {
 	err = h.services.Employees.Update(context.TODO(), id, employee)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_employee.go"),
 			zap.String("function", "updateEmployee()"),
 			zap.Error(err),
@@ -223,11 +224,11 @@ func (h *AdminsHandler) updateEmployee(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/employees/{id} [delete]
-func (h *AdminsHandler) deleteEmployee(w http.ResponseWriter, r *http.Request) {
-	id, err := getIdFromRequest(r)
+func (h *AdminsHandler) DeleteEmployee(w http.ResponseWriter, r *http.Request) {
+	id, err := common.GetIdFromRequest(r)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_employee.go"),
 			zap.String("function", "deleteEmployee()"),
 			zap.Error(err),
@@ -237,7 +238,7 @@ func (h *AdminsHandler) deleteEmployee(w http.ResponseWriter, r *http.Request) {
 	}
 	if err := h.services.Employees.Delete(context.TODO(), id); err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_employee.go"),
 			zap.String("function", "deleteEmployee()"),
 			zap.Error(err),

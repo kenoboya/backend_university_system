@@ -1,4 +1,4 @@
-package rest
+package admin
 
 import (
 	"context"
@@ -6,18 +6,19 @@ import (
 	"io"
 	"net/http"
 	"test-crud/internal/model"
+	"test-crud/internal/transports/rest/common"
 
 	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 )
 
-func (h *Handler) initAdminLessonsRoutes(admin *mux.Router) {
+func (h *AdminsHandler) InitAdminLessonsRoutes(admin *mux.Router) {
 	lessons := admin.PathPrefix("/lessons").Subrouter()
 	{
-		lessons.HandleFunc("", h.Admins.createLesson).Methods(http.MethodPost)
-		lessons.HandleFunc("", h.Admins.getLessons).Methods(http.MethodGet)
-		lessons.HandleFunc("/{id:[0-9]+}", h.Admins.getLesson).Methods(http.MethodGet)
-		lessons.HandleFunc("/{id:[0-9]+}", h.Admins.deleteLesson).Methods(http.MethodDelete)
+		lessons.HandleFunc("", h.CreateLesson).Methods(http.MethodPost)
+		lessons.HandleFunc("", h.GetLessons).Methods(http.MethodGet)
+		lessons.HandleFunc("/{id:[0-9]+}", h.GetLesson).Methods(http.MethodGet)
+		lessons.HandleFunc("/{id:[0-9]+}", h.DeleteLesson).Methods(http.MethodDelete)
 	}
 }
 
@@ -31,11 +32,11 @@ func (h *Handler) initAdminLessonsRoutes(admin *mux.Router) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/lessons [post]
-func (h *AdminsHandler) createLesson(w http.ResponseWriter, r *http.Request) {
+func (h *AdminsHandler) CreateLesson(w http.ResponseWriter, r *http.Request) {
 	reqBytes, err := io.ReadAll(r.Body)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_lesson.go"),
 			zap.String("function", "createLesson()"),
 			zap.Error(err),
@@ -47,7 +48,7 @@ func (h *AdminsHandler) createLesson(w http.ResponseWriter, r *http.Request) {
 	var lesson model.CreateLessonInput
 	if err := json.Unmarshal(reqBytes, &lesson); err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_lesson.go"),
 			zap.String("function", "createLesson()"),
 			zap.Error(err),
@@ -57,7 +58,7 @@ func (h *AdminsHandler) createLesson(w http.ResponseWriter, r *http.Request) {
 	}
 	if err := h.services.Lessons.Create(context.TODO(), lesson); err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_lesson.go"),
 			zap.String("function", "createLesson()"),
 			zap.Error(err),
@@ -77,11 +78,11 @@ func (h *AdminsHandler) createLesson(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/lessons [get]
-func (h *AdminsHandler) getLessons(w http.ResponseWriter, r *http.Request) {
+func (h *AdminsHandler) GetLessons(w http.ResponseWriter, r *http.Request) {
 	lessons, err := h.services.Lessons.GetAll(context.TODO())
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_lesson.go"),
 			zap.String("function", "getLessons()"),
 			zap.Error(err),
@@ -92,7 +93,7 @@ func (h *AdminsHandler) getLessons(w http.ResponseWriter, r *http.Request) {
 	response, err := json.Marshal(lessons)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_lesson.go"),
 			zap.String("function", "getLessons()"),
 			zap.Error(err),
@@ -114,11 +115,11 @@ func (h *AdminsHandler) getLessons(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/lessons/{id} [get]
-func (h *AdminsHandler) getLesson(w http.ResponseWriter, r *http.Request) {
-	id, err := getIdFromRequest(r)
+func (h *AdminsHandler) GetLesson(w http.ResponseWriter, r *http.Request) {
+	id, err := common.GetIdFromRequest(r)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_lesson.go"),
 			zap.String("function", "getLesson()"),
 			zap.Error(err),
@@ -130,7 +131,7 @@ func (h *AdminsHandler) getLesson(w http.ResponseWriter, r *http.Request) {
 	lesson, err := h.services.Lessons.GetById(context.TODO(), id)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_lesson.go"),
 			zap.String("function", "getLesson()"),
 			zap.Error(err),
@@ -142,7 +143,7 @@ func (h *AdminsHandler) getLesson(w http.ResponseWriter, r *http.Request) {
 	response, err := json.Marshal(lesson)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_lesson.go"),
 			zap.String("function", "getLesson()"),
 			zap.Error(err),
@@ -164,11 +165,11 @@ func (h *AdminsHandler) getLesson(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/lessons/{id} [delete]
-func (h *AdminsHandler) deleteLesson(w http.ResponseWriter, r *http.Request) {
-	id, err := getIdFromRequest(r)
+func (h *AdminsHandler) DeleteLesson(w http.ResponseWriter, r *http.Request) {
+	id, err := common.GetIdFromRequest(r)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_lesson.go"),
 			zap.String("function", "deleteLesson()"),
 			zap.Error(err),
@@ -178,7 +179,7 @@ func (h *AdminsHandler) deleteLesson(w http.ResponseWriter, r *http.Request) {
 	}
 	if err := h.services.Lessons.Delete(context.TODO(), id); err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_lesson.go"),
 			zap.String("function", "deleteLesson()"),
 			zap.Error(err),

@@ -1,4 +1,4 @@
-package rest
+package admin
 
 import (
 	"context"
@@ -6,18 +6,19 @@ import (
 	"io"
 	"net/http"
 	"test-crud/internal/model"
+	"test-crud/internal/transports/rest/common"
 
 	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 )
 
-func (h *Handler) initAdminGroupsRoutes(admin *mux.Router) {
+func (h *AdminsHandler) InitAdminGroupsRoutes(admin *mux.Router) {
 	groups := admin.PathPrefix("/groups").Subrouter()
 	{
-		groups.HandleFunc("", h.Admins.createGroup).Methods(http.MethodPost)
-		groups.HandleFunc("", h.Admins.getGroups).Methods(http.MethodGet)
-		groups.HandleFunc("/{id:[0-9]+}", h.Admins.getGroups).Methods(http.MethodGet)
-		groups.HandleFunc("/{id:[0-9]+}", h.Admins.deleteGroup).Methods(http.MethodDelete)
+		groups.HandleFunc("", h.CreateGroup).Methods(http.MethodPost)
+		groups.HandleFunc("", h.GetGroups).Methods(http.MethodGet)
+		groups.HandleFunc("/{id:[0-9]+}", h.GetGroups).Methods(http.MethodGet)
+		groups.HandleFunc("/{id:[0-9]+}", h.DeleteGroup).Methods(http.MethodDelete)
 	}
 }
 
@@ -31,11 +32,11 @@ func (h *Handler) initAdminGroupsRoutes(admin *mux.Router) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/groups [post]
-func (h *AdminsHandler) createGroup(w http.ResponseWriter, r *http.Request) {
+func (h *AdminsHandler) CreateGroup(w http.ResponseWriter, r *http.Request) {
 	reqBytes, err := io.ReadAll(r.Body)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_group.go"),
 			zap.String("function", "createGroup()"),
 			zap.Error(err),
@@ -47,7 +48,7 @@ func (h *AdminsHandler) createGroup(w http.ResponseWriter, r *http.Request) {
 	var group model.CreateGroupInput
 	if err := json.Unmarshal(reqBytes, &group); err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_group.go"),
 			zap.String("function", "createGroup()"),
 			zap.Error(err),
@@ -57,7 +58,7 @@ func (h *AdminsHandler) createGroup(w http.ResponseWriter, r *http.Request) {
 	}
 	if err := h.services.Groups.Create(context.TODO(), group); err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_group.go"),
 			zap.String("function", "createGroup()"),
 			zap.Error(err),
@@ -77,11 +78,11 @@ func (h *AdminsHandler) createGroup(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/groups [get]
-func (h *AdminsHandler) getGroups(w http.ResponseWriter, r *http.Request) {
+func (h *AdminsHandler) GetGroups(w http.ResponseWriter, r *http.Request) {
 	groups, err := h.services.Groups.GetAll(context.TODO())
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_group.go"),
 			zap.String("function", "getGroups()"),
 			zap.Error(err),
@@ -92,7 +93,7 @@ func (h *AdminsHandler) getGroups(w http.ResponseWriter, r *http.Request) {
 	response, err := json.Marshal(groups)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_group.go"),
 			zap.String("function", "getGroups()"),
 			zap.Error(err),
@@ -114,11 +115,11 @@ func (h *AdminsHandler) getGroups(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/groups/{id} [get]
-func (h *AdminsHandler) getGroup(w http.ResponseWriter, r *http.Request) {
-	id, err := getIdFromRequest(r)
+func (h *AdminsHandler) GetGroup(w http.ResponseWriter, r *http.Request) {
+	id, err := common.GetIdFromRequest(r)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_group.go"),
 			zap.String("function", "getGroup()"),
 			zap.Error(err),
@@ -130,7 +131,7 @@ func (h *AdminsHandler) getGroup(w http.ResponseWriter, r *http.Request) {
 	group, err := h.services.Groups.GetById(context.TODO(), id)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_group.go"),
 			zap.String("function", "getGroup()"),
 			zap.Error(err),
@@ -142,7 +143,7 @@ func (h *AdminsHandler) getGroup(w http.ResponseWriter, r *http.Request) {
 	response, err := json.Marshal(group)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_group.go"),
 			zap.String("function", "getGroup()"),
 			zap.Error(err),
@@ -164,11 +165,11 @@ func (h *AdminsHandler) getGroup(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/groups/{id} [delete]
-func (h *AdminsHandler) deleteGroup(w http.ResponseWriter, r *http.Request) {
-	id, err := getIdFromRequest(r)
+func (h *AdminsHandler) DeleteGroup(w http.ResponseWriter, r *http.Request) {
+	id, err := common.GetIdFromRequest(r)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_group.go"),
 			zap.String("function", "deleteGroup()"),
 			zap.Error(err),
@@ -178,7 +179,7 @@ func (h *AdminsHandler) deleteGroup(w http.ResponseWriter, r *http.Request) {
 	}
 	if err := h.services.Groups.Delete(context.TODO(), id); err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_group.go"),
 			zap.String("function", "deleteGroup()"),
 			zap.Error(err),

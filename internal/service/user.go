@@ -38,7 +38,7 @@ func (s *UsersService) SignUp(ctx context.Context, input model.UserSignUpInput) 
 		Password:     passwordHash,
 		Email:        input.Email,
 		RegisteredAt: time.Now(),
-		Status:       model.Unblocked,
+		Blocked:      model.Unblocked,
 		Role:         model.RoleUser,
 	}
 	return s.repo.Create(ctx, user)

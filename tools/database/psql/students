@@ -3,6 +3,11 @@ CREATE TYPE user_role AS enum
 	'user','student','employee','teacher', 'admin'
 );
 
+CREATE TYPE user_status AS enum
+(
+	'unblocked','blocked'
+);
+
 CREATE TABLE users(
 	user_id INTEGER GENERATED ALWAYS AS IDENTITY,
 	username VARCHAR(70) UNIQUE,
@@ -10,7 +15,7 @@ CREATE TABLE users(
 	password TEXT NOT NULL,
 	registered_at TIMESTAMP DEFAULT NOW(),
 	last_visit_at TIMESTAMP DEFAULT NOW(),
-	status BOOLEAN DEFAULT false,
+	status user_status DEFAULT 'unblocked',
 	role user_role NOT NULL,
 	CONSTRAINT pk_users_user_id PRIMARY KEY(user_id),
 	CONSTRAINT chk_users_username CHECK (LENGTH(username) >= 5),
@@ -136,3 +141,25 @@ CREATE TABLE refresh_tokens(
 	CONSTRAINT pk_refresh_tokens_refresh_token_id PRIMARY KEY(refresh_token_id),
 	CONSTRAINT fk_refresh_tokens_users FOREIGN KEY(user_id) REFERENCES users(user_id)
 )
+
+CREATE TABLE complaints(
+	complaint_id BIGINT GENERATED ALWAYS AS IDENTITY,
+	reporting_user_id INTEGER NOT NULL, 
+	reported_user_id INTEGER NOT NULL,
+	cause text NOT NULL,
+	time TIMESTAMP DEFAULT NOW()
+	 text,
+	CONSTRAINT pk_complaints_complaint_id PRIMARY KEY(complaint_id),
+	CONSTRAINT fk_complaints_users_reporting_user_id FOREIGN KEY(reporting_user_id) REFERENCES users(user_id),
+	CONSTRAINT fk_complaints_users_reported_user_id FOREIGN KEY(reported_user_id) REFERENCES users(user_id),
+)
+
+CREATE TABLE block_users_audit(
+    id BIGINT GENERATED ALWAYS AS IDENTITY,
+	complaint_id INTEGER NOT NULL,
+    admin_id INTEGER NOT NULL,
+    operation user_status NOT NULL,
+    CONSTRAINT pk_block_users_audit_id PRIMARY KEY(id),
+    CONSTRAINT fk_block_users_audit_users_admin_id FOREIGN KEY(admin_id) REFERENCES users(user_id),
+    CONSTRAINT fk_block_users_audit_complaints FOREIGN KEY(complaint_id) REFERENCES complaints(complaint_id)
+);

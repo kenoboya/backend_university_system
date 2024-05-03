@@ -19,6 +19,7 @@ type Repositories struct {
 	Groups      Groups
 	Admins      Admins
 	People      People
+	Complaints  Complaints
 }
 
 func NewRepositories(db *sqlx.DB) *Repositories {
@@ -34,6 +35,7 @@ func NewRepositories(db *sqlx.DB) *Repositories {
 		Groups:      NewGroupsRepository(db),
 		Admins:      NewAdminsRepository(db),
 		People:      NewPeopleRepository(db),
+		Complaints:  NewComplaintsRepository(db),
 	}
 }
 
@@ -50,10 +52,10 @@ type Users interface {
 	GetByUsernameCredentials(ctx context.Context, login, password string) (model.User, error)
 	SetSession(ctx context.Context, id int64, session model.Session) error
 	GetByRefreshToken(ctx context.Context, refreshToken string) (model.User, error)
-	SetStatus(ctx context.Context, id int64, status bool) error
 }
 type Admins interface {
-	// todo
+	BlockUser(ctx context.Context, id int64) error
+	UnblockUser(ctx context.Context, id int64) error
 }
 type People interface {
 	Create(ctx context.Context, person model.CreatePersonInput) error
@@ -107,4 +109,10 @@ type Groups interface {
 	GetAll(ctx context.Context) ([]model.Group, error)
 	GetById(ctx context.Context, id int64) (model.Group, error)
 	Delete(ctx context.Context, id int64) error
+}
+type Complaints interface {
+	Create(ctx context.Context, complaint model.Complaint) error
+	GetAll(ctx context.Context) ([]model.Complaint, error)
+	GetById(ctx context.Context, id int64) (model.Complaint, error)
+	Response(ctx context.Context, id int64, response string) error
 }

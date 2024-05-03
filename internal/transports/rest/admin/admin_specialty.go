@@ -1,4 +1,4 @@
-package rest
+package admin
 
 import (
 	"context"
@@ -6,19 +6,20 @@ import (
 	"io"
 	"net/http"
 	"test-crud/internal/model"
+	"test-crud/internal/transports/rest/common"
 
 	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 )
 
-func (h *Handler) initAdminSpecialtiesRoutes(admin *mux.Router) {
+func (h *AdminsHandler) InitAdminSpecialtiesRoutes(admin *mux.Router) {
 	specialties := admin.PathPrefix("/specialties").Subrouter()
 	{
-		specialties.HandleFunc("", h.Admins.createSpecialty).Methods(http.MethodPost)
-		specialties.HandleFunc("", h.Admins.getSpecialty).Methods(http.MethodGet)
-		specialties.HandleFunc("/{id:[0-9]+}", h.Admins.getSpecialty).Methods(http.MethodGet)
-		specialties.HandleFunc("/{id:[0-9]+}", h.Admins.updateSpecialty).Methods(http.MethodPatch)
-		specialties.HandleFunc("/{id:[0-9]+}", h.Admins.deleteSpecialty).Methods(http.MethodDelete)
+		specialties.HandleFunc("", h.CreateSpecialty).Methods(http.MethodPost)
+		specialties.HandleFunc("", h.GetSpecialty).Methods(http.MethodGet)
+		specialties.HandleFunc("/{id:[0-9]+}", h.GetSpecialty).Methods(http.MethodGet)
+		specialties.HandleFunc("/{id:[0-9]+}", h.UpdateSpecialty).Methods(http.MethodPatch)
+		specialties.HandleFunc("/{id:[0-9]+}", h.DeleteSpecialty).Methods(http.MethodDelete)
 	}
 }
 
@@ -32,11 +33,11 @@ func (h *Handler) initAdminSpecialtiesRoutes(admin *mux.Router) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/specialties [post]
-func (h *AdminsHandler) createSpecialty(w http.ResponseWriter, r *http.Request) {
+func (h *AdminsHandler) CreateSpecialty(w http.ResponseWriter, r *http.Request) {
 	reqBytes, err := io.ReadAll(r.Body)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_specialty.go"),
 			zap.String("function", "createSpecialty()"),
 			zap.Error(err),
@@ -49,7 +50,7 @@ func (h *AdminsHandler) createSpecialty(w http.ResponseWriter, r *http.Request) 
 
 	if err = json.Unmarshal(reqBytes, &specialty); err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_specialty.go"),
 			zap.String("function", "createSpecialty()"),
 			zap.Error(err),
@@ -59,7 +60,7 @@ func (h *AdminsHandler) createSpecialty(w http.ResponseWriter, r *http.Request) 
 	}
 	if err := h.services.Specialties.Create(context.TODO(), specialty); err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_specialty.go"),
 			zap.String("function", "createSpecialty()"),
 			zap.Error(err),
@@ -79,11 +80,11 @@ func (h *AdminsHandler) createSpecialty(w http.ResponseWriter, r *http.Request) 
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/specialties [get]
-func (h *AdminsHandler) getSpecialties(w http.ResponseWriter, r *http.Request) {
+func (h *AdminsHandler) GetSpecialties(w http.ResponseWriter, r *http.Request) {
 	specialties, err := h.services.Specialties.GetAll(context.TODO())
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_specialty.go"),
 			zap.String("function", "getSpecialties()"),
 			zap.Error(err),
@@ -94,7 +95,7 @@ func (h *AdminsHandler) getSpecialties(w http.ResponseWriter, r *http.Request) {
 	response, err := json.Marshal(specialties)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_specialty.go"),
 			zap.String("function", "getSpecialties()"),
 			zap.Error(err),
@@ -116,11 +117,11 @@ func (h *AdminsHandler) getSpecialties(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/specialties/{id} [get]
-func (h *AdminsHandler) getSpecialty(w http.ResponseWriter, r *http.Request) {
-	id, err := getIdFromRequest(r)
+func (h *AdminsHandler) GetSpecialty(w http.ResponseWriter, r *http.Request) {
+	id, err := common.GetIdFromRequest(r)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_specialty.go"),
 			zap.String("function", "getSpecialty()"),
 			zap.Error(err),
@@ -131,7 +132,7 @@ func (h *AdminsHandler) getSpecialty(w http.ResponseWriter, r *http.Request) {
 	specialty, err := h.services.Specialties.GetById(context.TODO(), id)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_specialty.go"),
 			zap.String("function", "getSpecialty()"),
 			zap.Error(err),
@@ -142,7 +143,7 @@ func (h *AdminsHandler) getSpecialty(w http.ResponseWriter, r *http.Request) {
 	response, err := json.Marshal(specialty)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_specialty.go"),
 			zap.String("function", "getSpecialty()"),
 			zap.Error(err),
@@ -165,11 +166,11 @@ func (h *AdminsHandler) getSpecialty(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/specialties/{id} [patch]
-func (h *AdminsHandler) updateSpecialty(w http.ResponseWriter, r *http.Request) {
-	id, err := getIdFromRequest(r)
+func (h *AdminsHandler) UpdateSpecialty(w http.ResponseWriter, r *http.Request) {
+	id, err := common.GetIdFromRequest(r)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_specialty.go"),
 			zap.String("function", "updateSpecialty()"),
 			zap.Error(err),
@@ -180,7 +181,7 @@ func (h *AdminsHandler) updateSpecialty(w http.ResponseWriter, r *http.Request) 
 	reqBytes, err := io.ReadAll(r.Body)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_specialty.go"),
 			zap.String("function", "updateSpecialty()"),
 			zap.Error(err),
@@ -191,7 +192,7 @@ func (h *AdminsHandler) updateSpecialty(w http.ResponseWriter, r *http.Request) 
 	var specialty model.UpdateSpecialtyInput
 	if err := json.Unmarshal(reqBytes, &specialty); err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_specialty.go"),
 			zap.String("function", "updateSpecialty()"),
 			zap.Error(err),
@@ -202,7 +203,7 @@ func (h *AdminsHandler) updateSpecialty(w http.ResponseWriter, r *http.Request) 
 	err = h.services.Specialties.Update(context.TODO(), id, specialty)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_specialty.go"),
 			zap.String("function", "updateSpecialty()"),
 			zap.Error(err),
@@ -223,11 +224,11 @@ func (h *AdminsHandler) updateSpecialty(w http.ResponseWriter, r *http.Request) 
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/specialties/{id} [delete]
-func (h *AdminsHandler) deleteSpecialty(w http.ResponseWriter, r *http.Request) {
-	id, err := getIdFromRequest(r)
+func (h *AdminsHandler) DeleteSpecialty(w http.ResponseWriter, r *http.Request) {
+	id, err := common.GetIdFromRequest(r)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_specialty.go"),
 			zap.String("function", "deleteSpecialty()"),
 			zap.Error(err),
@@ -237,7 +238,7 @@ func (h *AdminsHandler) deleteSpecialty(w http.ResponseWriter, r *http.Request) 
 	}
 	if err := h.services.Specialties.Delete(context.TODO(), id); err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_specialty.go"),
 			zap.String("function", "deleteSpecialty()"),
 			zap.Error(err),

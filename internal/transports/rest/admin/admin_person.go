@@ -1,4 +1,4 @@
-package rest
+package admin
 
 import (
 	"context"
@@ -6,19 +6,20 @@ import (
 	"io"
 	"net/http"
 	"test-crud/internal/model"
+	"test-crud/internal/transports/rest/common"
 
 	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 )
 
-func (h *Handler) initAdminPeopleRoutes(admin *mux.Router) {
+func (h *AdminsHandler) InitAdminPeopleRoutes(admin *mux.Router) {
 	people := admin.PathPrefix("/people").Subrouter()
 	{
-		people.HandleFunc("", h.Admins.createPerson).Methods(http.MethodPost)
-		people.HandleFunc("", h.Admins.getPeople).Methods(http.MethodGet)
-		people.HandleFunc("/{id:[0-9]+}", h.Admins.getPerson).Methods(http.MethodGet)
-		people.HandleFunc("/{id:[0-9]+}", h.Admins.updatePerson).Methods(http.MethodPatch)
-		people.HandleFunc("/{id:[0-9]+}", h.Admins.deletePerson).Methods(http.MethodDelete)
+		people.HandleFunc("", h.CreatePerson).Methods(http.MethodPost)
+		people.HandleFunc("", h.GetPeople).Methods(http.MethodGet)
+		people.HandleFunc("/{id:[0-9]+}", h.GetPerson).Methods(http.MethodGet)
+		people.HandleFunc("/{id:[0-9]+}", h.UpdatePerson).Methods(http.MethodPatch)
+		people.HandleFunc("/{id:[0-9]+}", h.DeletePerson).Methods(http.MethodDelete)
 	}
 }
 
@@ -32,11 +33,11 @@ func (h *Handler) initAdminPeopleRoutes(admin *mux.Router) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/people [post]
-func (h *AdminsHandler) createPerson(w http.ResponseWriter, r *http.Request) {
+func (h *AdminsHandler) CreatePerson(w http.ResponseWriter, r *http.Request) {
 	reqBytes, err := io.ReadAll(r.Body)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_person.go"),
 			zap.String("function", "createPerson()"),
 			zap.Error(err),
@@ -48,7 +49,7 @@ func (h *AdminsHandler) createPerson(w http.ResponseWriter, r *http.Request) {
 	var person model.CreatePersonInput
 	if err := json.Unmarshal(reqBytes, &person); err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_person.go"),
 			zap.String("function", "createPerson()"),
 			zap.Error(err),
@@ -58,7 +59,7 @@ func (h *AdminsHandler) createPerson(w http.ResponseWriter, r *http.Request) {
 	}
 	if err := h.services.People.Create(context.TODO(), person); err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_person.go"),
 			zap.String("function", "createPerson()"),
 			zap.Error(err),
@@ -78,11 +79,11 @@ func (h *AdminsHandler) createPerson(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/people [get]
-func (h *AdminsHandler) getPeople(w http.ResponseWriter, r *http.Request) {
+func (h *AdminsHandler) GetPeople(w http.ResponseWriter, r *http.Request) {
 	people, err := h.services.People.GetAll(context.TODO())
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_person.go"),
 			zap.String("function", "getPeople()"),
 			zap.Error(err),
@@ -93,7 +94,7 @@ func (h *AdminsHandler) getPeople(w http.ResponseWriter, r *http.Request) {
 	response, err := json.Marshal(people)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_person.go"),
 			zap.String("function", "getPeople()"),
 			zap.Error(err),
@@ -115,11 +116,11 @@ func (h *AdminsHandler) getPeople(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/people/{id} [get]
-func (h *AdminsHandler) getPerson(w http.ResponseWriter, r *http.Request) {
-	id, err := getIdFromRequest(r)
+func (h *AdminsHandler) GetPerson(w http.ResponseWriter, r *http.Request) {
+	id, err := common.GetIdFromRequest(r)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "user_person.go"),
 			zap.String("function", "getPerson()"),
 			zap.Error(err),
@@ -131,7 +132,7 @@ func (h *AdminsHandler) getPerson(w http.ResponseWriter, r *http.Request) {
 	person, err := h.services.People.GetById(context.TODO(), id)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_person.go"),
 			zap.String("function", "getPerson()"),
 			zap.Error(err),
@@ -143,7 +144,7 @@ func (h *AdminsHandler) getPerson(w http.ResponseWriter, r *http.Request) {
 	response, err := json.Marshal(person)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_person.go"),
 			zap.String("function", "getPerson()"),
 			zap.Error(err),
@@ -166,11 +167,11 @@ func (h *AdminsHandler) getPerson(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/people/{id} [patch]
-func (h *AdminsHandler) updatePerson(w http.ResponseWriter, r *http.Request) {
-	id, err := getIdFromRequest(r)
+func (h *AdminsHandler) UpdatePerson(w http.ResponseWriter, r *http.Request) {
+	id, err := common.GetIdFromRequest(r)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "user_person.go"),
 			zap.String("function", "updatePerson()"),
 			zap.Error(err),
@@ -181,7 +182,7 @@ func (h *AdminsHandler) updatePerson(w http.ResponseWriter, r *http.Request) {
 	reqBytes, err := io.ReadAll(r.Body)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "user_person.go"),
 			zap.String("function", "updatePerson()"),
 			zap.Error(err),
@@ -192,7 +193,7 @@ func (h *AdminsHandler) updatePerson(w http.ResponseWriter, r *http.Request) {
 	var person model.UpdatePersonInput
 	if err := json.Unmarshal(reqBytes, &person); err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_person.go"),
 			zap.String("function", "updatePerson()"),
 			zap.Error(err),
@@ -203,7 +204,7 @@ func (h *AdminsHandler) updatePerson(w http.ResponseWriter, r *http.Request) {
 	err = h.services.People.Update(context.TODO(), id, person)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_person.go"),
 			zap.String("function", "updatePerson()"),
 			zap.Error(err),
@@ -224,11 +225,11 @@ func (h *AdminsHandler) updatePerson(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/people/{id} [delete]
-func (h *AdminsHandler) deletePerson(w http.ResponseWriter, r *http.Request) {
-	id, err := getIdFromRequest(r)
+func (h *AdminsHandler) DeletePerson(w http.ResponseWriter, r *http.Request) {
+	id, err := common.GetIdFromRequest(r)
 	if err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_person.go"),
 			zap.String("function", "deletePerson()"),
 			zap.Error(err),
@@ -238,7 +239,7 @@ func (h *AdminsHandler) deletePerson(w http.ResponseWriter, r *http.Request) {
 	}
 	if err := h.services.People.Delete(context.TODO(), id); err != nil {
 		zap.S().Error(
-			zap.String("package", "transport/rest"),
+			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_person.go"),
 			zap.String("function", "deletePerson()"),
 			zap.Error(err),
