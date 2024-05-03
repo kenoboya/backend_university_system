@@ -17,6 +17,8 @@ definitions:
     type: object
   model.CreateGroupInput:
     properties:
+      educational_level:
+        type: string
       full_name:
         type: string
       specialty_id:
@@ -82,15 +84,43 @@ definitions:
     type: object
   model.Employee:
     properties:
+      address:
+        type: string
+      birth_date:
+        type: string
+      email:
+        type: string
       employee_id:
         type: integer
       hire_date:
         type: string
-      person:
-        $ref: '#/definitions/model.Person'
+      last_visit_at:
+        type: string
+      name:
+        type: string
+      notes:
+        type: string
+      password:
+        type: string
+      person_id:
+        type: integer
+      phone:
+        type: string
+      photo:
+        items:
+          type: integer
+        type: array
+      registered_at:
+        type: string
       salary:
         type: number
+      surname:
+        type: string
       title:
+        type: string
+      user_id:
+        type: integer
+      username:
         type: string
     type: object
   model.Faculty:
@@ -106,43 +136,48 @@ definitions:
         type: string
       end_year:
         type: string
+      faculty_id:
+        type: string
       full_name:
         type: string
-      specialty:
-        $ref: '#/definitions/model.Specialty'
-      specialty_id:
+      group_id:
         type: string
+      specialty_id:
+        type: integer
       start_year:
         type: string
     type: object
   model.Lesson:
     properties:
-      group:
-        $ref: '#/definitions/model.Group'
+      address:
+        type: string
+      birth_date:
+        type: string
+      email:
+        type: string
+      employee_id:
+        type: integer
+      faculty_id:
+        type: string
+      full_name:
+        type: string
+      group_id:
+        type: string
+      hire_date:
+        type: string
+      last_visit_at:
+        type: string
       lecture_room:
         type: string
       lesson_id:
         type: integer
       lesson_type:
         type: string
-      subject:
-        $ref: '#/definitions/model.Subject'
-      teacher:
-        $ref: '#/definitions/model.Teacher'
-      time_end:
-        type: string
-      time_start:
-        type: string
-    type: object
-  model.Person:
-    properties:
-      address:
-        type: string
-      birth_date:
-        type: string
       name:
         type: string
       notes:
+        type: string
+      password:
         type: string
       person_id:
         type: integer
@@ -152,15 +187,66 @@ definitions:
         items:
           type: integer
         type: array
+      registered_at:
+        type: string
+      salary:
+        type: number
+      specialty_id:
+        type: integer
+      subject_id:
+        type: integer
       surname:
         type: string
-      user:
-        $ref: '#/definitions/model.User'
+      teacher_id:
+        type: integer
+      time_end:
+        type: string
+      time_start:
+        type: string
+      title:
+        type: string
+      user_id:
+        type: integer
+      username:
+        type: string
+    type: object
+  model.Person:
+    properties:
+      address:
+        type: string
+      birth_date:
+        type: string
+      email:
+        type: string
+      last_visit_at:
+        type: string
+      name:
+        type: string
+      notes:
+        type: string
+      password:
+        type: string
+      person_id:
+        type: integer
+      phone:
+        type: string
+      photo:
+        items:
+          type: integer
+        type: array
+      registered_at:
+        type: string
+      surname:
+        type: string
+      user_id:
+        type: integer
+      username:
+        type: string
     type: object
   model.Specialty:
     properties:
-      faculty:
-        $ref: '#/definitions/model.Faculty'
+      faculty_id:
+        type: string
       full_name:
         type: string
       specialty_id:
@@ -168,28 +254,108 @@ definitions:
     type: object
   model.Student:
     properties:
-      group:
-        $ref: '#/definitions/model.Group'
-      person:
-        $ref: '#/definitions/model.Person'
+      address:
+        type: string
+      birth_date:
+        type: string
+      educational_level:
+        type: string
+      email:
+        type: string
+      end_year:
+        type: string
+      faculty_id:
+        type: string
+      full_name:
+        type: string
+      group_id:
+        type: string
+      last_visit_at:
+        type: string
+      name:
+        type: string
+      notes:
+        type: string
+      password:
+        type: string
+      person_id:
+        type: integer
+      phone:
+        type: string
+      photo:
+        items:
+          type: integer
+        type: array
+      registered_at:
+        type: string
+      specialty_id:
+        type: integer
+      start_year:
+        type: string
       student_id:
         type: integer
+      surname:
+        type: string
+      user_id:
+        type: integer
+      username:
+        type: string
     type: object
   model.Subject:
     properties:
+      faculty_id:
+        type: string
+      full_name:
+        type: string
       name:
         type: string
-      specialty:
-        $ref: '#/definitions/model.Specialty'
+      specialty_id:
+        type: integer
       subject_id:
         type: integer
     type: object
   model.Teacher:
     properties:
-      employee:
-        $ref: '#/definitions/model.Employee'
+      address:
+        type: string
+      birth_date:
+        type: string
+      email:
+        type: string
+      employee_id:
+        type: integer
+      hire_date:
+        type: string
+      last_visit_at:
+        type: string
+      name:
+        type: string
+      notes:
+        type: string
+      password:
+        type: string
+      person_id:
+        type: integer
+      phone:
+        type: string
+      photo:
+        items:
+          type: integer
+        type: array
+      registered_at:
+        type: string
+      salary:
+        type: number
+      surname:
+        type: string
       teacher_id:
         type: integer
+      title:
+        type: string
+      user_id:
+        type: integer
+      username:
+        type: string
     type: object
   model.UpdateEmployeeInput:
     properties:
@@ -243,21 +409,6 @@ definitions:
       employee_id:
         type: integer
     type: object
-  model.User:
-    properties:
-      email:
-        type: string
-      last_visit_at:
-        type: string
-      password:
-        type: string
-      registered_at:
-        type: string
-      user_id:
-        type: integer
-      username:
-        type: string
-    type: object
   model.UserSignInInput:
     properties:
       login:
@@ -297,10 +448,10 @@ host: localhost:8080
 info:
   contact: {}
   description: REST API for test.
-  title: Student Swagger API
+  title: University System API
   version: "2.0"
 paths:
-  /admin/employees:
+  /admin/hub/employees:
     get:
       consumes:
       - application/json
@@ -324,7 +475,7 @@ paths:
             type: string
       summary: Get employees
       tags:
-      - employees
+      - admin-employees
     post:
       consumes:
       - application/json
@@ -353,8 +504,8 @@ paths:
             type: string
       summary: create employee
       tags:
-      - employees
-  /admin/employees/{id}:
+      - admin-employees
+  /admin/hub/employees/{id}:
     delete:
       consumes:
       - application/json
@@ -382,7 +533,7 @@ paths:
             type: string
       summary: Delete employee
       tags:
-      - employees
+      - admin-employees
     get:
       consumes:
       - application/json
@@ -410,7 +561,7 @@ paths:
             type: string
       summary: Get employee
       tags:
-      - employees
+      - admin-employees
     patch:
       consumes:
       - application/json
@@ -444,8 +595,8 @@ paths:
             type: string
       summary: Update employee
       tags:
-      - employees
-  /admin/faculties:
+      - admin-employees
+  /admin/hub/faculties:
     get:
       consumes:
       - application/json
@@ -469,7 +620,7 @@ paths:
             type: string
       summary: Get faculties
       tags:
-      - faculties
+      - admin-faculties
     post:
       consumes:
       - application/json
@@ -498,8 +649,8 @@ paths:
             type: string
       summary: create faculty
       tags:
-      - faculties
-  /admin/faculties/{id}:
+      - admin-faculties
+  /admin/hub/faculties/{id}:
     delete:
       consumes:
       - application/json
@@ -527,7 +678,7 @@ paths:
             type: string
       summary: Delete faculty
       tags:
-      - faculties
+      - admin-faculties
     get:
       consumes:
       - application/json
@@ -555,8 +706,8 @@ paths:
             type: string
       summary: Get faculty
       tags:
-      - faculties
-  /admin/groups:
+      - admin-faculties
+  /admin/hub/groups:
     get:
       consumes:
       - application/json
@@ -580,7 +731,7 @@ paths:
             type: string
       summary: Get groups
       tags:
-      - groups
+      - admin-groups
     post:
       consumes:
       - application/json
@@ -609,8 +760,8 @@ paths:
             type: string
       summary: create group
       tags:
-      - groups
-  /admin/groups/{id}:
+      - admin-groups
+  /admin/hub/groups/{id}:
     delete:
       consumes:
       - application/json
@@ -638,7 +789,7 @@ paths:
             type: string
       summary: Delete group
       tags:
-      - groups
+      - admin-groups
     get:
       consumes:
       - application/json
@@ -666,8 +817,8 @@ paths:
             type: string
       summary: Get group
       tags:
-      - groups
-  /admin/lessons:
+      - admin-groups
+  /admin/hub/lessons:
     get:
       consumes:
       - application/json
@@ -691,7 +842,7 @@ paths:
             type: string
       summary: Get lessons
       tags:
-      - lessons
+      - admin-lessons
     post:
       consumes:
       - application/json
@@ -720,8 +871,8 @@ paths:
             type: string
       summary: create lesson
       tags:
-      - lessons
-  /admin/lessons/{id}:
+      - admin-lessons
+  /admin/hub/lessons/{id}:
     delete:
       consumes:
       - application/json
@@ -749,7 +900,7 @@ paths:
             type: string
       summary: Delete lesson
       tags:
-      - lessons
+      - admin-lessons
     get:
       consumes:
       - application/json
@@ -777,588 +928,8 @@ paths:
             type: string
       summary: Get lesson
       tags:
-      - lessons
-  /admin/specialties:
-    get:
-      consumes:
-      - application/json
-      description: get specialties
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Accepted
-          schema:
-            items:
-              $ref: '#/definitions/model.Specialty'
-            type: array
-        "400":
-          description: Bad request
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      summary: Get specialties
-      tags:
-      - specialties
-    post:
-      consumes:
-      - application/json
-      description: create specialty
-      parameters:
-      - description: Data for creating specialty
-        in: body
-        name: specialty
-        required: true
-        schema:
-          $ref: '#/definitions/model.CreateSpecialtyInput'
-      produces:
-      - application/json
-      responses:
-        "202":
-          description: Accepted
-          schema:
-            type: string
-        "400":
-          description: Bad request
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      summary: Create specialty
-      tags:
-      - specialties
-  /admin/specialties/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: delete specialty
-      parameters:
-      - description: ID for deleting specialties
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-        "400":
-          description: Bad request
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      summary: Delete specialty
-      tags:
-      - specialties
-    get:
-      consumes:
-      - application/json
-      description: get specialty by id
-      parameters:
-      - description: ID for getting specialty
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Accepted
-          schema:
-            $ref: '#/definitions/model.Specialty'
-        "400":
-          description: Bad request
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      summary: Get specialty
-      tags:
-      - specialties
-    patch:
-      consumes:
-      - application/json
-      description: update specialty
-      parameters:
-      - description: ID for updating specialty
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: New information for update
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/model.UpdateSpecialtyInput'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-        "400":
-          description: Bad request
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      summary: Update specialty
-      tags:
-      - specialties
-  /admin/students:
-    get:
-      consumes:
-      - application/json
-      description: get students
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Accepted
-          schema:
-            items:
-              $ref: '#/definitions/model.Student'
-            type: array
-        "400":
-          description: Bad request
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      summary: Get students
-      tags:
-      - students
-    post:
-      consumes:
-      - application/json
-      description: create student
-      parameters:
-      - description: Data for creating student
-        in: body
-        name: student
-        required: true
-        schema:
-          $ref: '#/definitions/model.CreateStudentInput'
-      produces:
-      - application/json
-      responses:
-        "202":
-          description: Accepted
-          schema:
-            type: string
-        "400":
-          description: Bad request
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      summary: create student
-      tags:
-      - students
-  /admin/students/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: delete student
-      parameters:
-      - description: ID for deleting student
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-        "400":
-          description: Bad request
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      summary: Delete student
-      tags:
-      - students
-    get:
-      consumes:
-      - application/json
-      description: get student by id
-      parameters:
-      - description: ID for getting student
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Accepted
-          schema:
-            $ref: '#/definitions/model.Student'
-        "400":
-          description: Bad request
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      summary: Get student
-      tags:
-      - students
-    patch:
-      consumes:
-      - application/json
-      description: update student
-      parameters:
-      - description: ID for updating student
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: New information for update
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/model.UpdateStudentInput'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-        "400":
-          description: Bad request
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      summary: Update student
-      tags:
-      - students
-  /admin/subjects:
-    get:
-      consumes:
-      - application/json
-      description: get subjects
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Accepted
-          schema:
-            items:
-              $ref: '#/definitions/model.Subject'
-            type: array
-        "400":
-          description: Bad request
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      summary: Get subjects
-      tags:
-      - subjects
-    post:
-      consumes:
-      - application/json
-      description: create subject
-      parameters:
-      - description: Data for creating subject
-        in: body
-        name: subject
-        required: true
-        schema:
-          $ref: '#/definitions/model.CreateSubjectInput'
-      produces:
-      - application/json
-      responses:
-        "202":
-          description: Accepted
-          schema:
-            type: string
-        "400":
-          description: Bad request
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      summary: create subject
-      tags:
-      - subjects
-  /admin/subjects/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: delete subject
-      parameters:
-      - description: ID for deleting subject
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-        "400":
-          description: Bad request
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      summary: Delete subject
-      tags:
-      - subjects
-    get:
-      consumes:
-      - application/json
-      description: get subject by id
-      parameters:
-      - description: ID for getting subject
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Accepted
-          schema:
-            $ref: '#/definitions/model.Subject'
-        "400":
-          description: Bad request
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      summary: Get subject
-      tags:
-      - subjects
-    patch:
-      consumes:
-      - application/json
-      description: update subject
-      parameters:
-      - description: ID for updating subject
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: New information for update
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/model.UpdateSubjectInput'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-        "400":
-          description: Bad request
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      summary: Update subject
-      tags:
-      - subjects
-  /admin/teachers:
-    get:
-      consumes:
-      - application/json
-      description: get teachers
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Accepted
-          schema:
-            items:
-              $ref: '#/definitions/model.Teacher'
-            type: array
-        "400":
-          description: Bad request
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      summary: Get teachers
-      tags:
-      - teachers
-    post:
-      consumes:
-      - application/json
-      description: create teacher
-      parameters:
-      - description: Data for creating teacher
-        in: body
-        name: teacher
-        required: true
-        schema:
-          $ref: '#/definitions/model.CreateTeacherInput'
-      produces:
-      - application/json
-      responses:
-        "202":
-          description: Accepted
-          schema:
-            type: string
-        "400":
-          description: Bad request
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      summary: Create teacher
-      tags:
-      - teachers
-  /admin/teachers/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: delete teacher
-      parameters:
-      - description: ID for deleting teacher
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-        "400":
-          description: Bad request
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      summary: Delete teacher
-      tags:
-      - teachers
-    get:
-      consumes:
-      - application/json
-      description: get teacher by id
-      parameters:
-      - description: ID for getting teacher
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Accepted
-          schema:
-            $ref: '#/definitions/model.Teacher'
-        "400":
-          description: Bad request
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      summary: Get teacher
-      tags:
-      - teachers
-    patch:
-      consumes:
-      - application/json
-      description: update teacher
-      parameters:
-      - description: ID for updating teacher
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: New information for update
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/model.UpdateTeacherInput'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-        "400":
-          description: Bad request
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      summary: Update teacher
-      tags:
-      - teachers
-  /user/people:
+      - admin-lessons
+  /admin/hub/people:
     get:
       consumes:
       - application/json
@@ -1382,7 +953,7 @@ paths:
             type: string
       summary: Get people
       tags:
-      - people
+      - admin-people
     post:
       consumes:
       - application/json
@@ -1411,8 +982,8 @@ paths:
             type: string
       summary: create person
       tags:
-      - people
-  /user/people/{id}:
+      - admin-people
+  /admin/hub/people/{id}:
     delete:
       consumes:
       - application/json
@@ -1440,7 +1011,7 @@ paths:
             type: string
       summary: Delete person
       tags:
-      - people
+      - admin-people
     get:
       consumes:
       - application/json
@@ -1468,7 +1039,7 @@ paths:
             type: string
       summary: Get person
       tags:
-      - people
+      - admin-people
     patch:
       consumes:
       - application/json
@@ -1502,8 +1073,588 @@ paths:
             type: string
       summary: Update person
       tags:
-      - people
-  /users/refresh:
+      - admin-people
+  /admin/hub/specialties:
+    get:
+      consumes:
+      - application/json
+      description: get specialties
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Accepted
+          schema:
+            items:
+              $ref: '#/definitions/model.Specialty'
+            type: array
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get specialties
+      tags:
+      - admin-specialties
+    post:
+      consumes:
+      - application/json
+      description: create specialty
+      parameters:
+      - description: Data for creating specialty
+        in: body
+        name: specialty
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateSpecialtyInput'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            type: string
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Create specialty
+      tags:
+      - admin-specialties
+  /admin/hub/specialties/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete specialty
+      parameters:
+      - description: ID for deleting specialties
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Delete specialty
+      tags:
+      - admin-specialties
+    get:
+      consumes:
+      - application/json
+      description: get specialty by id
+      parameters:
+      - description: ID for getting specialty
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/model.Specialty'
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get specialty
+      tags:
+      - admin-specialties
+    patch:
+      consumes:
+      - application/json
+      description: update specialty
+      parameters:
+      - description: ID for updating specialty
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: New information for update
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateSpecialtyInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Update specialty
+      tags:
+      - admin-specialties
+  /admin/hub/students:
+    get:
+      consumes:
+      - application/json
+      description: get students
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Accepted
+          schema:
+            items:
+              $ref: '#/definitions/model.Student'
+            type: array
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get students
+      tags:
+      - admin-students
+    post:
+      consumes:
+      - application/json
+      description: create student
+      parameters:
+      - description: Data for creating student
+        in: body
+        name: student
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateStudentInput'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            type: string
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: create student
+      tags:
+      - admin-students
+  /admin/hub/students/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete student
+      parameters:
+      - description: ID for deleting student
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Delete student
+      tags:
+      - admin-students
+    get:
+      consumes:
+      - application/json
+      description: get student by id
+      parameters:
+      - description: ID for getting student
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/model.Student'
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get student
+      tags:
+      - admin-students
+    patch:
+      consumes:
+      - application/json
+      description: update student
+      parameters:
+      - description: ID for updating student
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: New information for update
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateStudentInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Update student
+      tags:
+      - admin-students
+  /admin/hub/subjects:
+    get:
+      consumes:
+      - application/json
+      description: get subjects
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Accepted
+          schema:
+            items:
+              $ref: '#/definitions/model.Subject'
+            type: array
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get subjects
+      tags:
+      - admin-subjects
+    post:
+      consumes:
+      - application/json
+      description: create subject
+      parameters:
+      - description: Data for creating subject
+        in: body
+        name: subject
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateSubjectInput'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            type: string
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: create subject
+      tags:
+      - admin-subjects
+  /admin/hub/subjects/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete subject
+      parameters:
+      - description: ID for deleting subject
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Delete subject
+      tags:
+      - admin-subjects
+    get:
+      consumes:
+      - application/json
+      description: get subject by id
+      parameters:
+      - description: ID for getting subject
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/model.Subject'
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get subject
+      tags:
+      - admin-subjects
+    patch:
+      consumes:
+      - application/json
+      description: update subject
+      parameters:
+      - description: ID for updating subject
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: New information for update
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateSubjectInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Update subject
+      tags:
+      - admin-subjects
+  /admin/hub/teachers:
+    get:
+      consumes:
+      - application/json
+      description: get teachers
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Accepted
+          schema:
+            items:
+              $ref: '#/definitions/model.Teacher'
+            type: array
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get teachers
+      tags:
+      - admin-teachers
+    post:
+      consumes:
+      - application/json
+      description: create teacher
+      parameters:
+      - description: Data for creating teacher
+        in: body
+        name: teacher
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateTeacherInput'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            type: string
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Create teacher
+      tags:
+      - admin-teachers
+  /admin/hub/teachers/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete teacher
+      parameters:
+      - description: ID for deleting teacher
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Delete teacher
+      tags:
+      - admin-teachers
+    get:
+      consumes:
+      - application/json
+      description: get teacher by id
+      parameters:
+      - description: ID for getting teacher
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/model.Teacher'
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get teacher
+      tags:
+      - admin-teachers
+    patch:
+      consumes:
+      - application/json
+      description: update teacher
+      parameters:
+      - description: ID for updating teacher
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: New information for update
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateTeacherInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Update teacher
+      tags:
+      - admin-teachers
+  /refresh:
     get:
       description: Refresh access token using refresh token stored in cookie
       produces:
@@ -1524,7 +1675,7 @@ paths:
       summary: Refresh Access Token
       tags:
       - auth
-  /users/sign-in:
+  /sign-in:
     post:
       consumes:
       - application/json
@@ -1554,7 +1705,7 @@ paths:
       summary: Sign In User
       tags:
       - auth
-  /users/sign-up:
+  /sign-up:
     post:
       consumes:
       - application/json
@@ -1569,7 +1720,7 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
+        "201":
           description: Registered
           schema:
             type: string

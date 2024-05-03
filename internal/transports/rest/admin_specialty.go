@@ -7,19 +7,31 @@ import (
 	"net/http"
 	"test-crud/internal/model"
 
+	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 )
 
+func (h *Handler) initAdminSpecialtiesRoutes(admin *mux.Router) {
+	specialties := admin.PathPrefix("/specialties").Subrouter()
+	{
+		specialties.HandleFunc("", h.Admins.createSpecialty).Methods(http.MethodPost)
+		specialties.HandleFunc("", h.Admins.getSpecialty).Methods(http.MethodGet)
+		specialties.HandleFunc("/{id:[0-9]+}", h.Admins.getSpecialty).Methods(http.MethodGet)
+		specialties.HandleFunc("/{id:[0-9]+}", h.Admins.updateSpecialty).Methods(http.MethodPatch)
+		specialties.HandleFunc("/{id:[0-9]+}", h.Admins.deleteSpecialty).Methods(http.MethodDelete)
+	}
+}
+
 // @Summary Create specialty
 // @Description create specialty
-// @Tags specialties
+// @Tags admin-specialties
 // @Accept json
 // @Produce json
 // @Param specialty body model.CreateSpecialtyInput true "Data for creating specialty"
 // @Success 202 {string} string "Accepted"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /admin/specialties [post]
+// @Router /admin/hub/specialties [post]
 func (h *AdminsHandler) createSpecialty(w http.ResponseWriter, r *http.Request) {
 	reqBytes, err := io.ReadAll(r.Body)
 	if err != nil {
@@ -60,13 +72,13 @@ func (h *AdminsHandler) createSpecialty(w http.ResponseWriter, r *http.Request) 
 
 // @Summary Get specialties
 // @Description get specialties
-// @Tags specialties
+// @Tags admin-specialties
 // @Accept json
 // @Produce json
 // @Success 200 {array} model.Specialty "Accepted"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /admin/specialties [get]
+// @Router /admin/hub/specialties [get]
 func (h *AdminsHandler) getSpecialties(w http.ResponseWriter, r *http.Request) {
 	specialties, err := h.services.Specialties.GetAll(context.TODO())
 	if err != nil {
@@ -96,14 +108,14 @@ func (h *AdminsHandler) getSpecialties(w http.ResponseWriter, r *http.Request) {
 
 // @Summary Get specialty
 // @Description get specialty by id
-// @Tags specialties
+// @Tags admin-specialties
 // @Accept json
 // @Produce json
 // @Param id path int true "ID for getting specialty"
 // @Success 200 {object} model.Specialty "Accepted"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /admin/specialties/{id} [get]
+// @Router /admin/hub/specialties/{id} [get]
 func (h *AdminsHandler) getSpecialty(w http.ResponseWriter, r *http.Request) {
 	id, err := getIdFromRequest(r)
 	if err != nil {
@@ -144,7 +156,7 @@ func (h *AdminsHandler) getSpecialty(w http.ResponseWriter, r *http.Request) {
 
 // @Summary Update specialty
 // @Description update specialty
-// @Tags specialties
+// @Tags admin-specialties
 // @Accept json
 // @Produce json
 // @Param id path int true "ID for updating specialty"
@@ -152,7 +164,7 @@ func (h *AdminsHandler) getSpecialty(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {string} string "OK"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /admin/specialties/{id} [patch]
+// @Router /admin/hub/specialties/{id} [patch]
 func (h *AdminsHandler) updateSpecialty(w http.ResponseWriter, r *http.Request) {
 	id, err := getIdFromRequest(r)
 	if err != nil {
@@ -203,14 +215,14 @@ func (h *AdminsHandler) updateSpecialty(w http.ResponseWriter, r *http.Request) 
 
 // @Summary Delete specialty
 // @Description delete specialty
-// @Tags specialties
+// @Tags admin-specialties
 // @Accept json
 // @Produce json
 // @Param id path int true "ID for deleting specialties"
 // @Success 200 {string} string "OK"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /admin/specialties/{id} [delete]
+// @Router /admin/hub/specialties/{id} [delete]
 func (h *AdminsHandler) deleteSpecialty(w http.ResponseWriter, r *http.Request) {
 	id, err := getIdFromRequest(r)
 	if err != nil {

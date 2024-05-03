@@ -1,9 +1,9 @@
 package app
 
 import (
-	"net/http"
 	config "test-crud/internal/config"
 	"test-crud/internal/repository/psql"
+	"test-crud/internal/server"
 	"test-crud/internal/service"
 	"test-crud/internal/transports/rest"
 	"test-crud/pkg/auth"
@@ -55,20 +55,13 @@ func Run(configPath string) {
 	}
 	services := service.NewServices(deps)
 	handler := rest.NewHandler(services, *tokenManager)
+	server := server.NewServer(config, *handler)
 
-	srv := &http.Server{
-		Addr:           config.HTTP.Addr,
-		ReadTimeout:    config.HTTP.ReadTimeout,
-		WriteTimeout:   config.HTTP.WriteTimeout,
-		MaxHeaderBytes: config.HTTP.MaxHeaderBytes,
-		Handler:        handler.InitRouter(),
-	}
-	logger.Infof("Server started at ")
-	if err := srv.ListenAndServe(); err != nil {
+	if err := server.Run(); err != nil {
 		logger.Fatal(
 			zap.String("package", "internal/app"),
 			zap.String("file", "app.go"),
-			zap.String("function", "srv.ListenAndServe()"),
+			zap.String("function", "Run()"),
 			zap.Error(err),
 		)
 	}

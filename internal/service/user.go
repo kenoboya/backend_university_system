@@ -38,6 +38,8 @@ func (s *UsersService) SignUp(ctx context.Context, input model.UserSignUpInput) 
 		Password:     passwordHash,
 		Email:        input.Email,
 		RegisteredAt: time.Now(),
+		Status:       model.Unblocked,
+		Role:         model.RoleUser,
 	}
 	return s.repo.Create(ctx, user)
 }
@@ -53,9 +55,15 @@ func (s *UsersService) SignIn(ctx context.Context, input model.UserSignInInput) 
 		if err != nil {
 			return Tokens{}, err
 		}
-		return s.createSession(ctx, user.UserID)
+		if user.IsBlocked() {
+			return Tokens{}, model.ErrUserBlocked
+		}
+		return s.createSession(ctx, &user)
 	}
-	return s.createSession(ctx, user.UserID)
+	if user.IsBlocked() {
+		return Tokens{}, model.ErrUserBlocked
+	}
+	return s.createSession(ctx, &user)
 }
 
 func (s *UsersService) Refresh(ctx context.Context, refreshToken string) (Tokens, error) {
@@ -63,14 +71,14 @@ func (s *UsersService) Refresh(ctx context.Context, refreshToken string) (Tokens
 	if err != nil {
 		return Tokens{}, err
 	}
-	return s.createSession(ctx, user.UserID)
+	return s.createSession(ctx, &user)
 }
-func (s *UsersService) createSession(ctx context.Context, userID int64) (Tokens, error) {
+func (s *UsersService) createSession(ctx context.Context, user *model.User) (Tokens, error) {
 	var (
 		res Tokens
 		err error
 	)
-	res.AccessToken, err = s.tokenManager.NewJWT(userID, s.accessTokenTTL)
+	res.AccessToken, err = s.tokenManager.NewJWT(user.UserID, user.Role, s.accessTokenTTL)
 	if err != nil {
 		return res, err
 	}
@@ -82,6 +90,6 @@ func (s *UsersService) createSession(ctx context.Context, userID int64) (Tokens,
 		RefreshToken: res.RefreshToken,
 		ExpiresAt:    time.Now().Add(s.refreshTokenTTL),
 	}
-	err = s.repo.SetSession(ctx, userID, session)
+	err = s.repo.SetSession(ctx, user.UserID, session)
 	return res, err
 }

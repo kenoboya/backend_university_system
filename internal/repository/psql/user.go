@@ -30,6 +30,15 @@ func (r *UsersRepository) GetByEmailCredentials(ctx context.Context, login, pass
 	}
 	return user, nil
 }
+
+func (r *UsersRepository) SetStatus(ctx context.Context, id int64, status bool) error {
+	_, err := r.db.Exec("UPDATE users SET status=$1 WHERE user_id=$2", status, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *UsersRepository) GetByUsernameCredentials(ctx context.Context, username, password string) (model.User, error) {
 	var user model.User
 	err := r.db.Get(&user, "SELECT * FROM users WHERE username = $1 AND password = $2", username, password)

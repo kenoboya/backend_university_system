@@ -7,19 +7,30 @@ import (
 	"net/http"
 	"test-crud/internal/model"
 
+	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 )
 
+func (h *Handler) initAdminFacultiesRoutes(admin *mux.Router) {
+	faculties := admin.PathPrefix("/faculties").Subrouter()
+	{
+		faculties.HandleFunc("", h.Admins.createFaculty).Methods(http.MethodPost)
+		faculties.HandleFunc("", h.Admins.getFaculties).Methods(http.MethodGet)
+		faculties.HandleFunc("/{id:[0-9]+}", h.Admins.getFaculty).Methods(http.MethodGet)
+		faculties.HandleFunc("/{id:[0-9]+}", h.Admins.deleteFaculty).Methods(http.MethodDelete)
+	}
+}
+
 // @Summary create faculty
 // @Description create faculty
-// @Tags faculties
+// @Tags admin-faculties
 // @Accept json
 // @Produce json
 // @Param faculty body model.CreateFacultyInput true "Data for creating faculty"
 // @Success 202 {string} string "Accepted"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /admin/faculties [post]
+// @Router /admin/hub/faculties [post]
 func (h *AdminsHandler) createFaculty(w http.ResponseWriter, r *http.Request) {
 	reqBytes, err := io.ReadAll(r.Body)
 	if err != nil {
@@ -59,13 +70,13 @@ func (h *AdminsHandler) createFaculty(w http.ResponseWriter, r *http.Request) {
 
 // @Summary Get faculties
 // @Description get faculties
-// @Tags faculties
+// @Tags admin-faculties
 // @Accept json
 // @Produce json
 // @Success 200 {array} model.Faculty "Accepted"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /admin/faculties [get]
+// @Router /admin/hub/faculties [get]
 func (h *AdminsHandler) getFaculties(w http.ResponseWriter, r *http.Request) {
 	faculties, err := h.services.Faculties.GetAll(context.TODO())
 	if err != nil {
@@ -95,14 +106,14 @@ func (h *AdminsHandler) getFaculties(w http.ResponseWriter, r *http.Request) {
 
 // @Summary Get faculty
 // @Description get faculty by id
-// @Tags faculties
+// @Tags admin-faculties
 // @Accept json
 // @Produce json
 // @Param id path int true "ID for getting faculty"
 // @Success 200 {object} model.Faculty "Accepted"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /admin/faculties/{id} [get]
+// @Router /admin/hub/faculties/{id} [get]
 func (h *AdminsHandler) getFaculty(w http.ResponseWriter, r *http.Request) {
 	id, err := getIdFromRequest(r)
 	if err != nil {
@@ -145,14 +156,14 @@ func (h *AdminsHandler) getFaculty(w http.ResponseWriter, r *http.Request) {
 
 // @Summary Delete faculty
 // @Description delete faculty
-// @Tags faculties
+// @Tags admin-faculties
 // @Accept json
 // @Produce json
 // @Param id path int true "ID for deleting faculty"
 // @Success 200 {string} string "OK"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /admin/faculties/{id} [delete]
+// @Router /admin/hub/faculties/{id} [delete]
 func (h *AdminsHandler) deleteFaculty(w http.ResponseWriter, r *http.Request) {
 	id, err := getIdFromRequest(r)
 	if err != nil {

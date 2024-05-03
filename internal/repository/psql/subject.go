@@ -71,7 +71,7 @@ func (r LessonsRepository) Create(ctx context.Context, lesson model.CreateLesson
 }
 func (r LessonsRepository) GetAll(ctx context.Context) ([]model.Lesson, error) {
 	lessons := []model.Lesson{}
-	err := r.db.Select(&lessons, "SELECT * FROM lessons JOIN teachers USING(teacher_id) JOIN subjects USING(subjects_id) JOIN groups USING(group_id)")
+	err := r.db.Select(&lessons, "SELECT * FROM lessons JOIN teachers USING(teacher_id)")
 	if err != nil {
 		return lessons, err
 	}
@@ -79,7 +79,7 @@ func (r LessonsRepository) GetAll(ctx context.Context) ([]model.Lesson, error) {
 }
 func (r LessonsRepository) GetById(ctx context.Context, id int64) (model.Lesson, error) {
 	var lesson model.Lesson
-	err := r.db.Get(&lesson, "SELECT * FROM lessons JOIN teachers USING(teacher_id) JOIN subjects USING(subjects_id) JOIN groups USING(group_id) WHERE lesson_id = $1", id)
+	err := r.db.Get(&lesson, "SELECT * FROM lessons JOIN teachers USING(teacher_id) WHERE lesson_id = $1", id)
 	if err != nil {
 		return lesson, err
 	}

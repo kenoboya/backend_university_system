@@ -4,6 +4,17 @@ import (
 	"time"
 )
 
+const (
+	Blocked   = true
+	Unblocked = false
+
+	RoleAdmin    = "admin"
+	RoleTeacher  = "teacher"
+	RoleStudent  = "student"
+	RoleEmployee = "employee"
+	RoleUser     = "user"
+)
+
 type User struct {
 	UserID       int64      `db:"user_id" json:"user_id"`
 	Username     string     `db:"username" json:"username"`
@@ -11,9 +22,13 @@ type User struct {
 	Password     string     `db:"password" json:"password"`
 	RegisteredAt time.Time  `db:"registered_at" json:"registered_at"`
 	LastVisitAt  *time.Time `db:"last_visit_at" json:"last_visit_at"`
+	Status       bool       `db:"status" json:"status"`
+	Role         string     `db:"role" json:"role"`
 	// Verification Verification `json:"verification"`
-	// Session Session json:"session"`
-	// Blocked bool json:"blocked"`
+}
+
+func (u *User) IsBlocked() bool {
+	return u.Status
 }
 
 type UserSignUpInput struct {

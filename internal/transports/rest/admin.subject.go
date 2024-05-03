@@ -7,19 +7,31 @@ import (
 	"net/http"
 	"test-crud/internal/model"
 
+	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 )
 
+func (h *Handler) initAdminSubjectsRoutes(admin *mux.Router) {
+	subjects := admin.PathPrefix("/subjects").Subrouter()
+	{
+		subjects.HandleFunc("", h.Admins.createSubject).Methods(http.MethodPost)
+		subjects.HandleFunc("", h.Admins.getSubject).Methods(http.MethodGet)
+		subjects.HandleFunc("/{id:[0-9]+}", h.Admins.getSubject).Methods(http.MethodGet)
+		subjects.HandleFunc("/{id:[0-9]+}", h.Admins.updateSubject).Methods(http.MethodPatch)
+		subjects.HandleFunc("/{id:[0-9]+}", h.Admins.deleteSubject).Methods(http.MethodDelete)
+	}
+}
+
 // @Summary create subject
 // @Description create subject
-// @Tags subjects
+// @Tags admin-subjects
 // @Accept json
 // @Produce json
 // @Param subject body model.CreateSubjectInput true "Data for creating subject"
 // @Success 202 {string} string "Accepted"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /admin/subjects [post]
+// @Router /admin/hub/subjects [post]
 func (h *AdminsHandler) createSubject(w http.ResponseWriter, r *http.Request) {
 	reqBytes, err := io.ReadAll(r.Body)
 	if err != nil {
@@ -60,13 +72,13 @@ func (h *AdminsHandler) createSubject(w http.ResponseWriter, r *http.Request) {
 
 // @Summary Get subjects
 // @Description get subjects
-// @Tags subjects
+// @Tags admin-subjects
 // @Accept json
 // @Produce json
 // @Success 200 {array} model.Subject "Accepted"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /admin/subjects [get]
+// @Router /admin/hub/subjects [get]
 func (h *AdminsHandler) getSubjects(w http.ResponseWriter, r *http.Request) {
 	subjects, err := h.services.Subjects.GetAll(context.TODO())
 	if err != nil {
@@ -96,14 +108,14 @@ func (h *AdminsHandler) getSubjects(w http.ResponseWriter, r *http.Request) {
 
 // @Summary Get subject
 // @Description get subject by id
-// @Tags subjects
+// @Tags admin-subjects
 // @Accept json
 // @Produce json
 // @Param id path int true "ID for getting subject"
 // @Success 200 {object} model.Subject "Accepted"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /admin/subjects/{id} [get]
+// @Router /admin/hub/subjects/{id} [get]
 func (h *AdminsHandler) getSubject(w http.ResponseWriter, r *http.Request) {
 	id, err := getIdFromRequest(r)
 	if err != nil {
@@ -144,7 +156,7 @@ func (h *AdminsHandler) getSubject(w http.ResponseWriter, r *http.Request) {
 
 // @Summary Update subject
 // @Description update subject
-// @Tags subjects
+// @Tags admin-subjects
 // @Accept json
 // @Produce json
 // @Param id path int true "ID for updating subject"
@@ -152,7 +164,7 @@ func (h *AdminsHandler) getSubject(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {string} string "OK"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /admin/subjects/{id} [patch]
+// @Router /admin/hub/subjects/{id} [patch]
 func (h *AdminsHandler) updateSubject(w http.ResponseWriter, r *http.Request) {
 	id, err := getIdFromRequest(r)
 	if err != nil {
@@ -203,14 +215,14 @@ func (h *AdminsHandler) updateSubject(w http.ResponseWriter, r *http.Request) {
 
 // @Summary Delete subject
 // @Description delete subject
-// @Tags subjects
+// @Tags admin-subjects
 // @Accept json
 // @Produce json
 // @Param id path int true "ID for deleting subject"
 // @Success 200 {string} string "OK"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /admin/subjects/{id} [delete]
+// @Router /admin/hub/subjects/{id} [delete]
 func (h *AdminsHandler) deleteSubject(w http.ResponseWriter, r *http.Request) {
 	id, err := getIdFromRequest(r)
 	if err != nil {

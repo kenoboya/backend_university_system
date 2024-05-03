@@ -2,6 +2,13 @@ package model
 
 import "time"
 
+const (
+	LessonLecture    = "lecture"
+	LessonLaboratory = "laboratory"
+	LessonPractical  = "Practical"
+	LessonSession    = "Session"
+)
+
 type Faculty struct {
 	FacultyID string `db:"faculty_id" json:"faculty_id"`
 	FullName  string `db:"full_name" json:"full_name"`

@@ -7,19 +7,31 @@ import (
 	"net/http"
 	"test-crud/internal/model"
 
+	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 )
 
+func (h *Handler) initAdminStudentsRoutes(admin *mux.Router) {
+	students := admin.PathPrefix("/students").Subrouter()
+	{
+		students.HandleFunc("", h.Admins.createStudent).Methods(http.MethodPost)
+		students.HandleFunc("", h.Admins.getStudents).Methods(http.MethodGet)
+		students.HandleFunc("/{id:[0-9]+}", h.Admins.getStudent).Methods(http.MethodGet)
+		students.HandleFunc("/{id:[0-9]+}", h.Admins.updateStudent).Methods(http.MethodPatch)
+		students.HandleFunc("/{id:[0-9]+}", h.Admins.deleteStudent).Methods(http.MethodDelete)
+	}
+}
+
 // @Summary create student
 // @Description create student
-// @Tags students
+// @Tags admin-students
 // @Accept json
 // @Produce json
 // @Param student body model.CreateStudentInput true "Data for creating student"
 // @Success 202 {string} string "Accepted"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /admin/students [post]
+// @Router /admin/hub/students [post]
 func (h *AdminsHandler) createStudent(w http.ResponseWriter, r *http.Request) {
 	reqBytes, err := io.ReadAll(r.Body)
 	if err != nil {
@@ -60,13 +72,13 @@ func (h *AdminsHandler) createStudent(w http.ResponseWriter, r *http.Request) {
 
 // @Summary Get students
 // @Description get students
-// @Tags students
+// @Tags admin-students
 // @Accept json
 // @Produce json
 // @Success 200 {array} model.Student "Accepted"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /admin/students [get]
+// @Router /admin/hub/students [get]
 func (h *AdminsHandler) getStudents(w http.ResponseWriter, r *http.Request) {
 	students, err := h.services.Students.GetAll(context.TODO())
 	if err != nil {
@@ -96,14 +108,14 @@ func (h *AdminsHandler) getStudents(w http.ResponseWriter, r *http.Request) {
 
 // @Summary Get student
 // @Description get student by id
-// @Tags students
+// @Tags admin-students
 // @Accept json
 // @Produce json
 // @Param id path int true "ID for getting student"
 // @Success 200 {object} model.Student "Accepted"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /admin/students/{id} [get]
+// @Router /admin/hub/students/{id} [get]
 func (h *AdminsHandler) getStudent(w http.ResponseWriter, r *http.Request) {
 	id, err := getIdFromRequest(r)
 	if err != nil {
@@ -144,7 +156,7 @@ func (h *AdminsHandler) getStudent(w http.ResponseWriter, r *http.Request) {
 
 // @Summary Update student
 // @Description update student
-// @Tags students
+// @Tags admin-students
 // @Accept json
 // @Produce json
 // @Param id path int true "ID for updating student"
@@ -152,7 +164,7 @@ func (h *AdminsHandler) getStudent(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {string} string "OK"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /admin/students/{id} [patch]
+// @Router /admin/hub/students/{id} [patch]
 func (h *AdminsHandler) updateStudent(w http.ResponseWriter, r *http.Request) {
 	id, err := getIdFromRequest(r)
 	if err != nil {
@@ -203,14 +215,14 @@ func (h *AdminsHandler) updateStudent(w http.ResponseWriter, r *http.Request) {
 
 // @Summary Delete student
 // @Description delete student
-// @Tags students
+// @Tags admin-students
 // @Accept json
 // @Produce json
 // @Param id path int true "ID for deleting student"
 // @Success 200 {string} string "OK"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /admin/students/{id} [delete]
+// @Router /admin/hub/students/{id} [delete]
 func (h *AdminsHandler) deleteStudent(w http.ResponseWriter, r *http.Request) {
 	id, err := getIdFromRequest(r)
 	if err != nil {

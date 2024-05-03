@@ -10,19 +10,24 @@ import (
 	"test-crud/internal/service"
 
 	"github.com/go-playground/validator/v10"
+	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 )
 
 type UsersHandler struct {
-	usersService  service.Users
-	peopleService service.People
+	usersService service.Users
 }
 
-func NewUsersHandler(usersService service.Users, peopleService service.People) *UsersHandler {
+func NewUsersHandler(usersService service.Users) *UsersHandler {
 	return &UsersHandler{
-		usersService:  usersService,
-		peopleService: peopleService,
+		usersService: usersService,
 	}
+}
+
+func (h *Handler) initUsersRoutes(users *mux.Router) {
+	users.HandleFunc("/sign-up", h.Users.signUp).Methods(http.MethodPost)
+	users.HandleFunc("/sign-in", h.Users.signIn).Methods(http.MethodPost)
+	users.HandleFunc("/refresh", h.Users.refresh).Methods(http.MethodGet)
 }
 
 // @Summary User registration
@@ -34,7 +39,7 @@ func NewUsersHandler(usersService service.Users, peopleService service.People) *
 // @Success 201 {string} string "Registered"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /users/sign-up [post]
+// @Router /sign-up [post]
 func (h *UsersHandler) signUp(w http.ResponseWriter, r *http.Request) {
 	reqBytes, err := io.ReadAll(r.Body)
 	if err != nil {
@@ -91,7 +96,7 @@ func (h *UsersHandler) signUp(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} service.Tokens "Successful operation"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal server error"
-// @Router /users/sign-in [post]
+// @Router /sign-in [post]
 func (h *UsersHandler) signIn(w http.ResponseWriter, r *http.Request) {
 	reqBytes, err := io.ReadAll(r.Body)
 	if err != nil {
@@ -162,7 +167,7 @@ func (h *UsersHandler) signIn(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} service.Tokens "Successful operation"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal server error"
-// @Router /users/refresh [get]
+// @Router /refresh [get]
 func (h *UsersHandler) refresh(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("refresh-token")
 	if err != nil {

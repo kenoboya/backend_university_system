@@ -1,3 +1,8 @@
+CREATE TYPE user_role AS enum
+(
+	'user','student','employee','teacher', 'admin'
+);
+
 CREATE TABLE users(
 	user_id INTEGER GENERATED ALWAYS AS IDENTITY,
 	username VARCHAR(70) UNIQUE,
@@ -5,6 +10,8 @@ CREATE TABLE users(
 	password TEXT NOT NULL,
 	registered_at TIMESTAMP DEFAULT NOW(),
 	last_visit_at TIMESTAMP DEFAULT NOW(),
+	status BOOLEAN DEFAULT false,
+	role user_role NOT NULL,
 	CONSTRAINT pk_users_user_id PRIMARY KEY(user_id),
 	CONSTRAINT chk_users_username CHECK (LENGTH(username) >= 5),
 	CONSTRAINT chk_users_email CHECK(email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$')
@@ -91,7 +98,7 @@ CREATE TABLE subjects(
 
 CREATE TYPE lesson_type AS enum
 (
-	'Lecture','Laboratory','Practical','Session'
+	'lecture','practical','laboratory','session'
 );
 
 CREATE TABLE lessons(

@@ -15,7 +15,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/admin/employees": {
+        "/admin/hub/employees": {
             "get": {
                 "description": "get employees",
                 "consumes": [
@@ -25,7 +25,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "employees"
+                    "admin-employees"
                 ],
                 "summary": "Get employees",
                 "responses": {
@@ -61,7 +61,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "employees"
+                    "admin-employees"
                 ],
                 "summary": "create employee",
                 "parameters": [
@@ -97,7 +97,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/admin/employees/{id}": {
+        "/admin/hub/employees/{id}": {
             "get": {
                 "description": "get employee by id",
                 "consumes": [
@@ -107,7 +107,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "employees"
+                    "admin-employees"
                 ],
                 "summary": "Get employee",
                 "parameters": [
@@ -149,7 +149,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "employees"
+                    "admin-employees"
                 ],
                 "summary": "Delete employee",
                 "parameters": [
@@ -191,7 +191,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "employees"
+                    "admin-employees"
                 ],
                 "summary": "Update employee",
                 "parameters": [
@@ -234,7 +234,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/admin/faculties": {
+        "/admin/hub/faculties": {
             "get": {
                 "description": "get faculties",
                 "consumes": [
@@ -244,7 +244,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "faculties"
+                    "admin-faculties"
                 ],
                 "summary": "Get faculties",
                 "responses": {
@@ -280,7 +280,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "faculties"
+                    "admin-faculties"
                 ],
                 "summary": "create faculty",
                 "parameters": [
@@ -316,7 +316,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/admin/faculties/{id}": {
+        "/admin/hub/faculties/{id}": {
             "get": {
                 "description": "get faculty by id",
                 "consumes": [
@@ -326,7 +326,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "faculties"
+                    "admin-faculties"
                 ],
                 "summary": "Get faculty",
                 "parameters": [
@@ -368,7 +368,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "faculties"
+                    "admin-faculties"
                 ],
                 "summary": "Delete faculty",
                 "parameters": [
@@ -402,7 +402,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/admin/groups": {
+        "/admin/hub/groups": {
             "get": {
                 "description": "get groups",
                 "consumes": [
@@ -412,7 +412,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "groups"
+                    "admin-groups"
                 ],
                 "summary": "Get groups",
                 "responses": {
@@ -448,7 +448,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "groups"
+                    "admin-groups"
                 ],
                 "summary": "create group",
                 "parameters": [
@@ -484,7 +484,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/admin/groups/{id}": {
+        "/admin/hub/groups/{id}": {
             "get": {
                 "description": "get group by id",
                 "consumes": [
@@ -494,7 +494,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "groups"
+                    "admin-groups"
                 ],
                 "summary": "Get group",
                 "parameters": [
@@ -536,7 +536,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "groups"
+                    "admin-groups"
                 ],
                 "summary": "Delete group",
                 "parameters": [
@@ -570,7 +570,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/admin/lessons": {
+        "/admin/hub/lessons": {
             "get": {
                 "description": "get lessons",
                 "consumes": [
@@ -580,7 +580,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "lessons"
+                    "admin-lessons"
                 ],
                 "summary": "Get lessons",
                 "responses": {
@@ -616,7 +616,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "lessons"
+                    "admin-lessons"
                 ],
                 "summary": "create lesson",
                 "parameters": [
@@ -652,7 +652,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/admin/lessons/{id}": {
+        "/admin/hub/lessons/{id}": {
             "get": {
                 "description": "get lesson by id",
                 "consumes": [
@@ -662,7 +662,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "lessons"
+                    "admin-lessons"
                 ],
                 "summary": "Get lesson",
                 "parameters": [
@@ -704,7 +704,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "lessons"
+                    "admin-lessons"
                 ],
                 "summary": "Delete lesson",
                 "parameters": [
@@ -738,883 +738,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/admin/specialties": {
-            "get": {
-                "description": "get specialties",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "specialties"
-                ],
-                "summary": "Get specialties",
-                "responses": {
-                    "200": {
-                        "description": "Accepted",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/model.Specialty"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "create specialty",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "specialties"
-                ],
-                "summary": "Create specialty",
-                "parameters": [
-                    {
-                        "description": "Data for creating specialty",
-                        "name": "specialty",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.CreateSpecialtyInput"
-                        }
-                    }
-                ],
-                "responses": {
-                    "202": {
-                        "description": "Accepted",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/specialties/{id}": {
-            "get": {
-                "description": "get specialty by id",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "specialties"
-                ],
-                "summary": "Get specialty",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "ID for getting specialty",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Accepted",
-                        "schema": {
-                            "$ref": "#/definitions/model.Specialty"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "delete specialty",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "specialties"
-                ],
-                "summary": "Delete specialty",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "ID for deleting specialties",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "patch": {
-                "description": "update specialty",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "specialties"
-                ],
-                "summary": "Update specialty",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "ID for updating specialty",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "New information for update",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.UpdateSpecialtyInput"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/students": {
-            "get": {
-                "description": "get students",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "students"
-                ],
-                "summary": "Get students",
-                "responses": {
-                    "200": {
-                        "description": "Accepted",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/model.Student"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "create student",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "students"
-                ],
-                "summary": "create student",
-                "parameters": [
-                    {
-                        "description": "Data for creating student",
-                        "name": "student",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.CreateStudentInput"
-                        }
-                    }
-                ],
-                "responses": {
-                    "202": {
-                        "description": "Accepted",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/students/{id}": {
-            "get": {
-                "description": "get student by id",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "students"
-                ],
-                "summary": "Get student",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "ID for getting student",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Accepted",
-                        "schema": {
-                            "$ref": "#/definitions/model.Student"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "delete student",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "students"
-                ],
-                "summary": "Delete student",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "ID for deleting student",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "patch": {
-                "description": "update student",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "students"
-                ],
-                "summary": "Update student",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "ID for updating student",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "New information for update",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.UpdateStudentInput"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/subjects": {
-            "get": {
-                "description": "get subjects",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "subjects"
-                ],
-                "summary": "Get subjects",
-                "responses": {
-                    "200": {
-                        "description": "Accepted",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/model.Subject"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "create subject",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "subjects"
-                ],
-                "summary": "create subject",
-                "parameters": [
-                    {
-                        "description": "Data for creating subject",
-                        "name": "subject",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.CreateSubjectInput"
-                        }
-                    }
-                ],
-                "responses": {
-                    "202": {
-                        "description": "Accepted",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/subjects/{id}": {
-            "get": {
-                "description": "get subject by id",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "subjects"
-                ],
-                "summary": "Get subject",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "ID for getting subject",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Accepted",
-                        "schema": {
-                            "$ref": "#/definitions/model.Subject"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "delete subject",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "subjects"
-                ],
-                "summary": "Delete subject",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "ID for deleting subject",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "patch": {
-                "description": "update subject",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "subjects"
-                ],
-                "summary": "Update subject",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "ID for updating subject",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "New information for update",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.UpdateSubjectInput"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/teachers": {
-            "get": {
-                "description": "get teachers",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "teachers"
-                ],
-                "summary": "Get teachers",
-                "responses": {
-                    "200": {
-                        "description": "Accepted",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/model.Teacher"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "create teacher",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "teachers"
-                ],
-                "summary": "Create teacher",
-                "parameters": [
-                    {
-                        "description": "Data for creating teacher",
-                        "name": "teacher",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.CreateTeacherInput"
-                        }
-                    }
-                ],
-                "responses": {
-                    "202": {
-                        "description": "Accepted",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/teachers/{id}": {
-            "get": {
-                "description": "get teacher by id",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "teachers"
-                ],
-                "summary": "Get teacher",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "ID for getting teacher",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Accepted",
-                        "schema": {
-                            "$ref": "#/definitions/model.Teacher"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "delete teacher",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "teachers"
-                ],
-                "summary": "Delete teacher",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "ID for deleting teacher",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "patch": {
-                "description": "update teacher",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "teachers"
-                ],
-                "summary": "Update teacher",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "ID for updating teacher",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "New information for update",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.UpdateTeacherInput"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/user/people": {
+        "/admin/hub/people": {
             "get": {
                 "description": "get people",
                 "consumes": [
@@ -1624,7 +748,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "people"
+                    "admin-people"
                 ],
                 "summary": "Get people",
                 "responses": {
@@ -1660,7 +784,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "people"
+                    "admin-people"
                 ],
                 "summary": "create person",
                 "parameters": [
@@ -1696,7 +820,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/people/{id}": {
+        "/admin/hub/people/{id}": {
             "get": {
                 "description": "get person by id",
                 "consumes": [
@@ -1706,7 +830,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "people"
+                    "admin-people"
                 ],
                 "summary": "Get person",
                 "parameters": [
@@ -1748,7 +872,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "people"
+                    "admin-people"
                 ],
                 "summary": "Delete person",
                 "parameters": [
@@ -1790,7 +914,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "people"
+                    "admin-people"
                 ],
                 "summary": "Update person",
                 "parameters": [
@@ -1833,7 +957,883 @@ const docTemplate = `{
                 }
             }
         },
-        "/users/refresh": {
+        "/admin/hub/specialties": {
+            "get": {
+                "description": "get specialties",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-specialties"
+                ],
+                "summary": "Get specialties",
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Specialty"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create specialty",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-specialties"
+                ],
+                "summary": "Create specialty",
+                "parameters": [
+                    {
+                        "description": "Data for creating specialty",
+                        "name": "specialty",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateSpecialtyInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/hub/specialties/{id}": {
+            "get": {
+                "description": "get specialty by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-specialties"
+                ],
+                "summary": "Get specialty",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID for getting specialty",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/model.Specialty"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete specialty",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-specialties"
+                ],
+                "summary": "Delete specialty",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID for deleting specialties",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "update specialty",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-specialties"
+                ],
+                "summary": "Update specialty",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID for updating specialty",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "New information for update",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UpdateSpecialtyInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/hub/students": {
+            "get": {
+                "description": "get students",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-students"
+                ],
+                "summary": "Get students",
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Student"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create student",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-students"
+                ],
+                "summary": "create student",
+                "parameters": [
+                    {
+                        "description": "Data for creating student",
+                        "name": "student",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateStudentInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/hub/students/{id}": {
+            "get": {
+                "description": "get student by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-students"
+                ],
+                "summary": "Get student",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID for getting student",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/model.Student"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete student",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-students"
+                ],
+                "summary": "Delete student",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID for deleting student",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "update student",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-students"
+                ],
+                "summary": "Update student",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID for updating student",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "New information for update",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UpdateStudentInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/hub/subjects": {
+            "get": {
+                "description": "get subjects",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-subjects"
+                ],
+                "summary": "Get subjects",
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Subject"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create subject",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-subjects"
+                ],
+                "summary": "create subject",
+                "parameters": [
+                    {
+                        "description": "Data for creating subject",
+                        "name": "subject",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateSubjectInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/hub/subjects/{id}": {
+            "get": {
+                "description": "get subject by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-subjects"
+                ],
+                "summary": "Get subject",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID for getting subject",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/model.Subject"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete subject",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-subjects"
+                ],
+                "summary": "Delete subject",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID for deleting subject",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "update subject",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-subjects"
+                ],
+                "summary": "Update subject",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID for updating subject",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "New information for update",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UpdateSubjectInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/hub/teachers": {
+            "get": {
+                "description": "get teachers",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-teachers"
+                ],
+                "summary": "Get teachers",
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Teacher"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create teacher",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-teachers"
+                ],
+                "summary": "Create teacher",
+                "parameters": [
+                    {
+                        "description": "Data for creating teacher",
+                        "name": "teacher",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateTeacherInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/hub/teachers/{id}": {
+            "get": {
+                "description": "get teacher by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-teachers"
+                ],
+                "summary": "Get teacher",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID for getting teacher",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/model.Teacher"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete teacher",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-teachers"
+                ],
+                "summary": "Delete teacher",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID for deleting teacher",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "update teacher",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-teachers"
+                ],
+                "summary": "Update teacher",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID for updating teacher",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "New information for update",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UpdateTeacherInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/refresh": {
             "get": {
                 "description": "Refresh access token using refresh token stored in cookie",
                 "produces": [
@@ -1865,7 +1865,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/users/sign-in": {
+        "/sign-in": {
             "post": {
                 "description": "Sign in a user and generate access token",
                 "consumes": [
@@ -1911,7 +1911,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/users/sign-up": {
+        "/sign-up": {
             "post": {
                 "description": "User registration",
                 "consumes": [
@@ -1936,7 +1936,7 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "201": {
                         "description": "Registered",
                         "schema": {
                             "type": "string"
@@ -1987,6 +1987,9 @@ const docTemplate = `{
         "model.CreateGroupInput": {
             "type": "object",
             "properties": {
+                "educational_level": {
+                    "type": "string"
+                },
                 "full_name": {
                     "type": "string"
                 },
@@ -2088,19 +2091,61 @@ const docTemplate = `{
         "model.Employee": {
             "type": "object",
             "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "birth_date": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
                 "employee_id": {
                     "type": "integer"
                 },
                 "hire_date": {
                     "type": "string"
                 },
-                "person": {
-                    "$ref": "#/definitions/model.Person"
+                "last_visit_at": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "person_id": {
+                    "type": "integer"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "photo": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "registered_at": {
+                    "type": "string"
                 },
                 "salary": {
                     "type": "number"
                 },
+                "surname": {
+                    "type": "string"
+                },
                 "title": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "username": {
                     "type": "string"
                 }
             }
@@ -2125,14 +2170,17 @@ const docTemplate = `{
                 "end_year": {
                     "type": "string"
                 },
+                "faculty_id": {
+                    "type": "string"
+                },
                 "full_name": {
                     "type": "string"
                 },
-                "specialty": {
-                    "$ref": "#/definitions/model.Specialty"
+                "group_id": {
+                    "type": "string"
                 },
                 "specialty_id": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "start_year": {
                     "type": "string"
@@ -2142,8 +2190,32 @@ const docTemplate = `{
         "model.Lesson": {
             "type": "object",
             "properties": {
-                "group": {
-                    "$ref": "#/definitions/model.Group"
+                "address": {
+                    "type": "string"
+                },
+                "birth_date": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "employee_id": {
+                    "type": "integer"
+                },
+                "faculty_id": {
+                    "type": "string"
+                },
+                "full_name": {
+                    "type": "string"
+                },
+                "group_id": {
+                    "type": "string"
+                },
+                "hire_date": {
+                    "type": "string"
+                },
+                "last_visit_at": {
+                    "type": "string"
                 },
                 "lecture_room": {
                     "type": "string"
@@ -2154,33 +2226,13 @@ const docTemplate = `{
                 "lesson_type": {
                     "type": "string"
                 },
-                "subject": {
-                    "$ref": "#/definitions/model.Subject"
-                },
-                "teacher": {
-                    "$ref": "#/definitions/model.Teacher"
-                },
-                "time_end": {
-                    "type": "string"
-                },
-                "time_start": {
-                    "type": "string"
-                }
-            }
-        },
-        "model.Person": {
-            "type": "object",
-            "properties": {
-                "address": {
-                    "type": "string"
-                },
-                "birth_date": {
-                    "type": "string"
-                },
                 "name": {
                     "type": "string"
                 },
                 "notes": {
+                    "type": "string"
+                },
+                "password": {
                     "type": "string"
                 },
                 "person_id": {
@@ -2195,19 +2247,96 @@ const docTemplate = `{
                         "type": "integer"
                     }
                 },
+                "registered_at": {
+                    "type": "string"
+                },
+                "salary": {
+                    "type": "number"
+                },
+                "specialty_id": {
+                    "type": "integer"
+                },
+                "subject_id": {
+                    "type": "integer"
+                },
                 "surname": {
                     "type": "string"
                 },
-                "user": {
-                    "$ref": "#/definitions/model.User"
+                "teacher_id": {
+                    "type": "integer"
+                },
+                "time_end": {
+                    "type": "string"
+                },
+                "time_start": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Person": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "birth_date": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "last_visit_at": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "person_id": {
+                    "type": "integer"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "photo": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "registered_at": {
+                    "type": "string"
+                },
+                "surname": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         },
         "model.Specialty": {
             "type": "object",
             "properties": {
-                "faculty": {
-                    "$ref": "#/definitions/model.Faculty"
+                "faculty_id": {
+                    "type": "string"
                 },
                 "full_name": {
                     "type": "string"
@@ -2220,25 +2349,91 @@ const docTemplate = `{
         "model.Student": {
             "type": "object",
             "properties": {
-                "group": {
-                    "$ref": "#/definitions/model.Group"
+                "address": {
+                    "type": "string"
                 },
-                "person": {
-                    "$ref": "#/definitions/model.Person"
+                "birth_date": {
+                    "type": "string"
+                },
+                "educational_level": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "end_year": {
+                    "type": "string"
+                },
+                "faculty_id": {
+                    "type": "string"
+                },
+                "full_name": {
+                    "type": "string"
+                },
+                "group_id": {
+                    "type": "string"
+                },
+                "last_visit_at": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "person_id": {
+                    "type": "integer"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "photo": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "registered_at": {
+                    "type": "string"
+                },
+                "specialty_id": {
+                    "type": "integer"
+                },
+                "start_year": {
+                    "type": "string"
                 },
                 "student_id": {
                     "type": "integer"
+                },
+                "surname": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         },
         "model.Subject": {
             "type": "object",
             "properties": {
+                "faculty_id": {
+                    "type": "string"
+                },
+                "full_name": {
+                    "type": "string"
+                },
                 "name": {
                     "type": "string"
                 },
-                "specialty": {
-                    "$ref": "#/definitions/model.Specialty"
+                "specialty_id": {
+                    "type": "integer"
                 },
                 "subject_id": {
                     "type": "integer"
@@ -2248,11 +2443,65 @@ const docTemplate = `{
         "model.Teacher": {
             "type": "object",
             "properties": {
-                "employee": {
-                    "$ref": "#/definitions/model.Employee"
+                "address": {
+                    "type": "string"
+                },
+                "birth_date": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "employee_id": {
+                    "type": "integer"
+                },
+                "hire_date": {
+                    "type": "string"
+                },
+                "last_visit_at": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "person_id": {
+                    "type": "integer"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "photo": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "registered_at": {
+                    "type": "string"
+                },
+                "salary": {
+                    "type": "number"
+                },
+                "surname": {
+                    "type": "string"
                 },
                 "teacher_id": {
                     "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         },
@@ -2337,29 +2586,6 @@ const docTemplate = `{
                 }
             }
         },
-        "model.User": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "last_visit_at": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "registered_at": {
-                    "type": "string"
-                },
-                "user_id": {
-                    "type": "integer"
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
         "model.UserSignInInput": {
             "type": "object",
             "required": [
@@ -2419,7 +2645,7 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "localhost:8080",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "Student Swagger API",
+	Title:            "University System API",
 	Description:      "REST API for test.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
