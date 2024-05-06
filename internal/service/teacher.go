@@ -32,3 +32,6 @@ func (s *TeachersService) Delete(ctx context.Context, id int64) error {
 func (s *TeachersService) GetTeacherProfile(ctx context.Context, id int64) (model.TeacherBriefInfo, error) {
 	return s.repo.GetTeacherBriefInfoById(ctx, id)
 }
+func (s *TeachersService) GetExtendedTeacherProfile(ctx context.Context, id int64) (model.TeacherFullInfo, error) {
+	return s.repo.GetTeacherFullInfoById(ctx, id)
+}

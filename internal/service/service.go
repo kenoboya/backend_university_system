@@ -54,6 +54,7 @@ type Students interface {
 	Update(ctx context.Context, id int64, student model.UpdateStudentInput) error
 	Delete(ctx context.Context, id int64) error
 	GetStudentProfile(ctx context.Context, id int64) (model.StudentBriefInfo, error)
+	GetExtendedStudentProfile(ctx context.Context, id int64) (model.StudentFullInfo, error)
 }
 type Users interface {
 	SignUp(ctx context.Context, input model.UserSignUpInput) error
@@ -67,6 +68,7 @@ type Teachers interface {
 	Update(ctx context.Context, id int64, teacher model.UpdateTeacherInput) error
 	Delete(ctx context.Context, id int64) error
 	GetTeacherProfile(ctx context.Context, id int64) (model.TeacherBriefInfo, error)
+	GetExtendedTeacherProfile(ctx context.Context, id int64) (model.TeacherFullInfo, error)
 }
 
 type People interface {

@@ -5,9 +5,13 @@ import (
 )
 
 type StudentsHandler struct {
-	service service.Students
+	studentService service.Students
+	teacherService service.Teachers
 }
 
-func NewStudentsHandler(service service.Students) *StudentsHandler {
-	return &StudentsHandler{service: service}
+func NewStudentsHandler(studentService service.Students, teacherService service.Teachers) *StudentsHandler {
+	return &StudentsHandler{
+		studentService: studentService,
+		teacherService: teacherService,
+	}
 }

@@ -10,6 +10,11 @@ type Employee struct {
 	Person
 }
 
+type EmployeeBriefInfo struct {
+	Title    string    `db:"title" json:"title"`
+	HireDate time.Time `db:"hire_date" json:"hire_date"`
+}
+
 type CreateEmployeeInput struct {
 	PersonID int64     `db:"person_id" json:"person_id"`
 	Title    string    `db:"title" json:"title"`

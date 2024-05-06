@@ -9,6 +9,11 @@ type Teacher struct {
 type TeacherBriefInfo struct {
 	PersonBriefInfo
 }
+type TeacherFullInfo struct {
+	PersonFullInfo
+	EmployeeBriefInfo
+}
+
 type CreateTeacherInput struct {
 	EmployeeID int64 `db:"employee_id" json:"employee_id"`
 	// SEPARATE TABLE?

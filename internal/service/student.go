@@ -32,3 +32,6 @@ func (s StudentsService) GetAll(ctx context.Context) ([]model.Student, error) {
 func (s *StudentsService) GetStudentProfile(ctx context.Context, id int64) (model.StudentBriefInfo, error) {
 	return s.repo.GetStudentBriefInfoById(ctx, id)
 }
+func (s *StudentsService) GetExtendedStudentProfile(ctx context.Context, id int64) (model.StudentFullInfo, error) {
+	return s.repo.GetStudentFullInfoById(ctx, id)
+}
