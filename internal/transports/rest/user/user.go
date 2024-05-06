@@ -10,24 +10,19 @@ import (
 	"test-crud/internal/service"
 
 	"github.com/go-playground/validator/v10"
-	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 )
 
 type UsersHandler struct {
-	usersService service.Users
+	usersService      service.Users
+	complaintsService service.Complaints
 }
 
-func NewUsersHandler(usersService service.Users) *UsersHandler {
+func NewUsersHandler(usersService service.Users, complaintsService service.Complaints) *UsersHandler {
 	return &UsersHandler{
-		usersService: usersService,
+		usersService:      usersService,
+		complaintsService: complaintsService,
 	}
-}
-
-func (h *Handler) initUsersRoutes(users *mux.Router) {
-	users.HandleFunc("/sign-up", h.Users.signUp).Methods(http.MethodPost)
-	users.HandleFunc("/sign-in", h.Users.signIn).Methods(http.MethodPost)
-	users.HandleFunc("/refresh", h.Users.refresh).Methods(http.MethodGet)
 }
 
 // @Summary User registration
@@ -40,7 +35,7 @@ func (h *Handler) initUsersRoutes(users *mux.Router) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /sign-up [post]
-func (h *UsersHandler) signUp(w http.ResponseWriter, r *http.Request) {
+func (h *UsersHandler) SignUp(w http.ResponseWriter, r *http.Request) {
 	reqBytes, err := io.ReadAll(r.Body)
 	if err != nil {
 		zap.S().Error(
@@ -97,7 +92,7 @@ func (h *UsersHandler) signUp(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal server error"
 // @Router /sign-in [post]
-func (h *UsersHandler) signIn(w http.ResponseWriter, r *http.Request) {
+func (h *UsersHandler) SignIn(w http.ResponseWriter, r *http.Request) {
 	reqBytes, err := io.ReadAll(r.Body)
 	if err != nil {
 		zap.S().Error(
@@ -168,7 +163,7 @@ func (h *UsersHandler) signIn(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal server error"
 // @Router /refresh [get]
-func (h *UsersHandler) refresh(w http.ResponseWriter, r *http.Request) {
+func (h *UsersHandler) Refresh(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("refresh-token")
 	if err != nil {
 		zap.S().Error(

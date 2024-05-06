@@ -6,6 +6,9 @@ type Student struct {
 	Group
 }
 
+type StudentBriefInfo struct {
+	PersonBriefInfo
+}
 type CreateStudentInput struct {
 	PersonID int64 `db:"person_id" json:"person_id"`
 	GroupID  int64 `db:"group_id" json:"group_id"`

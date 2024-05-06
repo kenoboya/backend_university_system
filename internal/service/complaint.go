@@ -15,9 +15,9 @@ func NewComplaintsService(repo psql.Complaints) *ComplaintsService {
 	return &ComplaintsService{repo}
 }
 
-func (s *ComplaintsService) Create(ctx context.Context, reportingUserID int64, complaint model.CreateComplaintInput) error {
+func (s *ComplaintsService) Create(ctx context.Context, complaint model.CreateComplaintInput) error {
 	return s.repo.Create(ctx, model.Complaint{
-		ReportingUserID: reportingUserID,
+		ReportingUserID: complaint.ReportingUserID,
 		ReportedUserID:  complaint.ReportedUserID,
 		Cause:           complaint.Cause,
 		Time:            time.Now(),
@@ -32,6 +32,6 @@ func (s *ComplaintsService) GetById(ctx context.Context, id int64) (model.Compla
 	return s.repo.GetById(ctx, id)
 }
 
-func (s *ComplaintsService) Response(ctx context.Context, complaintID int64, response string) error {
-	return s.repo.Response(ctx, complaintID, response)
+func (s *ComplaintsService) Response(ctx context.Context, complaintID int64, response model.ResponseComplaintInput) error {
+	return s.repo.Response(ctx, complaintID, response.Response)
 }

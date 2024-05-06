@@ -16,7 +16,7 @@ func NewAdminsRepository(db *sqlx.DB) *AdminsRepository {
 }
 
 func (r *AdminsRepository) BlockUser(ctx context.Context, id int64) error {
-	_, err := r.db.Exec("UPDATE users SET status=$1 WHERE user_id=$2", model.Blocked, id)
+	_, err := r.db.Exec("UPDATE users SET blocked=$1 WHERE user_id=$2", model.Blocked, id)
 	if err != nil {
 		return err
 	}
@@ -24,7 +24,7 @@ func (r *AdminsRepository) BlockUser(ctx context.Context, id int64) error {
 }
 
 func (r *AdminsRepository) UnblockUser(ctx context.Context, id int64) error {
-	_, err := r.db.Exec("UPDATE users SET status=$1 WHERE user_id=$2", model.Unblocked, id)
+	_, err := r.db.Exec("UPDATE users SET blocked=$1 WHERE user_id=$2", model.Unblocked, id)
 	if err != nil {
 		return err
 	}

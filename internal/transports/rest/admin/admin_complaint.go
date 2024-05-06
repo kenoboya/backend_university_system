@@ -165,5 +165,16 @@ func (h *AdminsHandler) ResponseToComplaint(w http.ResponseWriter, r *http.Reque
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+
+	if err := h.services.Admins.TryBlockUser(context.TODO(), response); err != nil {
+		zap.S().Error(
+			zap.String("package", "transport/rest/admin"),
+			zap.String("file", "admin_complaint.go"),
+			zap.String("function", "ResponseToComplaint()"),
+			zap.Error(err),
+		)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 	w.WriteHeader(http.StatusOK)
 }

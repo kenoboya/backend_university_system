@@ -7,7 +7,13 @@ import (
 )
 
 func (h *Handler) initUsersRoutes(users *mux.Router) {
-	users.HandleFunc("/sign-up", h.Users.signUp).Methods(http.MethodPost)
-	users.HandleFunc("/sign-in", h.Users.signIn).Methods(http.MethodPost)
-	users.HandleFunc("/refresh", h.Users.refresh).Methods(http.MethodGet)
+	users.HandleFunc("/sign-up", h.Users.SignUp).Methods(http.MethodPost)
+	users.HandleFunc("/sign-in", h.Users.SignIn).Methods(http.MethodPost)
+	users.HandleFunc("/refresh", h.Users.Refresh).Methods(http.MethodGet)
+
+	complaints := users.PathPrefix("/complaints").Subrouter()
+	{
+		complaints.Use(h.authMiddleware)
+		complaints.HandleFunc("", h.Users.SubmitComplaint).Methods(http.MethodPost)
+	}
 }

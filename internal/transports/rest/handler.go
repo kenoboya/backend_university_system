@@ -1,12 +1,15 @@
 package rest
 
 import (
-	"fmt"
 	"net/http"
 	_ "test-crud/docs"
 	"test-crud/internal/service"
 	"test-crud/internal/transports/rest/admin"
+	"test-crud/internal/transports/rest/employee"
+	"test-crud/internal/transports/rest/guest"
 	"test-crud/internal/transports/rest/student"
+	"test-crud/internal/transports/rest/teacher"
+	"test-crud/internal/transports/rest/user"
 	"test-crud/pkg/auth"
 
 	"github.com/gorilla/mux"
@@ -18,8 +21,7 @@ type Handler struct {
 	Users        Users
 	Teachers     Teachers
 	Employees    Employees
-	Faculties    Faculties
-	Specialties  Specialties
+	Guests       Guests
 	Admins       Admins
 	tokenManager auth.TokenManager
 }
@@ -29,10 +31,11 @@ func NewHandler(services *service.Services, tokenManager auth.Manager) *Handler 
 	return &Handler{
 		tokenManager: &tokenManager,
 		Students:     student.NewStudentsHandler(services.Students),
-		Users:        NewUsersHandler(services.Users),
-		Teachers:     NewTeachersHandler(services.Teachers),
-		Employees:    NewEmployeesHandler(services.Employees),
+		Users:        user.NewUsersHandler(services.Users, services.Complaints),
+		Teachers:     teacher.NewTeachersHandler(services.Teachers),
+		Employees:    employee.NewEmployeesHandler(services.Employees),
 		Admins:       admin.NewAdminsHandler(*services),
+		Guests:       guest.NewGuestsHandler(services.Faculties, services.Specialties),
 	}
 }
 
@@ -42,12 +45,12 @@ func (h *Handler) InitRouter() *mux.Router {
 	router.PathPrefix("/swagger/").Handler(httpSwagger.Handler(
 		httpSwagger.URL("http://localhost:8080/swagger/doc.json"), // URL для Swagger JSON
 	))
+	h.initGuestsRoutes(router)
 	h.initUsersRoutes(router)
 	h.initAdminsRoutes(router)
 	h.initEmployeeRoutes(router)
 	h.initStudentsRoutes(router)
 	h.initTeachersRoutes(router)
-	fmt.Println(router)
 	return router
 }
 
@@ -124,14 +127,10 @@ type AdminLessons interface {
 }
 type AdminFaculties interface {
 	CreateFaculty(w http.ResponseWriter, r *http.Request)
-	GetFaculties(w http.ResponseWriter, r *http.Request)
-	GetFaculty(w http.ResponseWriter, r *http.Request)
 	DeleteFaculty(w http.ResponseWriter, r *http.Request)
 }
 type AdminSpecialties interface {
 	CreateSpecialty(w http.ResponseWriter, r *http.Request)
-	GetSpecialties(w http.ResponseWriter, r *http.Request)
-	GetSpecialty(w http.ResponseWriter, r *http.Request)
 	UpdateSpecialty(w http.ResponseWriter, r *http.Request)
 	DeleteSpecialty(w http.ResponseWriter, r *http.Request)
 }
@@ -142,14 +141,14 @@ type AdminGroups interface {
 	DeleteGroup(w http.ResponseWriter, r *http.Request)
 }
 type Users interface {
-	signUp(w http.ResponseWriter, r *http.Request)
-	signIn(w http.ResponseWriter, r *http.Request)
-	refresh(w http.ResponseWriter, r *http.Request)
+	SignUp(w http.ResponseWriter, r *http.Request)
+	SignIn(w http.ResponseWriter, r *http.Request)
+	Refresh(w http.ResponseWriter, r *http.Request)
 
 	SubmitComplaint(w http.ResponseWriter, r *http.Request)
 }
 type Students interface {
-	// DELETE?
+	//
 }
 type Teachers interface {
 	// getTeachers(w http.ResponseWriter, r *http.Request)
@@ -159,11 +158,23 @@ type Employees interface {
 	// DELETE?
 }
 
-type Specialties interface {
-	// getSpecialties(w http.ResponseWriter, r *http.Request)
-	// getSpecialty(w http.ResponseWriter, r *http.Request)
+type Guests interface {
+	GuestRoutes
+	GuestFaculties
+	GuestSpecialties
 }
-type Faculties interface {
-	// getFaculties(w http.ResponseWriter, r *http.Request)
-	// getFaculty(w http.ResponseWriter, r *http.Request)
+
+type GuestFaculties interface {
+	GetFaculties(w http.ResponseWriter, r *http.Request)
+	GetFaculty(w http.ResponseWriter, r *http.Request)
+}
+
+type GuestSpecialties interface {
+	GetSpecialties(w http.ResponseWriter, r *http.Request)
+	GetSpecialty(w http.ResponseWriter, r *http.Request)
+}
+
+type GuestRoutes interface {
+	InitGuestFacultiesRoutes(hubs *mux.Router) *mux.Router
+	InitGuestSpecialtiesRoutes(hubs *mux.Router)
 }

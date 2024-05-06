@@ -15,9 +15,10 @@ func NewAdminsService(repo psql.Admins) *AdminsService {
 }
 
 func (s *AdminsService) TryBlockUser(ctx context.Context, response model.ResponseComplaintInput) error {
-	if response.Status {
-
+	if response.Blocked {
+		return s.repo.BlockUser(ctx, response.UserID)
 	}
+	return nil
 }
 
 func (s *AdminsService) UnblockUser(ctx context.Context, userID int64) error {

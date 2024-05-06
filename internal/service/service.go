@@ -79,7 +79,7 @@ type Admins interface {
 	UnblockUser(ctx context.Context, userID int64) error
 }
 type Complaints interface {
-	Create(ctx context.Context, reportingUserID int64, complaint model.CreateComplaintInput) error
+	Create(ctx context.Context, complaint model.CreateComplaintInput) error
 	GetAll(ctx context.Context) ([]model.Complaint, error)
 	GetById(ctx context.Context, id int64) (model.Complaint, error)
 	Response(ctx context.Context, complaintID int64, response model.ResponseComplaintInput) error
