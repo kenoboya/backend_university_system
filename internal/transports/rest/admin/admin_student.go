@@ -118,7 +118,41 @@ func (h *AdminsHandler) GetStudents(w http.ResponseWriter, r *http.Request) {
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/students/{id} [get]
 func (h *AdminsHandler) GetStudent(w http.ResponseWriter, r *http.Request) {
-	common.GetStudent(w, r, h.services.Students)
+	id, err := common.GetIdFromRequest(r)
+	if err != nil {
+		zap.S().Error(
+			zap.String("package", "transport/rest/admin"),
+			zap.String("file", "admin_student.go"),
+			zap.String("function", "getStudent"),
+			zap.Error(err),
+		)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	student, err := h.services.Students.GetById(context.TODO(), id)
+	if err != nil {
+		zap.S().Error(
+			zap.String("package", "transport/rest/admin"),
+			zap.String("file", "admin_student.go"),
+			zap.String("function", "getStudent"),
+			zap.Error(err),
+		)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	response, err := json.Marshal(student)
+	if err != nil {
+		zap.S().Error(
+			zap.String("package", "transport/rest/admin"),
+			zap.String("file", "admin_student.go"),
+			zap.String("function", "getStudent"),
+			zap.Error(err),
+		)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.Header().Add("Context-Type", "application/json")
+	w.Write(response)
 }
 
 // @Summary Update student

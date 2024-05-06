@@ -29,3 +29,6 @@ func (s StudentsService) GetById(ctx context.Context, id int64) (model.Student, 
 func (s StudentsService) GetAll(ctx context.Context) ([]model.Student, error) {
 	return s.repo.GetAll(ctx)
 }
+func (s *StudentsService) GetStudentProfile(ctx context.Context, id int64) (model.StudentBriefInfo, error) {
+	return s.repo.GetStudentBriefInfoById(ctx, id)
+}

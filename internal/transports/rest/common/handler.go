@@ -9,7 +9,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func GetStudent(w http.ResponseWriter, r *http.Request, studentService service.Students) {
+func GetStudentProfile(w http.ResponseWriter, r *http.Request, studentService service.Students) {
 	id, err := GetIdFromRequest(r)
 	if err != nil {
 		zap.S().Error(
@@ -21,7 +21,7 @@ func GetStudent(w http.ResponseWriter, r *http.Request, studentService service.S
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	student, err := studentService.GetById(context.TODO(), id)
+	student, err := studentService.GetStudentProfile(context.TODO(), id)
 	if err != nil {
 		zap.S().Error(
 			zap.String("package", "transport/rest/common"),
@@ -47,7 +47,7 @@ func GetStudent(w http.ResponseWriter, r *http.Request, studentService service.S
 	w.Write(response)
 }
 
-func GetTeacher(w http.ResponseWriter, r *http.Request, teacherService service.Teachers) {
+func GetTeacherProfile(w http.ResponseWriter, r *http.Request, teacherService service.Teachers) {
 	id, err := GetIdFromRequest(r)
 	if err != nil {
 		zap.S().Error(
@@ -60,7 +60,7 @@ func GetTeacher(w http.ResponseWriter, r *http.Request, teacherService service.T
 		return
 	}
 
-	teacher, err := teacherService.GetById(context.TODO(), id)
+	teacher, err := teacherService.GetTeacherProfile(context.TODO(), id)
 	if err != nil {
 		zap.S().Error(
 			zap.String("package", "transport/rest/common"),

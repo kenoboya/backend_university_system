@@ -16,7 +16,7 @@ func (h *AdminsHandler) InitAdminFacultiesRoutes(admin *mux.Router) {
 	faculties := admin.PathPrefix("/faculties").Subrouter()
 	{
 		faculties.HandleFunc("", h.CreateFaculty).Methods(http.MethodPost)
-		faculties.HandleFunc("/{id:[0-9]+}", h.DeleteFaculty).Methods(http.MethodDelete)
+		faculties.HandleFunc("/{faculty_id:[0-9]+}", h.DeleteFaculty).Methods(http.MethodDelete)
 	}
 }
 
@@ -72,13 +72,13 @@ func (h *AdminsHandler) CreateFaculty(w http.ResponseWriter, r *http.Request) {
 // @Tags admin-faculties
 // @Accept json
 // @Produce json
-// @Param id path int true "ID for deleting faculty"
+// @Param faculty_id path int true "ID for deleting faculty"
 // @Success 200 {string} string "OK"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /admin/hub/faculties/{id} [delete]
+// @Router /admin/hub/faculties/{faculty_id} [delete]
 func (h *AdminsHandler) DeleteFaculty(w http.ResponseWriter, r *http.Request) {
-	id, err := common.GetIdFromRequest(r)
+	id, err := common.GetIdStringFromRequest(r, "faculty_id")
 	if err != nil {
 		zap.S().Error(
 			zap.String("package", "transport/rest/admin"),

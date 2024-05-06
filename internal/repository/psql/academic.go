@@ -46,7 +46,7 @@ func (r FacultiesRepository) GetAll(ctx context.Context) ([]model.Faculty, error
 	}
 	return faculties, nil
 }
-func (r FacultiesRepository) GetById(ctx context.Context, id int64) (model.Faculty, error) {
+func (r FacultiesRepository) GetById(ctx context.Context, id string) (model.Faculty, error) {
 	var faculty model.Faculty
 	err := r.db.Get(&faculty, "SELECT * FROM faculties WHERE faculty_id = $1", id)
 	if err != nil {
@@ -55,7 +55,7 @@ func (r FacultiesRepository) GetById(ctx context.Context, id int64) (model.Facul
 	return faculty, nil
 }
 
-func (r FacultiesRepository) Delete(ctx context.Context, id int64) error {
+func (r FacultiesRepository) Delete(ctx context.Context, id string) error {
 	_, err := r.db.Exec("DELETE FROM faculties WHERE faculty_id = $1", id)
 	if err != nil {
 		return err
@@ -64,7 +64,7 @@ func (r FacultiesRepository) Delete(ctx context.Context, id int64) error {
 }
 
 func (r SpecialtiesRepository) Create(ctx context.Context, specialty model.CreateSpecialtyInput) error {
-	_, err := r.db.NamedExec("INSERT INTO specialties(faculty_id, full_name) VALUES(:faculty_id, :full_name)", specialty)
+	_, err := r.db.NamedExec("INSERT INTO specialties(specialty_id, faculty_id, full_name) VALUES(:specialty_id, :faculty_id, :full_name)", specialty)
 	if err != nil {
 		return err
 	}
@@ -73,6 +73,14 @@ func (r SpecialtiesRepository) Create(ctx context.Context, specialty model.Creat
 func (r SpecialtiesRepository) GetAll(ctx context.Context) ([]model.Specialty, error) {
 	specialties := []model.Specialty{}
 	err := r.db.Select(&specialties, "SELECT * FROM specialties JOIN faculties USING(faculty_id)")
+	if err != nil {
+		return specialties, err
+	}
+	return specialties, nil
+}
+func (r SpecialtiesRepository) GetSpecialtiesByFacultyID(ctx context.Context, faculty_id string) ([]model.Specialty, error) {
+	specialties := []model.Specialty{}
+	err := r.db.Select(&specialties, "SELECT * FROM specialties JOIN faculties USING(faculty_id) WHERE faculty_id=$1", faculty_id)
 	if err != nil {
 		return specialties, err
 	}
@@ -117,7 +125,7 @@ func (r GroupsRepository) GetAll(ctx context.Context) ([]model.Group, error) {
 	}
 	return groups, nil
 }
-func (r GroupsRepository) GetById(ctx context.Context, id int64) (model.Group, error) {
+func (r GroupsRepository) GetById(ctx context.Context, id string) (model.Group, error) {
 	var group model.Group
 	err := r.db.Get(&group, "SELECT * FROM faculties JOIN specialties USING(specialty_id) WHERE group_id = $1", id)
 	if err != nil {
@@ -126,7 +134,7 @@ func (r GroupsRepository) GetById(ctx context.Context, id int64) (model.Group, e
 	return group, nil
 }
 
-func (r GroupsRepository) Delete(ctx context.Context, id int64) error {
+func (r GroupsRepository) Delete(ctx context.Context, id string) error {
 	_, err := r.db.Exec("DELETE FROM groups WHERE group_id = $1", id)
 	if err != nil {
 		return err

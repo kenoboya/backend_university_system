@@ -17,8 +17,8 @@ func (h *AdminsHandler) InitAdminGroupsRoutes(admin *mux.Router) {
 	{
 		groups.HandleFunc("", h.CreateGroup).Methods(http.MethodPost)
 		groups.HandleFunc("", h.GetGroups).Methods(http.MethodGet)
-		groups.HandleFunc("/{id:[0-9]+}", h.GetGroups).Methods(http.MethodGet)
-		groups.HandleFunc("/{id:[0-9]+}", h.DeleteGroup).Methods(http.MethodDelete)
+		groups.HandleFunc("/{group_id:[0-9]+}", h.GetGroups).Methods(http.MethodGet)
+		groups.HandleFunc("/{group_id:[0-9]+}", h.DeleteGroup).Methods(http.MethodDelete)
 	}
 }
 
@@ -110,13 +110,13 @@ func (h *AdminsHandler) GetGroups(w http.ResponseWriter, r *http.Request) {
 // @Tags admin-groups
 // @Accept json
 // @Produce json
-// @Param id path int true "ID for getting group"
+// @Param group_id path int true "ID for getting group"
 // @Success 200 {object} model.Faculty "Accepted"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /admin/hub/groups/{id} [get]
+// @Router /admin/hub/groups/{group_id} [get]
 func (h *AdminsHandler) GetGroup(w http.ResponseWriter, r *http.Request) {
-	id, err := common.GetIdFromRequest(r)
+	id, err := common.GetIdStringFromRequest(r, "group_id")
 	if err != nil {
 		zap.S().Error(
 			zap.String("package", "transport/rest/admin"),
@@ -160,13 +160,13 @@ func (h *AdminsHandler) GetGroup(w http.ResponseWriter, r *http.Request) {
 // @Tags admin-groups
 // @Accept json
 // @Produce json
-// @Param id path int true "ID for deleting group"
+// @Param group_id path int true "ID for deleting group"
 // @Success 200 {string} string "OK"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /admin/hub/groups/{id} [delete]
+// @Router /admin/hub/groups/{group_id} [delete]
 func (h *AdminsHandler) DeleteGroup(w http.ResponseWriter, r *http.Request) {
-	id, err := common.GetIdFromRequest(r)
+	id, err := common.GetIdStringFromRequest(r, "group_id")
 	if err != nil {
 		zap.S().Error(
 			zap.String("package", "transport/rest/admin"),

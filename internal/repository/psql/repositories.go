@@ -45,6 +45,7 @@ type Students interface {
 	GetById(ctx context.Context, id int64) (model.Student, error)
 	Update(ctx context.Context, id int64, student model.UpdateStudentInput) error
 	Delete(ctx context.Context, id int64) error
+	GetStudentBriefInfoById(ctx context.Context, id int64) (model.StudentBriefInfo, error)
 }
 type Users interface {
 	Create(ctx context.Context, user model.User) error
@@ -70,6 +71,7 @@ type Teachers interface {
 	GetById(ctx context.Context, id int64) (model.Teacher, error)
 	Update(ctx context.Context, id int64, teacher model.UpdateTeacherInput) error
 	Delete(ctx context.Context, id int64) error
+	GetTeacherBriefInfoById(ctx context.Context, id int64) (model.TeacherBriefInfo, error)
 }
 type Employees interface {
 	Create(ctx context.Context, employee model.CreateEmployeeInput) error
@@ -94,8 +96,8 @@ type Lessons interface {
 type Faculties interface {
 	Create(ctx context.Context, faculty model.CreateFacultyInput) error
 	GetAll(ctx context.Context) ([]model.Faculty, error)
-	GetById(ctx context.Context, id int64) (model.Faculty, error)
-	Delete(ctx context.Context, id int64) error
+	GetById(ctx context.Context, id string) (model.Faculty, error)
+	Delete(ctx context.Context, id string) error
 }
 type Specialties interface {
 	Create(ctx context.Context, specialty model.CreateSpecialtyInput) error
@@ -103,12 +105,13 @@ type Specialties interface {
 	GetById(ctx context.Context, id int64) (model.Specialty, error)
 	Update(ctx context.Context, id int64, specialty model.UpdateSpecialtyInput) error
 	Delete(ctx context.Context, id int64) error
+	GetSpecialtiesByFacultyID(ctx context.Context, faculty_id string) ([]model.Specialty, error)
 }
 type Groups interface {
 	Create(ctx context.Context, group model.CreateGroupInput) error
 	GetAll(ctx context.Context) ([]model.Group, error)
-	GetById(ctx context.Context, id int64) (model.Group, error)
-	Delete(ctx context.Context, id int64) error
+	GetById(ctx context.Context, id string) (model.Group, error)
+	Delete(ctx context.Context, id string) error
 }
 type Complaints interface {
 	Create(ctx context.Context, complaint model.Complaint) error

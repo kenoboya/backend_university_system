@@ -11,11 +11,8 @@ import (
 )
 
 func (h *GuestsHandler) InitGuestSpecialtiesRoutes(faculty *mux.Router) {
-	specialties := faculty.PathPrefix("/specialties").Subrouter()
-	{
-		specialties.HandleFunc("", h.GetSpecialty).Methods(http.MethodGet)
-		specialties.HandleFunc("/{id:[0-9]+}", h.GetSpecialty).Methods(http.MethodGet)
-	}
+	faculty.HandleFunc("/{faculty_id}", h.GetSpecialty).Methods(http.MethodGet)
+	faculty.HandleFunc("/{faculty_id}/{id:[0-9]+}", h.GetSpecialty).Methods(http.MethodGet)
 }
 
 // @Summary Get specialties
@@ -27,9 +24,20 @@ func (h *GuestsHandler) InitGuestSpecialtiesRoutes(faculty *mux.Router) {
 // @Success 200 {array} model.Specialty "Accepted"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /faculties/{faculty_id}/specialties [get]
+// @Router /faculties/{faculty_id} [get]
 func (h *GuestsHandler) GetSpecialties(w http.ResponseWriter, r *http.Request) {
-	specialties, err := h.specialtiesService.GetAll(context.TODO())
+	facultyID, err := common.GetIdStringFromRequest(r, "faculty_id")
+	if err != nil {
+		zap.S().Error(
+			zap.String("package", "transport/rest/guest"),
+			zap.String("file", "guest_specialty.go"),
+			zap.String("function", "getSpecialties()"),
+			zap.Error(err),
+		)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	specialties, err := h.specialtiesService.GetSpecialtiesByFacultyID(context.TODO(), facultyID)
 	if err != nil {
 		zap.S().Error(
 			zap.String("package", "transport/rest/guest"),
@@ -65,9 +73,9 @@ func (h *GuestsHandler) GetSpecialties(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} model.Specialty "Accepted"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /faculties/{faculty_id}/specialties/{specialty_id} [get]
+// @Router /faculties/{faculty_id}/{specialty_id} [get]
 func (h *GuestsHandler) GetSpecialty(w http.ResponseWriter, r *http.Request) {
-	id, err := common.GetIdFromRequest(r)
+	specialtyID, err := common.GetIdFromRequest(r)
 	if err != nil {
 		zap.S().Error(
 			zap.String("package", "transport/rest/guest"),
@@ -78,7 +86,7 @@ func (h *GuestsHandler) GetSpecialty(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	specialty, err := h.facultiesService.GetById(context.TODO(), id)
+	specialty, err := h.specialtiesService.GetById(context.TODO(), specialtyID)
 	if err != nil {
 		zap.S().Error(
 			zap.String("package", "transport/rest/guest"),

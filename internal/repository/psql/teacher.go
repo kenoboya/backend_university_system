@@ -39,6 +39,15 @@ func (r *TeachersRepository) GetById(ctx context.Context, id int64) (model.Teach
 	}
 	return teacher, nil
 }
+func (r *TeachersRepository) GetTeacherBriefInfoById(ctx context.Context, id int64) (model.TeacherBriefInfo, error) {
+	var teacher model.TeacherBriefInfo
+	err := r.db.Get(&teacher, "SELECT * FROM teachers JOIN employees USING(employee_id) JOIN people USING(person_id) WHERE teacher_id=$1", id)
+	if err != nil {
+		return teacher, err
+	}
+	return teacher, nil
+}
+
 func (r *TeachersRepository) Update(ctx context.Context, id int64, teacher model.UpdateTeacherInput) error {
 	_, err := r.db.Exec("UPDATE teachers SET employee_id=$1, WHERE teacher_id=$2", teacher.EmployeeID, id)
 	if err != nil {

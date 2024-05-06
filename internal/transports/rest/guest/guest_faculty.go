@@ -64,9 +64,9 @@ func (h *GuestsHandler) GetFaculties(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} model.Faculty "Accepted"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router faculties/{id} [get]
+// @Router /faculties/{id} [get]
 func (h *GuestsHandler) GetFaculty(w http.ResponseWriter, r *http.Request) {
-	id, err := common.GetIdFromRequest(r)
+	id, err := common.GetIdStringFromRequest(r, "faculty_id")
 	if err != nil {
 		zap.S().Error(
 			zap.String("package", "transport/rest/guest"),

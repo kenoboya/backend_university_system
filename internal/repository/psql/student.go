@@ -38,6 +38,16 @@ func (r StudentsRepository) GetById(ctx context.Context, id int64) (model.Studen
 	}
 	return student, nil
 }
+
+func (r *StudentsRepository) GetStudentBriefInfoById(ctx context.Context, id int64) (model.StudentBriefInfo, error) {
+	var student model.StudentBriefInfo
+	err := r.db.Get(&student, "SELECT * FROM students JOIN people USING(person_id) JOIN groups USING(group_id) WHERE student_id = $1", id)
+	if err != nil {
+		return student, err
+	}
+	return student, nil
+}
+
 func (r StudentsRepository) Update(ctx context.Context, id int64, student model.UpdateStudentInput) error {
 	_, err := r.db.Exec("UPDATE students SET group_id= $1, WHERE student_id = $2", student.GroupID, id)
 	if err != nil {

@@ -19,3 +19,12 @@ func GetIdFromRequest(r *http.Request) (int64, error) {
 	}
 	return id, nil
 }
+
+func GetIdStringFromRequest(r *http.Request, nameID string) (string, error) {
+	vars := mux.Vars(r)
+	id := vars[nameID]
+	if id == "" {
+		return id, errors.New("id couldn't be empty")
+	}
+	return id, nil
+}

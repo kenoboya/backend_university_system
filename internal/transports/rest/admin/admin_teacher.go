@@ -118,7 +118,43 @@ func (h *AdminsHandler) GetTeachers(w http.ResponseWriter, r *http.Request) {
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /admin/hub/teachers/{id} [get]
 func (h *AdminsHandler) GetTeacher(w http.ResponseWriter, r *http.Request) {
-	common.GetTeacher(w, r, h.services.Teachers)
+	id, err := common.GetIdFromRequest(r)
+	if err != nil {
+		zap.S().Error(
+			zap.String("package", "transport/rest/admin"),
+			zap.String("file", "admin_teacher.go"),
+			zap.String("function", "getTeacher()"),
+			zap.Error(err),
+		)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	teacher, err := h.services.Teachers.GetById(context.TODO(), id)
+	if err != nil {
+		zap.S().Error(
+			zap.String("package", "transport/rest/admin"),
+			zap.String("file", "admin_teacher.go"),
+			zap.String("function", "getTeacher()"),
+			zap.Error(err),
+		)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	response, err := json.Marshal(teacher)
+	if err != nil {
+		zap.S().Error(
+			zap.String("package", "transport/rest/admin"),
+			zap.String("file", "admin_teacher.go"),
+			zap.String("function", "getTeacher()"),
+			zap.Error(err),
+		)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.Header().Add("Context-Type", "application/json")
+	w.Write(response)
 }
 
 // @Summary Update teacher

@@ -29,3 +29,6 @@ func (s *TeachersService) Update(ctx context.Context, id int64, teacher model.Up
 func (s *TeachersService) Delete(ctx context.Context, id int64) error {
 	return s.repo.Delete(ctx, id)
 }
+func (s *TeachersService) GetTeacherProfile(ctx context.Context, id int64) (model.TeacherBriefInfo, error) {
+	return s.repo.GetTeacherBriefInfoById(ctx, id)
+}
