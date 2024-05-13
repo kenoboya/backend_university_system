@@ -93,12 +93,16 @@ CREATE TABLE students(
 	CONSTRAINT fk_students_groups FOREIGN KEY (group_id) REFERENCES groups(group_id)
 );
 
-CREATE TABLE subjects(
-	subject_id INTEGER GENERATED ALWAYS AS IDENTITY,
-	specialty_id INTEGER,
-	name VARCHAR(70) UNIQUE,
-	CONSTRAINT pk_subjects_subject_id PRIMARY KEY(subject_id),
-	CONSTRAINT fk_subjects_specialties FOREIGN KEY(specialty_id) REFERENCES specialties(specialty_id)
+CREATE TYPE subject_type AS ENUM (
+    'selected', 'general', 'specialized'
+);
+
+CREATE TABLE subjects (
+    subject_id SERIAL PRIMARY KEY,
+    name VARCHAR(70) UNIQUE,
+    semester SMALLINT[] NOT NULL,
+    subject_type subject_type NOT NULL,
+    CONSTRAINT pk_subjects_subject_id PRIMARY KEY(subject_id)
 );
 
 CREATE TYPE lesson_type AS enum
@@ -162,4 +166,35 @@ CREATE TABLE block_users_audit(
     CONSTRAINT pk_block_users_audit_id PRIMARY KEY(id),
     CONSTRAINT fk_block_users_audit_users_admin_id FOREIGN KEY(admin_id) REFERENCES users(user_id),
     CONSTRAINT fk_block_users_audit_complaints FOREIGN KEY(complaint_id) REFERENCES complaints(complaint_id)
+);
+
+CREATE TABLE students_subjects (
+    student_id INTEGER REFERENCES students(student_id),
+    subject_id INTEGER REFERENCES subjects(subject_id),
+    CONSTRAINT ck_students_subjects PRIMARY KEY(student_id, subject_id)
+);
+
+CREATE TABLE lessons_students (
+    lesson_id INTEGER REFERENCES lessons(lesson_id),
+    student_id INTEGER REFERENCES students(student_id),
+    CONSTRAINT ck_teachers_subjects PRIMARY KEY(lesson_id, student_id)
+);
+
+CREATE TABLE grades (
+    lesson_id INTEGER REFERENCES lessons(lesson_id),
+    student_id INTEGER REFERENCES student(student_id),
+	grade SMALLINT,
+    CONSTRAINT ck_teachers_subjects PRIMARY KEY(lesson_id, student_id)
+);
+
+CREATE TYPE attendance_records_status AS enum
+(
+	'present','absent'
+);
+
+CREATE TABLE attendance_records (
+    lesson_id INTEGER REFERENCES lessons(lesson_id),
+    student_id INTEGER REFERENCES student(student_id),
+	status attendance_records_status NOT NULL,
+    CONSTRAINT ck_teachers_subjects PRIMARY KEY(lesson_id, student_id)
 );

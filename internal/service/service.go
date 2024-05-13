@@ -101,6 +101,7 @@ type Subjects interface {
 	GetById(ctx context.Context, id int64) (model.Subject, error)
 	Update(ctx context.Context, id int64, subject model.UpdateSubjectInput) error
 	Delete(ctx context.Context, id int64) error
+	GetStudentSubjects(ctx context.Context, student model.Student) ([]model.Subject, error)
 }
 type Lessons interface {
 	Create(ctx context.Context, lesson model.CreateLessonInput) error

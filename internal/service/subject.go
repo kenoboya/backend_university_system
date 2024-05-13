@@ -38,6 +38,10 @@ func (s *SubjectsService) Delete(ctx context.Context, id int64) error {
 	return s.repo.Delete(ctx, id)
 }
 
+func (s *SubjectsService) GetStudentSubjects(ctx context.Context, student model.Student) ([]model.Subject, error) {
+	return s.repo.GetSubjectsByStudentID(ctx, student.StudentID)
+}
+
 func (s *LessonsService) Create(ctx context.Context, lesson model.CreateLessonInput) error {
 	return s.repo.Create(ctx, lesson)
 }
