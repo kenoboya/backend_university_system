@@ -3,6 +3,7 @@ package psql
 import (
 	"context"
 	"test-crud/internal/model"
+	"time"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -64,7 +65,7 @@ func (r SubjectsRepository) Delete(ctx context.Context, id int64) error {
 
 func (r SubjectsRepository) GetSubjectsByStudentID(ctx context.Context, student_id int64) ([]model.Subject, error) {
 	subjects := []model.Subject{}
-	err := r.db.Select(&subjects, "SELECT s.subject_id, name, semester, subject_type FROM subjects s JOIN students_subjects USING(subject_id) WHERE student_id = $1", student_id)
+	err := r.db.Select(&subjects, "SELECT subject_id, name, semester, subject_type FROM subjects JOIN students_subjects USING(subject_id) WHERE student_id = $1", student_id)
 	if err != nil {
 		return subjects, err
 	}
@@ -100,4 +101,12 @@ func (r LessonsRepository) Delete(ctx context.Context, id int64) error {
 		return err
 	}
 	return nil
+}
+func (r LessonsRepository) GetLessonsByStudentID(ctx context.Context, student_id int64, timeNow time.Time) ([]model.Lesson, error) {
+	lessons := []model.Lesson{}
+	err := r.db.Select(&lessons, "SELECT lesson_id, subject_id, teacher_id, lecture_room, date, lesson_type FROM lessons JOIN lessons_students USING(lesson_id) JOIN teachers USING(teacher_id) WHERE student_id = $1 AND date > $2", student_id, timeNow)
+	if err != nil {
+		return lessons, err
+	}
+	return lessons, nil
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 	"test-crud/internal/model"
 	"test-crud/internal/repository/psql"
+	"time"
 )
 
 type SubjectsService struct {
@@ -53,4 +54,7 @@ func (s *LessonsService) GetById(ctx context.Context, id int64) (model.Lesson, e
 }
 func (s *LessonsService) Delete(ctx context.Context, id int64) error {
 	return s.repo.Delete(ctx, id)
+}
+func (s *LessonsService) Schedule(ctx context.Context, student model.Student) ([]model.Lesson, error) {
+	return s.repo.GetLessonsByStudentID(ctx, student.StudentID, time.Now())
 }
