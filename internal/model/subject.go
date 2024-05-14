@@ -38,9 +38,9 @@ type CreateSubjectInput struct {
 	SubjectType string `db:"subject_type" json:"subject_type"`
 }
 type UpdateSubjectInput struct {
-	Name        string `db:"name" json:"name"`
-	Semester    []int8 `db:"semester" json:"semester"`
-	SubjectType string `db:"subject_type" json:"subject_type"`
+	Name        string  `db:"name" json:"name"`
+	Semester    []uint8 `db:"semester" json:"semester"`
+	SubjectType string  `db:"subject_type" json:"subject_type"`
 }
 
 type CreateLessonInput struct {
@@ -49,4 +49,17 @@ type CreateLessonInput struct {
 	LectureRoom string    `db:"lecture_room" json:"lecture_room"`
 	Date        time.Time `db:"date" json:"date"`
 	LessonType  string    `db:"lesson_type" json:"lesson_type"`
+}
+
+type AttendanceRecord struct {
+	StudentBriefInfo
+	LessonID int64  `db:"lesson_id" json:"lesson_id"`
+	Status   string `db:"status" json:"status"`
+}
+
+type Grade struct {
+	StudentBriefInfo
+	StudentID int64 `db:"student_id" json:"student_id"`
+	LessonID  int64 `db:"lesson_id" json:"lesson_id"`
+	Grade     uint8 `db:"status" json:"status"`
 }

@@ -55,7 +55,7 @@ func (h *StudentsHandler) Schedule(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	lessons, err := h.lessonService.Schedule(context.TODO(), student)
+	lessons, err := h.lessonService.StudentSchedule(context.TODO(), student)
 	if err != nil {
 		zap.S().Error(
 			zap.String("package", "transport/rest/student"),

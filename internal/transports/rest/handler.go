@@ -32,7 +32,7 @@ func NewHandler(services *service.Services, tokenManager auth.Manager) *Handler 
 		tokenManager: &tokenManager,
 		Students:     student.NewStudentsHandler(services.Students, services.Teachers, services.Subjects, services.Lessons),
 		Users:        user.NewUsersHandler(services.Users, services.Complaints),
-		Teachers:     teacher.NewTeachersHandler(services.Students, services.Teachers),
+		Teachers:     teacher.NewTeachersHandler(services.Students, services.Teachers, services.Lessons),
 		Employees:    employee.NewEmployeesHandler(services.Employees),
 		Admins:       admin.NewAdminsHandler(*services),
 		Guests:       guest.NewGuestsHandler(services.Faculties, services.Specialties),
@@ -172,10 +172,20 @@ type StudentRoutes interface {
 type Teachers interface {
 	Profile
 	TeacherRoutes
+	Schedule
+	TeacherLessons
 }
-
 type TeacherRoutes interface {
 	InitTeacherProfileRoutes(hubs *mux.Router)
+	InitTeacherScheduleRoutes(hub *mux.Router)
+	InitTeacherLessonsRoutes(hub *mux.Router)
+}
+type TeacherLessons interface {
+	GetLesson(w http.ResponseWriter, r *http.Request)
+	AttendanceList(w http.ResponseWriter, r *http.Request)
+	MarkAttendance(w http.ResponseWriter, r *http.Request)
+	GradeList(w http.ResponseWriter, r *http.Request)
+	Evaluate(w http.ResponseWriter, r *http.Request)
 }
 type Employees interface {
 	// DELETE?

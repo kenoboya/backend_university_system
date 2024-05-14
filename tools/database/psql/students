@@ -174,19 +174,6 @@ CREATE TABLE students_subjects (
     CONSTRAINT ck_students_subjects PRIMARY KEY(student_id, subject_id)
 );
 
-CREATE TABLE lessons_students (
-    lesson_id INTEGER REFERENCES lessons(lesson_id),
-    student_id INTEGER REFERENCES students(student_id),
-    CONSTRAINT ck_teachers_subjects PRIMARY KEY(lesson_id, student_id)
-);
-
-CREATE TABLE grades (
-    lesson_id INTEGER REFERENCES lessons(lesson_id),
-    student_id INTEGER REFERENCES student(student_id),
-	grade SMALLINT,
-    CONSTRAINT ck_teachers_subjects PRIMARY KEY(lesson_id, student_id)
-);
-
 CREATE TYPE attendance_records_status AS enum
 (
 	'present','absent'
@@ -196,5 +183,6 @@ CREATE TABLE attendance_records (
     lesson_id INTEGER REFERENCES lessons(lesson_id),
     student_id INTEGER REFERENCES student(student_id),
 	status attendance_records_status NOT NULL,
+	grade SMALLINT,
     CONSTRAINT ck_teachers_subjects PRIMARY KEY(lesson_id, student_id)
 );

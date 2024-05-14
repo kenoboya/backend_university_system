@@ -110,3 +110,11 @@ func (r LessonsRepository) GetLessonsByStudentID(ctx context.Context, student_id
 	}
 	return lessons, nil
 }
+func (r LessonsRepository) GetLessonsByTeacherID(ctx context.Context, teacher_id int64) ([]model.Lesson, error) {
+	lessons := []model.Lesson{}
+	err := r.db.Select(&lessons, "SELECT lesson_id, subject_id, teacher_id, lecture_room, date, lesson_type FROM lessons JOIN lessons_students USING(lesson_id) JOIN teachers USING(teacher_id) WHERE teacher_id = $1 ", teacher_id)
+	if err != nil {
+		return lessons, err
+	}
+	return lessons, nil
+}

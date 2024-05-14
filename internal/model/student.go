@@ -7,6 +7,7 @@ type Student struct {
 }
 
 type StudentBriefInfo struct {
+	StudentID int64 `db:"student_id" json:"student_id"`
 	PersonBriefInfo
 }
 type StudentFullInfo struct {

@@ -55,6 +55,8 @@ type Students interface {
 	Delete(ctx context.Context, id int64) error
 	GetStudentProfile(ctx context.Context, id int64) (model.StudentBriefInfo, error)
 	GetExtendedStudentProfile(ctx context.Context, id int64) (model.StudentFullInfo, error)
+	GetStudentsAttendance(ctx context.Context, lesson_id int64) ([]model.AttendanceRecord, error)
+	GetStudentsGrades(ctx context.Context, lesson_id int64) ([]model.Grade, error)
 }
 type Users interface {
 	SignUp(ctx context.Context, input model.UserSignUpInput) error
@@ -69,6 +71,8 @@ type Teachers interface {
 	Delete(ctx context.Context, id int64) error
 	GetTeacherProfile(ctx context.Context, id int64) (model.TeacherBriefInfo, error)
 	GetExtendedTeacherProfile(ctx context.Context, id int64) (model.TeacherFullInfo, error)
+	MarkAttendance(ctx context.Context, lesson_id int64, attendanceRecord model.AttendanceRecord) error
+	EvaluteStudent(ctx context.Context, lesson_id int64, grade model.Grade) error
 }
 
 type People interface {
@@ -108,7 +112,8 @@ type Lessons interface {
 	GetAll(ctx context.Context) ([]model.Lesson, error)
 	GetById(ctx context.Context, id int64) (model.Lesson, error)
 	Delete(ctx context.Context, id int64) error
-	Schedule(ctx context.Context, student model.Student) ([]model.Lesson, error)
+	StudentSchedule(ctx context.Context, student model.Student) ([]model.Lesson, error)
+	TeacherSchedule(ctx context.Context, teacher model.Teacher) ([]model.Lesson, error)
 }
 type Faculties interface {
 	Create(ctx context.Context, faculty model.CreateFacultyInput) error

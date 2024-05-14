@@ -97,6 +97,7 @@ type Lessons interface {
 	GetById(ctx context.Context, id int64) (model.Lesson, error)
 	Delete(ctx context.Context, id int64) error
 	GetLessonsByStudentID(ctx context.Context, student_id int64, timeNow time.Time) ([]model.Lesson, error)
+	GetLessonsByTeacherID(ctx context.Context, teacher_id int64) ([]model.Lesson, error)
 }
 type Faculties interface {
 	Create(ctx context.Context, faculty model.CreateFacultyInput) error
