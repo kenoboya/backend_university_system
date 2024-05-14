@@ -69,3 +69,20 @@ func (r *TeachersRepository) Delete(ctx context.Context, id int64) error {
 	}
 	return nil
 }
+
+func (r *TeachersRepository) UpdateStudentAttendance(ctx context.Context, attendanceRecord model.AttendanceRecord) error {
+	_, err := r.db.Exec("UPDATE attendance_grades SET status=$1 WHERE lesson_id=$2 AND student_id=$3",
+		attendanceRecord.Status, attendanceRecord.LessonID, attendanceRecord.StudentID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+func (r *TeachersRepository) UpdateStudentMark(ctx context.Context, grade model.Grade) error {
+	_, err := r.db.Exec("UPDATE attendance_grades SET grade=$1 WHERE lesson_id=$2 AND student_id=$3",
+		grade.Grade, grade.LessonID, grade.StudentID)
+	if err != nil {
+		return err
+	}
+	return nil
+}

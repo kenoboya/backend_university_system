@@ -59,7 +59,6 @@ type AttendanceRecord struct {
 
 type Grade struct {
 	StudentBriefInfo
-	StudentID int64 `db:"student_id" json:"student_id"`
-	LessonID  int64 `db:"lesson_id" json:"lesson_id"`
-	Grade     uint8 `db:"status" json:"status"`
+	LessonID int64 `db:"lesson_id" json:"lesson_id"`
+	Grade    uint8 `db:"status" json:"status"`
 }

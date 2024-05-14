@@ -35,3 +35,12 @@ func (s *TeachersService) GetTeacherProfile(ctx context.Context, id int64) (mode
 func (s *TeachersService) GetExtendedTeacherProfile(ctx context.Context, id int64) (model.TeacherFullInfo, error) {
 	return s.repo.GetTeacherFullInfoById(ctx, id)
 }
+
+func (s *TeachersService) MarkAttendance(ctx context.Context, lesson_id int64, attendanceRecord model.AttendanceRecord) error {
+	attendanceRecord.LessonID = lesson_id
+	return s.repo.UpdateStudentAttendance(ctx, attendanceRecord)
+}
+func (s *TeachersService) EvaluteStudent(ctx context.Context, lesson_id int64, grade model.Grade) error {
+	grade.LessonID = lesson_id
+	return s.repo.UpdateStudentMark(ctx, grade)
+}

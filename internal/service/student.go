@@ -35,3 +35,10 @@ func (s *StudentsService) GetStudentProfile(ctx context.Context, id int64) (mode
 func (s *StudentsService) GetExtendedStudentProfile(ctx context.Context, id int64) (model.StudentFullInfo, error) {
 	return s.repo.GetStudentFullInfoById(ctx, id)
 }
+func (s *StudentsService) GetStudentsAttendance(ctx context.Context, lesson_id int64) ([]model.AttendanceRecord, error) {
+	return s.repo.GetStudentsAttendanceByLessonID(ctx, lesson_id)
+}
+
+func (s *StudentsService) GetStudentsGrades(ctx context.Context, lesson_id int64) ([]model.Grade, error) {
+	return s.repo.GetStudentsGradesByLessonID(ctx, lesson_id)
+}

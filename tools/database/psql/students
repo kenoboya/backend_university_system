@@ -179,7 +179,7 @@ CREATE TYPE attendance_records_status AS enum
 	'present','absent'
 );
 
-CREATE TABLE attendance_records (
+CREATE TABLE attendance_grades (
     lesson_id INTEGER REFERENCES lessons(lesson_id),
     student_id INTEGER REFERENCES student(student_id),
 	status attendance_records_status NOT NULL,

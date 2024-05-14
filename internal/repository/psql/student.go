@@ -71,3 +71,20 @@ func (r StudentsRepository) Delete(ctx context.Context, id int64) error {
 	}
 	return nil
 }
+
+func (r StudentsRepository) GetStudentsAttendanceByLessonID(ctx context.Context, lesson_id int64) ([]model.AttendanceRecord, error) {
+	attendanceRecords := []model.AttendanceRecord{}
+	err := r.db.Select(&attendanceRecords, "SELECT student_id, name, surname, lesson_id, status FROM attendance_grades JOIN students USING(student_id) WHERE lesson_id = $1", lesson_id)
+	if err != nil {
+		return attendanceRecords, err
+	}
+	return attendanceRecords, nil
+}
+func (r StudentsRepository) GetStudentsGradesByLessonID(ctx context.Context, lesson_id int64) ([]model.Grade, error) {
+	grades := []model.Grade{}
+	err := r.db.Select(&grades, "SELECT student_id, name, surname, lesson_id, grade FROM attendance_grades JOIN students USING(student_id) WHERE lesson_id = $1", lesson_id)
+	if err != nil {
+		return grades, err
+	}
+	return grades, nil
+}
