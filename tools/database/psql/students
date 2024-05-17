@@ -186,3 +186,16 @@ CREATE TABLE attendance_grades (
 	grade SMALLINT,
     CONSTRAINT ck_teachers_subjects PRIMARY KEY(lesson_id, student_id)
 );
+
+CREATE TABLE news{
+	news_id INTEGER GENERATED ALWAYS AS IDENTITY,
+	title VARCHAR(70) UNIQUE NOT NULL,
+	author_id INTEGER NOT NULL,
+	published_time TIMESTAMP DEFAULT NOW(),
+	text TEXT NOT NULL,
+	titleImage NOT NULL,
+	images TEXT[], 
+	links TEXT[],
+	CONSTRAINT pk_news_news_id PRIMARY KEY(news_id),
+	CONSTRAINT fk_news_people FOREIGN KEY(author_id) REFERENCES people(person_id)
+}

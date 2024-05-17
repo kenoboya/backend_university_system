@@ -13,12 +13,14 @@ var (
 	ErrInvalidToken             = errors.New("invalid token")
 	ErrorGettingClaimsFromToken = errors.New("error get claims from token")
 	ErrEmptySecretKey           = errors.New("secret key is empty")
-	ErrParseFloatToInt          = errors.New("id claim is not a valid float64")
+	ErrParseClaims              = errors.New("id claim is not a valid to parse")
+	ErrProtectedArea            = errors.New("No required rights")
 )
 
 type TokenManager interface {
 	NewJWT(user_ID int64, role string, ttl time.Duration) (string, error)
 	VerifyToken(accessToken string) (int64, error)
+	VerifyTokenByRole(accessToken string, role string) (int64, error)
 	NewRefreshToken() (string, error)
 }
 
@@ -48,25 +50,53 @@ func (m *Manager) NewJWT(user_ID int64, role string, ttl time.Duration) (string,
 }
 
 func (m *Manager) VerifyToken(accessToken string) (int64, error) {
+	claims, err := m.verifyToken(accessToken)
+	if err != nil {
+		return -1, err
+	}
+	id, ok := claims["id"].(float64)
+	if !ok {
+		return 0, ErrParseClaims
+	}
+	userID := int64(id)
+	return userID, nil
+}
+
+func (m *Manager) VerifyTokenByRole(accessToken string, role string) (int64, error) {
+	claims, err := m.verifyToken(accessToken)
+	if err != nil {
+		return -1, err
+	}
+	roleStatus, ok := claims["role"].(string)
+	if !ok {
+		return -1, ErrParseClaims
+	}
+	if roleStatus != role {
+		return -1, ErrProtectedArea
+	}
+
+	id, ok := claims["id"].(float64)
+	if !ok {
+		return 0, ErrParseClaims
+	}
+	userID := int64(id)
+	return userID, nil
+}
+func (m *Manager) verifyToken(accessToken string) (jwt.MapClaims, error) {
 	token, err := jwt.Parse(accessToken, func(token *jwt.Token) (interface{}, error) {
 		return []byte(m.secretKey), nil
 	})
 	if err != nil {
-		return -1, err
+		return nil, err
 	}
 	if !token.Valid {
-		return -1, ErrInvalidToken
+		return nil, ErrInvalidToken
 	}
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok {
-		return -1, ErrorGettingClaimsFromToken
+		return nil, ErrorGettingClaimsFromToken
 	}
-	id, ok := claims["id"].(float64)
-	if !ok {
-		return 0, ErrParseFloatToInt
-	}
-	userID := int64(id)
-	return userID, nil
+	return claims, nil
 }
 
 func (m *Manager) NewRefreshToken() (string, error) {

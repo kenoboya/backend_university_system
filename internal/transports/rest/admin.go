@@ -5,7 +5,7 @@ import "github.com/gorilla/mux"
 func (h *Handler) initAdminsRoutes(router *mux.Router) {
 	admin := router.PathPrefix("/admin").Subrouter()
 	{
-		admin.Use(h.authMiddleware)
+		admin.Use(h.authAdminMiddleware)
 		hubs := admin.PathPrefix("/hub").Subrouter()
 		{
 			h.Admins.InitAdminPeopleRoutes(hubs)

@@ -35,7 +35,7 @@ func NewHandler(services *service.Services, tokenManager auth.Manager) *Handler 
 		Teachers:     teacher.NewTeachersHandler(services.Students, services.Teachers, services.Lessons),
 		Employees:    employee.NewEmployeesHandler(services.Employees),
 		Admins:       admin.NewAdminsHandler(*services),
-		Guests:       guest.NewGuestsHandler(services.Faculties, services.Specialties),
+		Guests:       guest.NewGuestsHandler(services.Faculties, services.Specialties, services.News),
 	}
 }
 
@@ -195,11 +195,17 @@ type Guests interface {
 	GuestRoutes
 	GuestFaculties
 	GuestSpecialties
+	GuestNews
 }
 
 type GuestFaculties interface {
 	GetFaculties(w http.ResponseWriter, r *http.Request)
 	GetFaculty(w http.ResponseWriter, r *http.Request)
+}
+
+type GuestNews interface {
+	GetListNews(w http.ResponseWriter, r *http.Request)
+	GetNews(w http.ResponseWriter, r *http.Request)
 }
 
 type GuestSpecialties interface {

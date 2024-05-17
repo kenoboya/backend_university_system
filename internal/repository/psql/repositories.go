@@ -21,6 +21,7 @@ type Repositories struct {
 	Admins      Admins
 	People      People
 	Complaints  Complaints
+	News        News
 }
 
 func NewRepositories(db *sqlx.DB) *Repositories {
@@ -37,6 +38,7 @@ func NewRepositories(db *sqlx.DB) *Repositories {
 		Admins:      NewAdminsRepository(db),
 		People:      NewPeopleRepository(db),
 		Complaints:  NewComplaintsRepository(db),
+		News:        NewNewsRepository(db),
 	}
 }
 
@@ -51,6 +53,7 @@ type Students interface {
 	GetStudentsAttendanceByLessonID(ctx context.Context, lesson_id int64) ([]model.AttendanceRecord, error)
 	GetStudentsGradesByLessonID(ctx context.Context, lesson_id int64) ([]model.Grade, error)
 }
+
 type Users interface {
 	Create(ctx context.Context, user model.User) error
 	GetByEmailCredentials(ctx context.Context, login, password string) (model.User, error)
@@ -109,6 +112,7 @@ type Faculties interface {
 	GetById(ctx context.Context, id string) (model.Faculty, error)
 	Delete(ctx context.Context, id string) error
 }
+
 type Specialties interface {
 	Create(ctx context.Context, specialty model.CreateSpecialtyInput) error
 	GetAll(ctx context.Context) ([]model.Specialty, error)
@@ -116,6 +120,13 @@ type Specialties interface {
 	Update(ctx context.Context, id int64, specialty model.UpdateSpecialtyInput) error
 	Delete(ctx context.Context, id int64) error
 	GetSpecialtiesByFacultyID(ctx context.Context, faculty_id string) ([]model.Specialty, error)
+}
+type News interface {
+	Create(ctx context.Context, news model.CreateNewsInput) error
+	GetAll(ctx context.Context) ([]model.News, error)
+	GetById(ctx context.Context, id int64) (model.News, error)
+	Update(ctx context.Context, id int64, news model.UpdateNewsInput) error
+	Delete(ctx context.Context, id int64) error
 }
 type Groups interface {
 	Create(ctx context.Context, group model.CreateGroupInput) error

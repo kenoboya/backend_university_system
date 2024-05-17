@@ -22,6 +22,7 @@ type Services struct {
 	Admins      Admins
 	People      People
 	Complaints  Complaints
+	News        News
 }
 type Deps struct {
 	Repos           psql.Repositories
@@ -44,6 +45,8 @@ func NewServices(deps Deps) *Services {
 		Groups:      NewGroupsService(deps.Repos.Groups),
 		Admins:      NewAdminsService(deps.Repos.Admins),
 		People:      NewPeopleService(deps.Repos.People),
+		Complaints:  NewComplaintsService(deps.Repos.Complaints),
+		News:        NewNewsService(deps.Repos.News),
 	}
 }
 
@@ -85,6 +88,13 @@ type People interface {
 type Admins interface {
 	TryBlockUser(ctx context.Context, response model.ResponseComplaintInput) error
 	UnblockUser(ctx context.Context, userID int64) error
+}
+type News interface {
+	Create(ctx context.Context, news model.CreateNewsInput) error
+	GetList(ctx context.Context) ([]model.News, error)
+	GetNews(ctx context.Context, newsID int64) (model.News, error)
+	Update(ctx context.Context, newsID int64, news model.UpdateNewsInput) error
+	Delete(ctx context.Context, newsID int64) error
 }
 type Complaints interface {
 	Create(ctx context.Context, complaint model.CreateComplaintInput) error

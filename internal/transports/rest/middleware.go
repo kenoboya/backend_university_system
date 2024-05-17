@@ -5,6 +5,7 @@ import (
 	"errors"
 	"net/http"
 	"strings"
+	"test-crud/internal/model"
 	"test-crud/pkg/logger"
 
 	"go.uber.org/zap"
@@ -41,7 +42,108 @@ func (h *Handler) authMiddleware(next http.Handler) http.Handler {
 		r = r.WithContext(ctx)
 		next.ServeHTTP(w, r)
 	})
+}
 
+func (h *Handler) authAdminMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		token, err := getTokenFromRequest(r)
+		if err != nil {
+			logger.Error(
+				zap.String("method", r.Method),
+				zap.String("request_url", r.RequestURI),
+				zap.String("error", err.Error()),
+			)
+			w.WriteHeader(http.StatusUnauthorized)
+			return
+		}
+		user_id, err := h.tokenManager.VerifyTokenByRole(token, model.RoleAdmin)
+		if err != nil {
+			logger.Error(
+				zap.String("method", r.Method),
+				zap.String("request_url", r.RequestURI),
+				zap.String("error", err.Error()),
+			)
+		}
+		ctx := context.WithValue(r.Context(), ctxUserID, user_id)
+		r = r.WithContext(ctx)
+		next.ServeHTTP(w, r)
+	})
+}
+
+func (h *Handler) authStudentMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		token, err := getTokenFromRequest(r)
+		if err != nil {
+			logger.Error(
+				zap.String("method", r.Method),
+				zap.String("request_url", r.RequestURI),
+				zap.String("error", err.Error()),
+			)
+			w.WriteHeader(http.StatusUnauthorized)
+			return
+		}
+		user_id, err := h.tokenManager.VerifyTokenByRole(token, model.RoleStudent)
+		if err != nil {
+			logger.Error(
+				zap.String("method", r.Method),
+				zap.String("request_url", r.RequestURI),
+				zap.String("error", err.Error()),
+			)
+		}
+		ctx := context.WithValue(r.Context(), ctxUserID, user_id)
+		r = r.WithContext(ctx)
+		next.ServeHTTP(w, r)
+	})
+}
+func (h *Handler) authTeacherMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		token, err := getTokenFromRequest(r)
+		if err != nil {
+			logger.Error(
+				zap.String("method", r.Method),
+				zap.String("request_url", r.RequestURI),
+				zap.String("error", err.Error()),
+			)
+			w.WriteHeader(http.StatusUnauthorized)
+			return
+		}
+		user_id, err := h.tokenManager.VerifyTokenByRole(token, model.RoleTeacher)
+		if err != nil {
+			logger.Error(
+				zap.String("method", r.Method),
+				zap.String("request_url", r.RequestURI),
+				zap.String("error", err.Error()),
+			)
+		}
+		ctx := context.WithValue(r.Context(), ctxUserID, user_id)
+		r = r.WithContext(ctx)
+		next.ServeHTTP(w, r)
+	})
+}
+func (h *Handler) authEmployeeMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		token, err := getTokenFromRequest(r)
+		if err != nil {
+			logger.Error(
+				zap.String("method", r.Method),
+				zap.String("request_url", r.RequestURI),
+				zap.String("error", err.Error()),
+			)
+			w.WriteHeader(http.StatusUnauthorized)
+			return
+		}
+		user_id, err := h.tokenManager.VerifyTokenByRole(token, model.RoleEmployee)
+		if err != nil {
+			logger.Error(
+				zap.String("method", r.Method),
+				zap.String("request_url", r.RequestURI),
+				zap.String("error", err.Error()),
+			)
+		}
+		ctx := context.WithValue(r.Context(), ctxUserID, user_id)
+		r = r.WithContext(ctx)
+		next.ServeHTTP(w, r)
+	})
 }
 func loggingMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
