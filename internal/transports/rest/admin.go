@@ -17,8 +17,8 @@ func (h *Handler) initAdminsRoutes(router *mux.Router) {
 			h.Admins.InitAdminFacultiesRoutes(hubs)
 			h.Admins.InitAdminSpecialtiesRoutes(hubs)
 			h.Admins.InitAdminGroupsRoutes(hubs)
-			h.Admins.InitAdminComplaintsRoutes(hubs)
-
+			// h.Admins.InitAdminComplaintsRoutes(hubs)
+			h.Admins.InitAdminApplicationsRoutes(hubs)
 		}
 		settings := admin.PathPrefix("/settings").Subrouter()
 		{

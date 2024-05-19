@@ -31,7 +31,7 @@ func NewHandler(services *service.Services, tokenManager auth.Manager) *Handler 
 	return &Handler{
 		tokenManager: &tokenManager,
 		Students:     student.NewStudentsHandler(services.Students, services.Teachers, services.Subjects, services.Lessons),
-		Users:        user.NewUsersHandler(services.Users, services.Complaints),
+		Users:        user.NewUsersHandler(services.Users, services.Complaints, services.People),
 		Teachers:     teacher.NewTeachersHandler(services.Students, services.Teachers, services.Lessons),
 		Employees:    employee.NewEmployeesHandler(services.Employees),
 		Admins:       admin.NewAdminsHandler(*services),
@@ -66,6 +66,7 @@ type Admins interface {
 	AdminPeople
 	AdminComplaints
 	AdminRoutes
+	AdminApplicationPeople
 }
 type AdminRoutes interface {
 	InitAdminPeopleRoutes(hubs *mux.Router)
@@ -78,11 +79,18 @@ type AdminRoutes interface {
 	InitAdminSpecialtiesRoutes(hubs *mux.Router)
 	InitAdminGroupsRoutes(hubs *mux.Router)
 	InitAdminComplaintsRoutes(hubs *mux.Router)
+	InitAdminApplicationsRoutes(hubs *mux.Router)
+	InitAdminPeopleRequestsRoutes(application *mux.Router)
 }
 type AdminComplaints interface {
 	GetComplaints(w http.ResponseWriter, r *http.Request)
 	GetComplaint(w http.ResponseWriter, r *http.Request)
 	ResponseToComplaint(w http.ResponseWriter, r *http.Request)
+}
+type AdminApplicationPeople interface {
+	GetPeopleApplications(w http.ResponseWriter, r *http.Request)
+	GetPersonApplication(w http.ResponseWriter, r *http.Request)
+	ResponseToApplication(w http.ResponseWriter, r *http.Request)
 }
 type AdminPeople interface {
 	CreatePerson(w http.ResponseWriter, r *http.Request)
@@ -146,6 +154,7 @@ type Users interface {
 	Refresh(w http.ResponseWriter, r *http.Request)
 
 	SubmitComplaint(w http.ResponseWriter, r *http.Request)
+	SubmitPerson(w http.ResponseWriter, r *http.Request)
 }
 type Students interface {
 	Profile

@@ -23,7 +23,7 @@ type User struct {
 	RegisteredAt time.Time  `db:"registered_at" json:"registered_at"`
 	LastVisitAt  *time.Time `db:"last_visit_at" json:"last_visit_at"`
 	Blocked      bool       `db:"blocked" json:"blocked"`
-	Role         string     `db:"role" json:"role"`
+	Role         string     `db:"role"`
 	// Verification Verification `json:"verification"`
 }
 

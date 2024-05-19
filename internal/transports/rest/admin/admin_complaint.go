@@ -12,8 +12,8 @@ import (
 	"go.uber.org/zap"
 )
 
-func (h *AdminsHandler) InitAdminComplaintsRoutes(admin *mux.Router) {
-	complaints := admin.PathPrefix("/complaints").Subrouter()
+func (h *AdminsHandler) InitAdminComplaintsRoutes(application *mux.Router) {
+	complaints := application.PathPrefix("/complaints").Subrouter()
 	{
 		complaints.HandleFunc("", h.GetComplaints).Methods(http.MethodGet)
 		complaints.HandleFunc("/{id:[0-9]+}", h.GetComplaint).Methods(http.MethodGet)
@@ -29,7 +29,7 @@ func (h *AdminsHandler) InitAdminComplaintsRoutes(admin *mux.Router) {
 // @Success 200 {array} model.Complaint "Accepted"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /admin/hub/complaints [get]
+// @Router /admin/hub/requests/complaints [get]
 func (h *AdminsHandler) GetComplaints(w http.ResponseWriter, r *http.Request) {
 	complaints, err := h.services.Complaints.GetAll(context.TODO())
 	if err != nil {
@@ -66,7 +66,7 @@ func (h *AdminsHandler) GetComplaints(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} model.Complaint "Accepted"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /admin/hub/complaints/{id} [get]
+// @Router /admin/hub/requests/complaints/{id} [get]
 func (h *AdminsHandler) GetComplaint(w http.ResponseWriter, r *http.Request) {
 	id, err := common.GetIdFromRequest(r)
 	if err != nil {
@@ -117,7 +117,7 @@ func (h *AdminsHandler) GetComplaint(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {string} string "OK"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /admin/hub/complaints/{id} [patch]
+// @Router /admin/hub/requests/complaints/{id} [patch]
 func (h *AdminsHandler) ResponseToComplaint(w http.ResponseWriter, r *http.Request) {
 	id, err := common.GetIdFromRequest(r)
 	if err != nil {

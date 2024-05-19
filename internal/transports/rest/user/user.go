@@ -16,12 +16,14 @@ import (
 type UsersHandler struct {
 	usersService      service.Users
 	complaintsService service.Complaints
+	peopleService     service.People
 }
 
-func NewUsersHandler(usersService service.Users, complaintsService service.Complaints) *UsersHandler {
+func NewUsersHandler(usersService service.Users, complaintsService service.Complaints, peopleService service.People) *UsersHandler {
 	return &UsersHandler{
 		usersService:      usersService,
 		complaintsService: complaintsService,
+		peopleService:     peopleService,
 	}
 }
 

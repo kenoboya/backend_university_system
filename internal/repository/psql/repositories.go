@@ -60,6 +60,7 @@ type Users interface {
 	GetByUsernameCredentials(ctx context.Context, login, password string) (model.User, error)
 	SetSession(ctx context.Context, id int64, session model.Session) error
 	GetByRefreshToken(ctx context.Context, refreshToken string) (model.User, error)
+	UpdateRole(ctx context.Context, role string, user_id int64) error
 }
 type Admins interface {
 	BlockUser(ctx context.Context, id int64) error
@@ -69,8 +70,13 @@ type People interface {
 	Create(ctx context.Context, person model.CreatePersonInput) error
 	GetAll(ctx context.Context) ([]model.Person, error)
 	GetById(ctx context.Context, id int64) (model.Person, error)
+	GetPersonByUserID(ctx context.Context, userID int64) (model.Person, error)
 	Update(ctx context.Context, id int64, person model.UpdatePersonInput) error
 	Delete(ctx context.Context, id int64) error
+	GetAllApplications(ctx context.Context) ([]model.PersonApplication, error)
+	GetApplication(ctx context.Context, personID int64) (model.PersonApplication, error)
+	UpdateApplicationStatus(ctx context.Context, response bool, id int64) error
+	CreateApplicationPerson(ctx context.Context, personID int64) error
 }
 type Teachers interface {
 	Create(ctx context.Context, teacher model.CreateTeacherInput) error

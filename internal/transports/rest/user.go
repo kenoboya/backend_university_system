@@ -16,4 +16,10 @@ func (h *Handler) initUsersRoutes(users *mux.Router) {
 		complaints.Use(h.authMiddleware)
 		complaints.HandleFunc("", h.Users.SubmitComplaint).Methods(http.MethodPost)
 	}
+
+	people := users.PathPrefix("/people").Subrouter()
+	{
+		people.Use(h.authMiddleware)
+		people.HandleFunc("", h.Users.SubmitPerson).Methods(http.MethodPost)
+	}
 }

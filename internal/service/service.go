@@ -65,6 +65,7 @@ type Users interface {
 	SignUp(ctx context.Context, input model.UserSignUpInput) error
 	SignIn(ctx context.Context, input model.UserSignInInput) (Tokens, error)
 	Refresh(ctx context.Context, refreshToken string) (Tokens, error)
+	ChangeRole(ctx context.Context, role string, user_id int64) error
 }
 type Teachers interface {
 	Create(ctx context.Context, teacher model.CreateTeacherInput) error
@@ -84,6 +85,10 @@ type People interface {
 	GetById(ctx context.Context, id int64) (model.Person, error)
 	Update(ctx context.Context, id int64, person model.UpdatePersonInput) error
 	Delete(ctx context.Context, id int64) error
+	GetListApplications(ctx context.Context) ([]model.PersonApplication, error)
+	GetApplication(ctx context.Context, personID int64) (model.PersonApplication, error)
+	ResponseToApplication(ctx context.Context, response model.PersonApplication) error
+	CreateApplicationPerson(ctx context.Context, person model.CreatePersonInput) error
 }
 type Admins interface {
 	TryBlockUser(ctx context.Context, response model.ResponseComplaintInput) error

@@ -58,3 +58,11 @@ func (r *UsersRepository) SetSession(ctx context.Context, userID int64, session 
 	}
 	return nil
 }
+
+func (r *UsersRepository) UpdateRole(ctx context.Context, role string, user_id int64) error {
+	_, err := r.db.Exec("UPDATE user SET role=$1 WHERE user_id=$2", role, user_id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
