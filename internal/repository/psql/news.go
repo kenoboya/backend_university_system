@@ -24,7 +24,7 @@ func (r NewsRepository) Create(ctx context.Context, news model.CreateNewsInput) 
 }
 func (r NewsRepository) GetAll(ctx context.Context) ([]model.News, error) {
 	news := []model.News{}
-	err := r.db.Select(&news, "SELECT * FROM news JOIN people ON news.author_id = people.person_id")
+	err := r.db.Select(&news, "SELECT news.*, people.name, people.surname, people.birth_date, people.photo FROM news JOIN people ON news.author_id = people.person_id")
 	if err != nil {
 		return news, err
 	}
@@ -32,7 +32,7 @@ func (r NewsRepository) GetAll(ctx context.Context) ([]model.News, error) {
 }
 func (r NewsRepository) GetById(ctx context.Context, id int64) (model.News, error) {
 	var news model.News
-	err := r.db.Get(&news, "SELECT * FROM news JOIN people ON news.author_id = people.person_id WHERE news_id = $1", id)
+	err := r.db.Get(&news, "SELECT news.*, people.name, people.surname, people.birth_date, people.photo FROM news JOIN people ON news.author_id = people.person_id WHERE news_id = $1", id)
 	if err != nil {
 		return news, err
 	}

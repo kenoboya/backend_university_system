@@ -15,6 +15,132 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/admin/hub/applications/people": {
+            "get": {
+                "description": "receive applications to create a person",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-applications"
+                ],
+                "summary": "Get people applications",
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.PersonApplication"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/hub/applications/people/{id}": {
+            "get": {
+                "description": "receive applications to create a person",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-applications"
+                ],
+                "summary": "Get person application",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Person ID for getting application on person",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/model.PersonApplication"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Response to application people. Accepted or Denied",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-applications"
+                ],
+                "summary": "Response to application people",
+                "parameters": [
+                    {
+                        "description": "Response to application",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.PersonApplication"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/hub/employees": {
             "get": {
                 "description": "get employees",
@@ -235,42 +361,6 @@ const docTemplate = `{
             }
         },
         "/admin/hub/faculties": {
-            "get": {
-                "description": "get faculties",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "admin-faculties"
-                ],
-                "summary": "Get faculties",
-                "responses": {
-                    "200": {
-                        "description": "Accepted",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/model.Faculty"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
             "post": {
                 "description": "create faculty",
                 "consumes": [
@@ -316,49 +406,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/admin/hub/faculties/{id}": {
-            "get": {
-                "description": "get faculty by id",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "admin-faculties"
-                ],
-                "summary": "Get faculty",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "ID for getting faculty",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Accepted",
-                        "schema": {
-                            "$ref": "#/definitions/model.Faculty"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
+        "/admin/hub/faculties/{faculty_id}": {
             "delete": {
                 "description": "delete faculty",
                 "consumes": [
@@ -375,7 +423,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "ID for deleting faculty",
-                        "name": "id",
+                        "name": "faculty_id",
                         "in": "path",
                         "required": true
                     }
@@ -484,7 +532,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/admin/hub/groups/{id}": {
+        "/admin/hub/groups/{group_id}": {
             "get": {
                 "description": "get group by id",
                 "consumes": [
@@ -501,7 +549,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "ID for getting group",
-                        "name": "id",
+                        "name": "group_id",
                         "in": "path",
                         "required": true
                     }
@@ -543,7 +591,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "ID for deleting group",
-                        "name": "id",
+                        "name": "group_id",
                         "in": "path",
                         "required": true
                     }
@@ -957,9 +1005,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/admin/hub/specialties": {
+        "/admin/hub/requests/complaints": {
             "get": {
-                "description": "get specialties",
+                "description": "get complaints",
                 "consumes": [
                     "application/json"
                 ],
@@ -967,16 +1015,16 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "admin-specialties"
+                    "admin-complaints"
                 ],
-                "summary": "Get specialties",
+                "summary": "Get Complaints",
                 "responses": {
                     "200": {
                         "description": "Accepted",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/model.Specialty"
+                                "$ref": "#/definitions/model.Complaint"
                             }
                         }
                     },
@@ -993,7 +1041,104 @@ const docTemplate = `{
                         }
                     }
                 }
+            }
+        },
+        "/admin/hub/requests/complaints/{id}": {
+            "get": {
+                "description": "get complaint by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-complaints"
+                ],
+                "summary": "Get complaint",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID for getting complaint",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/model.Complaint"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
             },
+            "patch": {
+                "description": "Response to complaint",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-complaints"
+                ],
+                "summary": "Response complaint",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID for response complaint",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Response to complaint",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ResponseComplaintInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/hub/specialties": {
             "post": {
                 "description": "create specialty",
                 "consumes": [
@@ -1040,48 +1185,6 @@ const docTemplate = `{
             }
         },
         "/admin/hub/specialties/{id}": {
-            "get": {
-                "description": "get specialty by id",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "admin-specialties"
-                ],
-                "summary": "Get specialty",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "ID for getting specialty",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Accepted",
-                        "schema": {
-                            "$ref": "#/definitions/model.Specialty"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
             "delete": {
                 "description": "delete specialty",
                 "consumes": [
@@ -1833,6 +1936,268 @@ const docTemplate = `{
                 }
             }
         },
+        "/faculties": {
+            "get": {
+                "description": "get faculties",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "guest-faculties"
+                ],
+                "summary": "Get faculties",
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Faculty"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/faculties/{faculty_id}": {
+            "get": {
+                "description": "get specialties",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "guest-specialties"
+                ],
+                "summary": "Get specialties",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID for getting faculty",
+                        "name": "faculty_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Specialty"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/faculties/{faculty_id}/{specialty_id}": {
+            "get": {
+                "description": "get specialty by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-specialties"
+                ],
+                "summary": "Get specialty",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID for getting faculty",
+                        "name": "faculty_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID for getting specialty",
+                        "name": "specialty_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/model.Specialty"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/faculties/{id}": {
+            "get": {
+                "description": "get faculty by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "guest-faculties"
+                ],
+                "summary": "Get faculty",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID for getting faculty",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/model.Faculty"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/news": {
+            "get": {
+                "description": "get news",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "guest-news"
+                ],
+                "summary": "get news",
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.News"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/news/{id}": {
+            "get": {
+                "description": "get new by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "guest-news"
+                ],
+                "summary": "get new",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID for getting news",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/model.Faculty"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/refresh": {
             "get": {
                 "description": "Refresh access token using refresh token stored in cookie",
@@ -1956,9 +2321,774 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/student/hub/schedule": {
+            "get": {
+                "description": "get student's schedule",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "student-schedule"
+                ],
+                "summary": "Get student's schedule",
+                "parameters": [
+                    {
+                        "description": "student",
+                        "name": "student",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Student"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Subject"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/student/hub/students/profile/{id}": {
+            "get": {
+                "description": "get student profile by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "student-profiles"
+                ],
+                "summary": "Get student profile",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID for getting student profile",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/model.StudentBriefInfo"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/student/hub/subjects": {
+            "get": {
+                "description": "get student's subjects",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "student-subjects"
+                ],
+                "summary": "Get student's subjects",
+                "parameters": [
+                    {
+                        "description": "student",
+                        "name": "student",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Student"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Subject"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/student/hub/subjects/{id}": {
+            "get": {
+                "description": "get student's subject by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "student-subjects"
+                ],
+                "summary": "Get student's subject",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID for getting subject profile",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/model.Subject"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/student/hub/teachers/profile/{id}": {
+            "get": {
+                "description": "get teacher profile by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "student-profiles"
+                ],
+                "summary": "Get teacher profile",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID for getting teacher profile",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/model.TeacherBriefInfo"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/teacher/hub/lessons/{id}": {
+            "get": {
+                "description": "get lesson by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "teacher-lessons"
+                ],
+                "summary": "Get lesson",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID for getting lesson",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/model.Lesson"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/teacher/hub/lessons/{id}/attendance": {
+            "get": {
+                "description": "Attendance List of students",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "teacher-lessons"
+                ],
+                "summary": "Attendance List of students",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID for getting lesson",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.StudentBriefInfo"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Mark student's attendance",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "teacher-lessons"
+                ],
+                "summary": "Mark student's attendance",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID lesson",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "information for mark attendance",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.AttendanceRecord"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/teacher/hub/lessons/{id}/grade": {
+            "get": {
+                "description": "Grade List of students",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "teacher-lessons"
+                ],
+                "summary": "Grade List of students",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID for getting lesson",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.StudentBriefInfo"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "evaluate the student",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "teacher-lessons"
+                ],
+                "summary": "evaluate the student",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID lesson",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Student information for evaluate",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.StudentBriefInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/teacher/hub/schedule": {
+            "get": {
+                "description": "get teacher's schedule",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "teacher-schedule"
+                ],
+                "summary": "Get teacher's schedule",
+                "parameters": [
+                    {
+                        "description": "Teacher",
+                        "name": "teacher",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Teacher"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Subject"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/teacher/hub/students/profile/{id}": {
+            "get": {
+                "description": "get student profile by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "teacher-profiles"
+                ],
+                "summary": "Get student profile",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID for getting student profile",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/model.StudentFullInfo"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/teacher/hub/teachers/profile/{id}": {
+            "get": {
+                "description": "get teacher profile by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "teacher-profiles"
+                ],
+                "summary": "Get teacher profile",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID for getting teacher profile",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/model.TeacherFullInfo"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/complaints": {
+            "post": {
+                "description": "create complaint",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user-complaints"
+                ],
+                "summary": "create complaint",
+                "parameters": [
+                    {
+                        "description": "Data for creating complaint",
+                        "name": "complaint",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateComplaintInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/people": {
+            "post": {
+                "description": "create person",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user-person"
+                ],
+                "summary": "create person",
+                "parameters": [
+                    {
+                        "description": "Data for creating complaint",
+                        "name": "person",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreatePersonInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "model.AttendanceRecord": {
+            "type": "object",
+            "properties": {
+                "birth_date": {
+                    "type": "string"
+                },
+                "lesson_id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "photo": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "status": {
+                    "type": "string"
+                },
+                "student_id": {
+                    "type": "integer"
+                },
+                "surname": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Complaint": {
+            "type": "object",
+            "properties": {
+                "cause": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "reported_user_id": {
+                    "type": "integer"
+                },
+                "reporting_user_id": {
+                    "type": "integer"
+                },
+                "response": {
+                    "type": "string"
+                },
+                "time": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.CreateComplaintInput": {
+            "type": "object",
+            "properties": {
+                "cause": {
+                    "type": "string"
+                },
+                "reported_user_id": {
+                    "type": "integer"
+                },
+                "reporting_user_id": {
+                    "type": "integer"
+                }
+            }
+        },
         "model.CreateEmployeeInput": {
             "type": "object",
             "properties": {
@@ -2004,7 +3134,7 @@ const docTemplate = `{
         "model.CreateLessonInput": {
             "type": "object",
             "properties": {
-                "group_id": {
+                "date": {
                     "type": "string"
                 },
                 "lecture_room": {
@@ -2018,12 +3148,6 @@ const docTemplate = `{
                 },
                 "teacher_id": {
                     "type": "integer"
-                },
-                "time_end": {
-                    "type": "string"
-                },
-                "time_start": {
-                    "type": "string"
                 }
             }
         },
@@ -2037,6 +3161,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "phone": {
+                    "type": "string"
+                },
+                "role": {
                     "type": "string"
                 },
                 "surname": {
@@ -2055,6 +3182,9 @@ const docTemplate = `{
                 },
                 "full_name": {
                     "type": "string"
+                },
+                "specialty_id": {
+                    "type": "integer"
                 }
             }
         },
@@ -2075,8 +3205,14 @@ const docTemplate = `{
                 "name": {
                     "type": "string"
                 },
-                "specialty_id": {
-                    "type": "integer"
+                "semester": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "subject_type": {
+                    "type": "string"
                 }
             }
         },
@@ -2096,6 +3232,9 @@ const docTemplate = `{
                 },
                 "birth_date": {
                     "type": "string"
+                },
+                "blocked": {
+                    "type": "boolean"
                 },
                 "email": {
                     "type": "string"
@@ -2131,6 +3270,9 @@ const docTemplate = `{
                     }
                 },
                 "registered_at": {
+                    "type": "string"
+                },
+                "role": {
                     "type": "string"
                 },
                 "salary": {
@@ -2196,20 +3338,17 @@ const docTemplate = `{
                 "birth_date": {
                     "type": "string"
                 },
+                "blocked": {
+                    "type": "boolean"
+                },
+                "date": {
+                    "type": "string"
+                },
                 "email": {
                     "type": "string"
                 },
                 "employee_id": {
                     "type": "integer"
-                },
-                "faculty_id": {
-                    "type": "string"
-                },
-                "full_name": {
-                    "type": "string"
-                },
-                "group_id": {
-                    "type": "string"
                 },
                 "hire_date": {
                     "type": "string"
@@ -2250,26 +3389,29 @@ const docTemplate = `{
                 "registered_at": {
                     "type": "string"
                 },
+                "role": {
+                    "type": "string"
+                },
                 "salary": {
                     "type": "number"
                 },
-                "specialty_id": {
-                    "type": "integer"
+                "semester": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
                 },
                 "subject_id": {
                     "type": "integer"
+                },
+                "subject_type": {
+                    "type": "string"
                 },
                 "surname": {
                     "type": "string"
                 },
                 "teacher_id": {
                     "type": "integer"
-                },
-                "time_end": {
-                    "type": "string"
-                },
-                "time_start": {
-                    "type": "string"
                 },
                 "title": {
                     "type": "string"
@@ -2282,6 +3424,56 @@ const docTemplate = `{
                 }
             }
         },
+        "model.News": {
+            "type": "object",
+            "properties": {
+                "author_id": {
+                    "type": "integer"
+                },
+                "birth_date": {
+                    "type": "string"
+                },
+                "images": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "links": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                },
+                "news_id": {
+                    "type": "integer"
+                },
+                "photo": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "published_time": {
+                    "type": "string"
+                },
+                "surname": {
+                    "type": "string"
+                },
+                "text": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "title_image": {
+                    "type": "string"
+                }
+            }
+        },
         "model.Person": {
             "type": "object",
             "properties": {
@@ -2290,6 +3482,9 @@ const docTemplate = `{
                 },
                 "birth_date": {
                     "type": "string"
+                },
+                "blocked": {
+                    "type": "boolean"
                 },
                 "email": {
                     "type": "string"
@@ -2321,6 +3516,9 @@ const docTemplate = `{
                 "registered_at": {
                     "type": "string"
                 },
+                "role": {
+                    "type": "string"
+                },
                 "surname": {
                     "type": "string"
                 },
@@ -2329,6 +3527,88 @@ const docTemplate = `{
                 },
                 "username": {
                     "type": "string"
+                }
+            }
+        },
+        "model.PersonApplication": {
+            "type": "object",
+            "properties": {
+                "accepted": {
+                    "type": "boolean"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "application_id": {
+                    "type": "integer"
+                },
+                "birth_date": {
+                    "type": "string"
+                },
+                "blocked": {
+                    "type": "boolean"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "last_visit_at": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "person_id": {
+                    "type": "integer"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "photo": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "registered_at": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "surname": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.ResponseComplaintInput": {
+            "type": "object",
+            "properties": {
+                "admin_id": {
+                    "type": "integer"
+                },
+                "blocked": {
+                    "type": "boolean"
+                },
+                "complaint_id": {
+                    "type": "integer"
+                },
+                "response": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
                 }
             }
         },
@@ -2354,6 +3634,9 @@ const docTemplate = `{
                 },
                 "birth_date": {
                     "type": "string"
+                },
+                "blocked": {
+                    "type": "boolean"
                 },
                 "educational_level": {
                     "type": "string"
@@ -2400,6 +3683,9 @@ const docTemplate = `{
                 "registered_at": {
                     "type": "string"
                 },
+                "role": {
+                    "type": "string"
+                },
                 "specialty_id": {
                     "type": "integer"
                 },
@@ -2420,23 +3706,72 @@ const docTemplate = `{
                 }
             }
         },
-        "model.Subject": {
+        "model.StudentBriefInfo": {
             "type": "object",
             "properties": {
-                "faculty_id": {
-                    "type": "string"
-                },
-                "full_name": {
+                "birth_date": {
                     "type": "string"
                 },
                 "name": {
                     "type": "string"
                 },
-                "specialty_id": {
+                "photo": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "student_id": {
                     "type": "integer"
+                },
+                "surname": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.StudentFullInfo": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "birth_date": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "photo": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "surname": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Subject": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "semester": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
                 },
                 "subject_id": {
                     "type": "integer"
+                },
+                "subject_type": {
+                    "type": "string"
                 }
             }
         },
@@ -2448,6 +3783,9 @@ const docTemplate = `{
                 },
                 "birth_date": {
                     "type": "string"
+                },
+                "blocked": {
+                    "type": "boolean"
                 },
                 "email": {
                     "type": "string"
@@ -2485,6 +3823,9 @@ const docTemplate = `{
                 "registered_at": {
                     "type": "string"
                 },
+                "role": {
+                    "type": "string"
+                },
                 "salary": {
                     "type": "number"
                 },
@@ -2501,6 +3842,58 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.TeacherBriefInfo": {
+            "type": "object",
+            "properties": {
+                "birth_date": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "photo": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "surname": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.TeacherFullInfo": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "birth_date": {
+                    "type": "string"
+                },
+                "hire_date": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "photo": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "surname": {
+                    "type": "string"
+                },
+                "title": {
                     "type": "string"
                 }
             }
@@ -2573,8 +3966,14 @@ const docTemplate = `{
                 "name": {
                     "type": "string"
                 },
-                "specialty_id": {
-                    "type": "integer"
+                "semester": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "subject_type": {
+                    "type": "string"
                 }
             }
         },

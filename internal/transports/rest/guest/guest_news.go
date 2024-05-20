@@ -10,13 +10,12 @@ import (
 	"go.uber.org/zap"
 )
 
-func (h *GuestsHandler) InitGuestNewsRoutes(guest *mux.Router) *mux.Router {
+func (h *GuestsHandler) InitGuestNewsRoutes(guest *mux.Router) {
 	news := guest.PathPrefix("/news").Subrouter()
 	{
 		news.HandleFunc("", h.GetListNews).Methods(http.MethodGet)
 		news.HandleFunc("/{id:[0-9]+}", h.GetNews).Methods(http.MethodGet)
 	}
-	return news
 }
 
 // @Summary get news

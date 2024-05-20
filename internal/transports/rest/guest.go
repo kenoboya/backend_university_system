@@ -5,6 +5,7 @@ import (
 )
 
 func (h *Handler) initGuestsRoutes(guest *mux.Router) {
+	h.Guests.InitGuestNewsRoutes(guest)
 	faculties := h.Guests.InitGuestFacultiesRoutes(guest)
 	h.Guests.InitGuestSpecialtiesRoutes(faculties)
 }

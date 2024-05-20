@@ -225,4 +225,5 @@ type GuestSpecialties interface {
 type GuestRoutes interface {
 	InitGuestFacultiesRoutes(hubs *mux.Router) *mux.Router
 	InitGuestSpecialtiesRoutes(hubs *mux.Router)
+	InitGuestNewsRoutes(hubs *mux.Router)
 }

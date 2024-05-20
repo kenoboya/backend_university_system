@@ -17,7 +17,7 @@ type News struct {
 
 type CreateNewsInput struct {
 	Title      string    `db:"title" json:"title"`
-	Author     int64     `db:"person_id" json:"person_id"`
+	Author     int64     `db:"author_id" json:"person_id"`
 	Text       string    `db:"text" json:"text"`
 	TitleImage string    `db:"title_image" json:"title_image"`
 	Images     *[]string `db:"images" json:"images"`

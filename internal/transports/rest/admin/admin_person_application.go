@@ -112,7 +112,7 @@ func (h *AdminsHandler) GetPersonApplication(w http.ResponseWriter, r *http.Requ
 // @Tags admin-applications
 // @Accept json
 // @Produce json
-// @Param request body model.PeopleApplication true "Response to application"
+// @Param request body model.PersonApplication true "Response to application"
 // @Success 200 {string} string "OK"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
