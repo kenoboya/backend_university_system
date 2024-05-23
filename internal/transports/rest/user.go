@@ -6,20 +6,14 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func (h *Handler) initUsersRoutes(users *mux.Router) {
-	users.HandleFunc("/sign-up", h.Users.SignUp).Methods(http.MethodPost)
-	users.HandleFunc("/sign-in", h.Users.SignIn).Methods(http.MethodPost)
-	users.HandleFunc("/refresh", h.Users.Refresh).Methods(http.MethodGet)
-
-	complaints := users.PathPrefix("/complaints").Subrouter()
+func (h *Handler) initUsersRoutes(router *mux.Router) {
+	router.HandleFunc("/sign-up", h.Users.SignUp).Methods(http.MethodPost)
+	router.HandleFunc("/sign-in", h.Users.SignIn).Methods(http.MethodPost)
+	router.HandleFunc("/refresh", h.Users.Refresh).Methods(http.MethodGet)
+	user := router.PathPrefix("/users").Subrouter()
 	{
-		complaints.Use(h.authMiddleware)
-		complaints.HandleFunc("", h.Users.SubmitComplaint).Methods(http.MethodPost)
-	}
-
-	people := users.PathPrefix("/people").Subrouter()
-	{
-		people.Use(h.authMiddleware)
-		people.HandleFunc("", h.Users.SubmitPerson).Methods(http.MethodPost)
+		user.Use(h.authMiddleware)
+		h.Users.InitUserComplaintsRoutes(user)
+		h.Users.InitUserPeopleRoutes(user)
 	}
 }

@@ -3233,28 +3233,16 @@ const docTemplate = `{
                 "birth_date": {
                     "type": "string"
                 },
-                "blocked": {
-                    "type": "boolean"
-                },
-                "email": {
-                    "type": "string"
-                },
                 "employee_id": {
                     "type": "integer"
                 },
                 "hire_date": {
                     "type": "string"
                 },
-                "last_visit_at": {
-                    "type": "string"
-                },
                 "name": {
                     "type": "string"
                 },
                 "notes": {
-                    "type": "string"
-                },
-                "password": {
                     "type": "string"
                 },
                 "person_id": {
@@ -3269,12 +3257,6 @@ const docTemplate = `{
                         "type": "integer"
                     }
                 },
-                "registered_at": {
-                    "type": "string"
-                },
-                "role": {
-                    "type": "string"
-                },
                 "salary": {
                     "type": "number"
                 },
@@ -3286,9 +3268,6 @@ const docTemplate = `{
                 },
                 "user_id": {
                     "type": "integer"
-                },
-                "username": {
-                    "type": "string"
                 }
             }
         },
@@ -3338,22 +3317,13 @@ const docTemplate = `{
                 "birth_date": {
                     "type": "string"
                 },
-                "blocked": {
-                    "type": "boolean"
-                },
                 "date": {
-                    "type": "string"
-                },
-                "email": {
                     "type": "string"
                 },
                 "employee_id": {
                     "type": "integer"
                 },
                 "hire_date": {
-                    "type": "string"
-                },
-                "last_visit_at": {
                     "type": "string"
                 },
                 "lecture_room": {
@@ -3371,9 +3341,6 @@ const docTemplate = `{
                 "notes": {
                     "type": "string"
                 },
-                "password": {
-                    "type": "string"
-                },
                 "person_id": {
                     "type": "integer"
                 },
@@ -3385,12 +3352,6 @@ const docTemplate = `{
                     "items": {
                         "type": "integer"
                     }
-                },
-                "registered_at": {
-                    "type": "string"
-                },
-                "role": {
-                    "type": "string"
                 },
                 "salary": {
                     "type": "number"
@@ -3418,9 +3379,6 @@ const docTemplate = `{
                 },
                 "user_id": {
                     "type": "integer"
-                },
-                "username": {
-                    "type": "string"
                 }
             }
         },
@@ -3483,22 +3441,10 @@ const docTemplate = `{
                 "birth_date": {
                     "type": "string"
                 },
-                "blocked": {
-                    "type": "boolean"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "last_visit_at": {
-                    "type": "string"
-                },
                 "name": {
                     "type": "string"
                 },
                 "notes": {
-                    "type": "string"
-                },
-                "password": {
                     "type": "string"
                 },
                 "person_id": {
@@ -3513,81 +3459,27 @@ const docTemplate = `{
                         "type": "integer"
                     }
                 },
-                "registered_at": {
-                    "type": "string"
-                },
-                "role": {
-                    "type": "string"
-                },
                 "surname": {
                     "type": "string"
                 },
                 "user_id": {
                     "type": "integer"
-                },
-                "username": {
-                    "type": "string"
                 }
             }
         },
         "model.PersonApplication": {
             "type": "object",
             "properties": {
-                "accepted": {
-                    "type": "boolean"
-                },
-                "address": {
-                    "type": "string"
-                },
                 "application_id": {
                     "type": "integer"
-                },
-                "birth_date": {
-                    "type": "string"
-                },
-                "blocked": {
-                    "type": "boolean"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "last_visit_at": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "notes": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
                 },
                 "person_id": {
                     "type": "integer"
                 },
-                "phone": {
-                    "type": "string"
-                },
-                "photo": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "registered_at": {
-                    "type": "string"
-                },
                 "role": {
                     "type": "string"
                 },
-                "surname": {
-                    "type": "string"
-                },
-                "user_id": {
-                    "type": "integer"
-                },
-                "username": {
+                "status": {
                     "type": "string"
                 }
             }
@@ -3635,13 +3527,7 @@ const docTemplate = `{
                 "birth_date": {
                     "type": "string"
                 },
-                "blocked": {
-                    "type": "boolean"
-                },
                 "educational_level": {
-                    "type": "string"
-                },
-                "email": {
                     "type": "string"
                 },
                 "end_year": {
@@ -3656,16 +3542,10 @@ const docTemplate = `{
                 "group_id": {
                     "type": "string"
                 },
-                "last_visit_at": {
-                    "type": "string"
-                },
                 "name": {
                     "type": "string"
                 },
                 "notes": {
-                    "type": "string"
-                },
-                "password": {
                     "type": "string"
                 },
                 "person_id": {
@@ -3679,12 +3559,6 @@ const docTemplate = `{
                     "items": {
                         "type": "integer"
                     }
-                },
-                "registered_at": {
-                    "type": "string"
-                },
-                "role": {
-                    "type": "string"
                 },
                 "specialty_id": {
                     "type": "integer"
@@ -3700,9 +3574,6 @@ const docTemplate = `{
                 },
                 "user_id": {
                     "type": "integer"
-                },
-                "username": {
-                    "type": "string"
                 }
             }
         },
@@ -3784,28 +3655,16 @@ const docTemplate = `{
                 "birth_date": {
                     "type": "string"
                 },
-                "blocked": {
-                    "type": "boolean"
-                },
-                "email": {
-                    "type": "string"
-                },
                 "employee_id": {
                     "type": "integer"
                 },
                 "hire_date": {
                     "type": "string"
                 },
-                "last_visit_at": {
-                    "type": "string"
-                },
                 "name": {
                     "type": "string"
                 },
                 "notes": {
-                    "type": "string"
-                },
-                "password": {
                     "type": "string"
                 },
                 "person_id": {
@@ -3819,12 +3678,6 @@ const docTemplate = `{
                     "items": {
                         "type": "integer"
                     }
-                },
-                "registered_at": {
-                    "type": "string"
-                },
-                "role": {
-                    "type": "string"
                 },
                 "salary": {
                     "type": "number"
@@ -3840,9 +3693,6 @@ const docTemplate = `{
                 },
                 "user_id": {
                     "type": "integer"
-                },
-                "username": {
-                    "type": "string"
                 }
             }
         },

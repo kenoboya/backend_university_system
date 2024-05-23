@@ -86,7 +86,8 @@ type People interface {
 	Update(ctx context.Context, id int64, person model.UpdatePersonInput) error
 	Delete(ctx context.Context, id int64) error
 	GetListApplications(ctx context.Context) ([]model.PersonApplication, error)
-	GetApplication(ctx context.Context, personID int64) (model.PersonApplication, error)
+	GetApplicationByUserID(ctx context.Context, userID int64) ([]model.PersonApplication, error)
+	GetApplicationByID(ctx context.Context, applicationID int64) (model.PersonApplication, error)
 	ResponseToApplication(ctx context.Context, response model.PersonApplication) error
 	CreateApplicationPerson(ctx context.Context, person model.CreatePersonInput) error
 }

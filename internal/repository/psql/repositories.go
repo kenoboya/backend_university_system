@@ -74,9 +74,10 @@ type People interface {
 	Update(ctx context.Context, id int64, person model.UpdatePersonInput) error
 	Delete(ctx context.Context, id int64) error
 	GetAllApplications(ctx context.Context) ([]model.PersonApplication, error)
-	GetApplication(ctx context.Context, personID int64) (model.PersonApplication, error)
-	UpdateApplicationStatus(ctx context.Context, response bool, id int64) error
-	CreateApplicationPerson(ctx context.Context, personID int64) error
+	GetApplicationsByUserID(ctx context.Context, userID int64) ([]model.PersonApplication, error)
+	GetApplicationByID(ctx context.Context, applicationID int64) (model.PersonApplication, error)
+	UpdateApplicationStatus(ctx context.Context, status string, id int64) error
+	CreateApplicationPerson(ctx context.Context, input model.CreatePersonInput) error
 }
 type Teachers interface {
 	Create(ctx context.Context, teacher model.CreateTeacherInput) error

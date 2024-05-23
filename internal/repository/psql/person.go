@@ -2,6 +2,7 @@ package psql
 
 import (
 	"context"
+	"fmt"
 	"test-crud/internal/model"
 
 	"github.com/jmoiron/sqlx"
@@ -16,8 +17,10 @@ func NewPeopleRepository(db *sqlx.DB) *PeopleRepository {
 }
 
 func (r *PeopleRepository) Create(ctx context.Context, person model.CreatePersonInput) error {
-	_, err := r.db.NamedExec("INSERT INTO people(user_id,name,surname,birth_date,phone) VALUES(:user_id,:name,:surname,:birth_date, phone)", person)
+	_, err := r.db.NamedExec("INSERT INTO people(user_id,name,surname,birth_date,phone) VALUES(:user_id,:name,:surname,:birth_date, :phone)", person)
 	if err != nil {
+		fmt.Println("\nError: ", err)
+		fmt.Println(person.Phone)
 		return err
 	}
 	return nil
@@ -25,7 +28,7 @@ func (r *PeopleRepository) Create(ctx context.Context, person model.CreatePerson
 
 func (r *PeopleRepository) GetAll(ctx context.Context) ([]model.Person, error) {
 	people := []model.Person{}
-	err := r.db.Select(&people, "SELECT * FROM people JOIN users USING(user_id)")
+	err := r.db.Select(&people, "SELECT * FROM people")
 	if err != nil {
 		return people, err
 	}
@@ -34,7 +37,7 @@ func (r *PeopleRepository) GetAll(ctx context.Context) ([]model.Person, error) {
 
 func (r *PeopleRepository) GetById(ctx context.Context, id int64) (model.Person, error) {
 	var person model.Person
-	err := r.db.Get(&person, "SELECT * FROM people JOIN users USING(user_id) WHERE person_id=$1", id)
+	err := r.db.Get(&person, "SELECT * FROM people WHERE person_id=$1", id)
 	if err != nil {
 		return person, err
 	}
@@ -43,7 +46,7 @@ func (r *PeopleRepository) GetById(ctx context.Context, id int64) (model.Person,
 
 func (r *PeopleRepository) GetPersonByUserID(ctx context.Context, userID int64) (model.Person, error) {
 	var person model.Person
-	err := r.db.Get(&person, "SELECT * FROM people JOIN users USING(user_id) WHERE user_id=$1", userID)
+	err := r.db.Get(&person, "SELECT * FROM people WHERE user_id=$1", userID)
 	if err != nil {
 		return person, err
 	}
@@ -69,30 +72,38 @@ func (r *PeopleRepository) Delete(ctx context.Context, id int64) error {
 
 func (r *PeopleRepository) GetAllApplications(ctx context.Context) ([]model.PersonApplication, error) {
 	applications := []model.PersonApplication{}
-	err := r.db.Select(&applications, "SELECT * FROM applications_people JOIN people USING(person_id) JOIN users USING(user_id)")
+	err := r.db.Select(&applications, "SELECT * FROM applications_people")
 	if err != nil {
 		return applications, err
 	}
 	return applications, err
 }
-func (r *PeopleRepository) GetApplication(ctx context.Context, personID int64) (model.PersonApplication, error) {
+func (r *PeopleRepository) GetApplicationByID(ctx context.Context, applicationID int64) (model.PersonApplication, error) {
 	var application model.PersonApplication
-	err := r.db.Get(&application, "SELECT * FROM applications_people JOIN people USING(person_id) JOIN users USING(user_id) WHERE person_id=$1", personID)
+	err := r.db.Get(&application, "SELECT * FROM applications_people WHERE application_id=$1", applicationID)
 	if err != nil {
 		return application, err
 	}
 	return application, nil
 }
-func (r *PeopleRepository) UpdateApplicationStatus(ctx context.Context, response bool, id int64) error {
-	_, err := r.db.Exec("UPDATE applications_people SET accepted=$1, WHERE application_id=$2", response, id)
+func (r *PeopleRepository) GetApplicationsByUserID(ctx context.Context, userID int64) ([]model.PersonApplication, error) {
+	applications := []model.PersonApplication{}
+	err := r.db.Select(&applications, "SELECT * FROM applications_people WHERE user_id=$1", userID)
+	if err != nil {
+		return applications, err
+	}
+	return applications, err
+}
+func (r *PeopleRepository) UpdateApplicationStatus(ctx context.Context, status string, id int64) error {
+	_, err := r.db.Exec("UPDATE applications_people SET status=$1 WHERE application_id=$2", status, id)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *PeopleRepository) CreateApplicationPerson(ctx context.Context, personID int64) error {
-	_, err := r.db.NamedExec("INSERT INTO applications_people(person_id) VALUES(:person_id)", personID)
+func (r *PeopleRepository) CreateApplicationPerson(ctx context.Context, input model.CreatePersonInput) error {
+	_, err := r.db.Exec("INSERT INTO applications_people(user_id, role) VALUES($1, $2)", input.UserID, input.Role)
 	if err != nil {
 		return err
 	}

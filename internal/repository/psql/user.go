@@ -41,7 +41,7 @@ func (r *UsersRepository) GetByUsernameCredentials(ctx context.Context, username
 }
 func (r *UsersRepository) GetByRefreshToken(ctx context.Context, refreshToken string) (model.User, error) {
 	var user model.User
-	if err := r.db.Get(&user, "SELECT user_id, username, email, password, registered_at, last_visit_at FROM refresh_tokens JOIN users USING(user_id) WHERE token=$1 AND expires_at > NOW()", refreshToken); err != nil {
+	if err := r.db.Get(&user, "SELECT user_id, username, email, password, blocked,registered_at, last_visit_at, role FROM refresh_tokens JOIN users USING(user_id) WHERE token=$1 AND expires_at > NOW()", refreshToken); err != nil {
 		return user, err
 	}
 	return user, nil
@@ -60,7 +60,7 @@ func (r *UsersRepository) SetSession(ctx context.Context, userID int64, session 
 }
 
 func (r *UsersRepository) UpdateRole(ctx context.Context, role string, user_id int64) error {
-	_, err := r.db.Exec("UPDATE user SET role=$1 WHERE user_id=$2", role, user_id)
+	_, err := r.db.Exec("UPDATE users SET role=$1 WHERE user_id=$2", role, user_id)
 	if err != nil {
 		return err
 	}

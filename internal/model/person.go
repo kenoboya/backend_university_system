@@ -2,16 +2,22 @@ package model
 
 import "time"
 
+const (
+	Accepted      = "accepted"
+	Consideration = "consideration"
+	Denied        = "denied"
+)
+
 type Person struct {
 	PersonID  int64     `db:"person_id" json:"person_id"`
+	UserID    int64     `db:"user_id" json:"user_id"`
 	Name      string    `db:"name" json:"name"`
 	Surname   string    `db:"surname" json:"surname"`
 	BirthDate time.Time `db:"birth_date" json:"birth_date"`
 	Phone     string    `db:"phone" json:"phone"`
-	Address   string    `db:"address" json:"address"`
-	Photo     []byte    `db:"photo" json:"photo"`
-	Notes     string    `db:"notes" json:"notes"`
-	User
+	Address   *string   `db:"address" json:"address"`
+	Photo     *[]byte   `db:"photo" json:"photo"`
+	Notes     *string   `db:"notes" json:"notes"`
 }
 
 type PersonBriefInfo struct {
@@ -23,8 +29,8 @@ type PersonBriefInfo struct {
 
 type PersonFullInfo struct {
 	PersonBriefInfo
-	Phone   string `db:"phone" json:"phone"`
-	Address string `db:"address" json:"address"`
+	Phone   string  `db:"phone" json:"phone"`
+	Address *string `db:"address" json:"address"`
 }
 
 type CreatePersonInput struct {
@@ -46,7 +52,8 @@ type UpdatePersonInput struct {
 }
 
 type PersonApplication struct {
-	ApplicationID int64 `db:"application_id" json:"application_id"`
-	Person
-	Accepted bool `db:"accepted" json:"accepted"`
+	ApplicationID int64  `db:"application_id" json:"application_id"`
+	UserID        int64  `db:"user_id" json:"user_id"`
+	Role          string `db:"role" json:"role"`
+	Status        string `db:"status" json:"status"`
 }

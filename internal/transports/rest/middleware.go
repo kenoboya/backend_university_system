@@ -37,6 +37,8 @@ func (h *Handler) authMiddleware(next http.Handler) http.Handler {
 				zap.String("request_url", r.RequestURI),
 				zap.String("error", err.Error()),
 			)
+			w.WriteHeader(http.StatusForbidden)
+			return
 		}
 		ctx := context.WithValue(r.Context(), ctxUserID, user_id)
 		r = r.WithContext(ctx)
@@ -63,6 +65,8 @@ func (h *Handler) authAdminMiddleware(next http.Handler) http.Handler {
 				zap.String("request_url", r.RequestURI),
 				zap.String("error", err.Error()),
 			)
+			w.WriteHeader(http.StatusForbidden)
+			return
 		}
 		ctx := context.WithValue(r.Context(), ctxUserID, user_id)
 		r = r.WithContext(ctx)
@@ -89,6 +93,8 @@ func (h *Handler) authStudentMiddleware(next http.Handler) http.Handler {
 				zap.String("request_url", r.RequestURI),
 				zap.String("error", err.Error()),
 			)
+			w.WriteHeader(http.StatusForbidden)
+			return
 		}
 		ctx := context.WithValue(r.Context(), ctxUserID, user_id)
 		r = r.WithContext(ctx)
@@ -114,6 +120,8 @@ func (h *Handler) authTeacherMiddleware(next http.Handler) http.Handler {
 				zap.String("request_url", r.RequestURI),
 				zap.String("error", err.Error()),
 			)
+			w.WriteHeader(http.StatusForbidden)
+			return
 		}
 		ctx := context.WithValue(r.Context(), ctxUserID, user_id)
 		r = r.WithContext(ctx)
@@ -139,6 +147,8 @@ func (h *Handler) authEmployeeMiddleware(next http.Handler) http.Handler {
 				zap.String("request_url", r.RequestURI),
 				zap.String("error", err.Error()),
 			)
+			w.WriteHeader(http.StatusForbidden)
+			return
 		}
 		ctx := context.WithValue(r.Context(), ctxUserID, user_id)
 		r = r.WithContext(ctx)

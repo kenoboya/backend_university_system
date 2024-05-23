@@ -33,23 +33,29 @@ func (s *PeopleService) Delete(ctx context.Context, id int64) error {
 func (s *PeopleService) GetListApplications(ctx context.Context) ([]model.PersonApplication, error) {
 	return s.repo.GetAllApplications(ctx)
 }
-func (s *PeopleService) GetApplication(ctx context.Context, personID int64) (model.PersonApplication, error) {
-	return s.repo.GetApplication(ctx, personID)
+func (s *PeopleService) GetApplicationByID(ctx context.Context, applicationID int64) (model.PersonApplication, error) {
+	return s.repo.GetApplicationByID(ctx, applicationID)
+}
+func (s *PeopleService) GetApplicationByUserID(ctx context.Context, userID int64) ([]model.PersonApplication, error) {
+	return s.repo.GetApplicationsByUserID(ctx, userID)
 }
 func (s *PeopleService) ResponseToApplication(ctx context.Context, response model.PersonApplication) error {
-	if err := s.repo.UpdateApplicationStatus(ctx, response.Accepted, response.ApplicationID); err != nil {
+	if err := s.repo.UpdateApplicationStatus(ctx, response.Status, response.ApplicationID); err != nil {
 		return err
 	}
-	if !response.Accepted {
-		return s.Delete(ctx, response.PersonID)
+	if response.Status == model.Denied {
+		person, err := s.repo.GetPersonByUserID(ctx, response.UserID)
+		if err != nil {
+			return err
+		}
+		return s.Delete(ctx, person.PersonID)
 	}
 	return nil
 }
 
 func (s *PeopleService) CreateApplicationPerson(ctx context.Context, input model.CreatePersonInput) error {
-	person, err := s.repo.GetPersonByUserID(ctx, input.UserID)
-	if err != nil {
+	if err := s.repo.Create(ctx, input); err != nil {
 		return err
 	}
-	return s.repo.CreateApplicationPerson(ctx, person.PersonID)
+	return s.repo.CreateApplicationPerson(ctx, input)
 }

@@ -135,21 +135,13 @@ definitions:
         type: string
       birth_date:
         type: string
-      blocked:
-        type: boolean
-      email:
-        type: string
       employee_id:
         type: integer
       hire_date:
         type: string
-      last_visit_at:
-        type: string
       name:
         type: string
       notes:
-        type: string
-      password:
         type: string
       person_id:
         type: integer
@@ -159,10 +151,6 @@ definitions:
         items:
           type: integer
         type: array
-      registered_at:
-        type: string
-      role:
-        type: string
       salary:
         type: number
       surname:
@@ -171,8 +159,6 @@ definitions:
         type: string
       user_id:
         type: integer
-      username:
-        type: string
     type: object
   model.Faculty:
     properties:
@@ -204,17 +190,11 @@ definitions:
         type: string
       birth_date:
         type: string
-      blocked:
-        type: boolean
       date:
-        type: string
-      email:
         type: string
       employee_id:
         type: integer
       hire_date:
-        type: string
-      last_visit_at:
         type: string
       lecture_room:
         type: string
@@ -226,8 +206,6 @@ definitions:
         type: string
       notes:
         type: string
-      password:
-        type: string
       person_id:
         type: integer
       phone:
@@ -236,10 +214,6 @@ definitions:
         items:
           type: integer
         type: array
-      registered_at:
-        type: string
-      role:
-        type: string
       salary:
         type: number
       semester:
@@ -258,8 +232,6 @@ definitions:
         type: string
       user_id:
         type: integer
-      username:
-        type: string
     type: object
   model.News:
     properties:
@@ -300,17 +272,9 @@ definitions:
         type: string
       birth_date:
         type: string
-      blocked:
-        type: boolean
-      email:
-        type: string
-      last_visit_at:
-        type: string
       name:
         type: string
       notes:
-        type: string
-      password:
         type: string
       person_id:
         type: integer
@@ -320,56 +284,20 @@ definitions:
         items:
           type: integer
         type: array
-      registered_at:
-        type: string
-      role:
-        type: string
       surname:
         type: string
       user_id:
         type: integer
-      username:
-        type: string
     type: object
   model.PersonApplication:
     properties:
-      accepted:
-        type: boolean
-      address:
-        type: string
       application_id:
         type: integer
-      birth_date:
-        type: string
-      blocked:
-        type: boolean
-      email:
-        type: string
-      last_visit_at:
-        type: string
-      name:
-        type: string
-      notes:
-        type: string
-      password:
-        type: string
       person_id:
         type: integer
-      phone:
-        type: string
-      photo:
-        items:
-          type: integer
-        type: array
-      registered_at:
-        type: string
       role:
         type: string
-      surname:
-        type: string
-      user_id:
-        type: integer
-      username:
+      status:
         type: string
     type: object
   model.ResponseComplaintInput:
@@ -400,11 +328,7 @@ definitions:
         type: string
       birth_date:
         type: string
-      blocked:
-        type: boolean
       educational_level:
-        type: string
-      email:
         type: string
       end_year:
         type: string
@@ -414,13 +338,9 @@ definitions:
         type: string
       group_id:
         type: string
-      last_visit_at:
-        type: string
       name:
         type: string
       notes:
-        type: string
-      password:
         type: string
       person_id:
         type: integer
@@ -430,10 +350,6 @@ definitions:
         items:
           type: integer
         type: array
-      registered_at:
-        type: string
-      role:
-        type: string
       specialty_id:
         type: integer
       start_year:
@@ -444,8 +360,6 @@ definitions:
         type: string
       user_id:
         type: integer
-      username:
-        type: string
     type: object
   model.StudentBriefInfo:
     properties:
@@ -498,21 +412,13 @@ definitions:
         type: string
       birth_date:
         type: string
-      blocked:
-        type: boolean
-      email:
-        type: string
       employee_id:
         type: integer
       hire_date:
         type: string
-      last_visit_at:
-        type: string
       name:
         type: string
       notes:
-        type: string
-      password:
         type: string
       person_id:
         type: integer
@@ -522,10 +428,6 @@ definitions:
         items:
           type: integer
         type: array
-      registered_at:
-        type: string
-      role:
-        type: string
       salary:
         type: number
       surname:
@@ -536,8 +438,6 @@ definitions:
         type: string
       user_id:
         type: integer
-      username:
-        type: string
     type: object
   model.TeacherBriefInfo:
     properties:

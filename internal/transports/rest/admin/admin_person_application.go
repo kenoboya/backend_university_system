@@ -16,8 +16,9 @@ func (h *AdminsHandler) InitAdminPeopleRequestsRoutes(application *mux.Router) {
 	people := application.PathPrefix("/people").Subrouter()
 	{
 		people.HandleFunc("", h.GetPeopleApplications).Methods(http.MethodGet)
+		people.HandleFunc("/users/{id:[0-9]+}", h.GetPersonApplications).Methods(http.MethodGet)
 		people.HandleFunc("/{id:[0-9]+}", h.GetPersonApplication).Methods(http.MethodGet)
-		people.HandleFunc("/{id:[0-9]+}", h.ResponseToApplication).Methods(http.MethodPatch)
+		people.HandleFunc("", h.ResponseToApplication).Methods(http.MethodPatch)
 	}
 }
 
@@ -57,12 +58,62 @@ func (h *AdminsHandler) GetPeopleApplications(w http.ResponseWriter, r *http.Req
 	w.Write(response)
 }
 
-// @Summary Get person application
-// @Description receive applications to create a person
+// @Summary Get person applications
+// @Description get person applications
 // @Tags admin-applications
 // @Accept json
 // @Produce json
-// @Param id path int true "Person ID for getting application on person"
+// @Param id path int true "User ID for getting application on person"
+// @Success 200 {object} model.PersonApplication "Accepted"
+// @Failure 400 {string} string "Bad request"
+// @Failure 500 {string} string "Internal Server Error"
+// @Router /admin/hub/applications/people/user/{id} [get]
+func (h *AdminsHandler) GetPersonApplications(w http.ResponseWriter, r *http.Request) {
+	id, err := common.GetIdFromRequest(r)
+	if err != nil {
+		zap.S().Error(
+			zap.String("package", "transport/rest/admin"),
+			zap.String("file", "admin_person_request.go"),
+			zap.String("function", "GetPersonApplication()"),
+			zap.Error(err),
+		)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	applications, err := h.services.People.GetApplicationByUserID(context.TODO(), id)
+	if err != nil {
+		zap.S().Error(
+			zap.String("package", "transport/rest/admin"),
+			zap.String("file", "admin_person_request.go"),
+			zap.String("function", "GetPersonApplication()"),
+			zap.Error(err),
+		)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	response, err := json.Marshal(applications)
+	if err != nil {
+		zap.S().Error(
+			zap.String("package", "transport/rest/admin"),
+			zap.String("file", "admin_person_request.go"),
+			zap.String("function", "GetPersonApplication()"),
+			zap.Error(err),
+		)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.Header().Add("Context-Type", "application/json")
+	w.Write(response)
+}
+
+// @Summary Get application
+// @Description get application
+// @Tags admin-applications
+// @Accept json
+// @Produce json
+// @Param id path int true "Application ID for getting application on person"
 // @Success 200 {object} model.PersonApplication "Accepted"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
@@ -80,7 +131,7 @@ func (h *AdminsHandler) GetPersonApplication(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	application, err := h.services.People.GetApplication(context.TODO(), id)
+	application, err := h.services.People.GetApplicationByID(context.TODO(), id)
 	if err != nil {
 		zap.S().Error(
 			zap.String("package", "transport/rest/admin"),
@@ -112,11 +163,10 @@ func (h *AdminsHandler) GetPersonApplication(w http.ResponseWriter, r *http.Requ
 // @Tags admin-applications
 // @Accept json
 // @Produce json
-// @Param request body model.PersonApplication true "Response to application"
 // @Success 200 {string} string "OK"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /admin/hub/applications/people/{id} [patch]
+// @Router /admin/hub/applications/people [patch]
 func (h *AdminsHandler) ResponseToApplication(w http.ResponseWriter, r *http.Request) {
 	reqBytes, err := io.ReadAll(r.Body)
 	if err != nil {
@@ -152,7 +202,7 @@ func (h *AdminsHandler) ResponseToApplication(w http.ResponseWriter, r *http.Req
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	if response.Accepted {
+	if response.Status == model.Accepted {
 		if err := h.services.Users.ChangeRole(context.TODO(), response.Role, response.UserID); err != nil {
 			zap.S().Error(
 				zap.String("package", "transport/rest/admin"),

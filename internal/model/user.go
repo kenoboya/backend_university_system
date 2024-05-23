@@ -5,8 +5,8 @@ import (
 )
 
 const (
-	Blocked   = true
-	Unblocked = false
+	Blocked   = "blocked"
+	Unblocked = "unblocked"
 
 	RoleAdmin    = "admin"
 	RoleTeacher  = "teacher"
@@ -22,13 +22,13 @@ type User struct {
 	Password     string     `db:"password" json:"password"`
 	RegisteredAt time.Time  `db:"registered_at" json:"registered_at"`
 	LastVisitAt  *time.Time `db:"last_visit_at" json:"last_visit_at"`
-	Blocked      bool       `db:"blocked" json:"blocked"`
+	Blocked      string     `db:"blocked" json:"blocked,omitempty"`
 	Role         string     `db:"role"`
 	// Verification Verification `json:"verification"`
 }
 
 func (u *User) IsBlocked() bool {
-	return u.Blocked
+	return u.Blocked == Blocked
 }
 
 type UserSignUpInput struct {

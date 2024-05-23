@@ -68,6 +68,9 @@ func (s *UsersService) SignIn(ctx context.Context, input model.UserSignInInput) 
 
 func (s *UsersService) Refresh(ctx context.Context, refreshToken string) (Tokens, error) {
 	user, err := s.repo.GetByRefreshToken(ctx, refreshToken)
+	if user.IsBlocked() {
+		return Tokens{}, err
+	}
 	if err != nil {
 		return Tokens{}, err
 	}

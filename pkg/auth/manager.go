@@ -14,7 +14,7 @@ var (
 	ErrorGettingClaimsFromToken = errors.New("error get claims from token")
 	ErrEmptySecretKey           = errors.New("secret key is empty")
 	ErrParseClaims              = errors.New("id claim is not a valid to parse")
-	ErrProtectedArea            = errors.New("No required rights")
+	ErrProtectedArea            = errors.New("no required rights")
 )
 
 type TokenManager interface {

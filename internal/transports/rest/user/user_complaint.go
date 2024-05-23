@@ -7,8 +7,16 @@ import (
 	"net/http"
 	"test-crud/internal/model"
 
+	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 )
+
+func (h *UsersHandler) InitUserComplaintsRoutes(users *mux.Router) {
+	complaints := users.PathPrefix("/complaints").Subrouter()
+	{
+		complaints.HandleFunc("", h.SubmitComplaint).Methods(http.MethodPost)
+	}
+}
 
 // @Summary create complaint
 // @Description create complaint

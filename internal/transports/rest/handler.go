@@ -152,9 +152,13 @@ type Users interface {
 	SignUp(w http.ResponseWriter, r *http.Request)
 	SignIn(w http.ResponseWriter, r *http.Request)
 	Refresh(w http.ResponseWriter, r *http.Request)
-
+	UserRoutes
 	SubmitComplaint(w http.ResponseWriter, r *http.Request)
 	SubmitPerson(w http.ResponseWriter, r *http.Request)
+}
+type UserRoutes interface {
+	InitUserComplaintsRoutes(hubs *mux.Router)
+	InitUserPeopleRoutes(hubs *mux.Router)
 }
 type Students interface {
 	Profile

@@ -7,8 +7,16 @@ import (
 	"net/http"
 	"test-crud/internal/model"
 
+	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 )
+
+func (h *UsersHandler) InitUserPeopleRoutes(users *mux.Router) {
+	people := users.PathPrefix("/people").Subrouter()
+	{
+		people.HandleFunc("", h.SubmitPerson).Methods(http.MethodPost)
+	}
+}
 
 // @Summary create person
 // @Description create person
