@@ -20,12 +20,12 @@ func (s *NewsService) Create(ctx context.Context, news model.CreateNewsInput) er
 func (s *NewsService) GetList(ctx context.Context) ([]model.News, error) {
 	return s.repo.GetAll(ctx)
 }
-func (s *NewsService) GetNews(ctx context.Context, newsID int64) (model.News, error) {
+func (s *NewsService) GetNews(ctx context.Context, newsID uint64) (model.News, error) {
 	return s.repo.GetById(ctx, newsID)
 }
-func (s *NewsService) Update(ctx context.Context, newsID int64, news model.UpdateNewsInput) error {
+func (s *NewsService) Update(ctx context.Context, newsID uint64, news model.UpdateNewsInput) error {
 	return s.repo.Update(ctx, newsID, news)
 }
-func (s *NewsService) Delete(ctx context.Context, newsID int64) error {
+func (s *NewsService) Delete(ctx context.Context, newsID uint64) error {
 	return s.repo.Delete(ctx, newsID)
 }

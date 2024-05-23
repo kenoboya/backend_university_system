@@ -114,7 +114,7 @@ func (h *AdminsHandler) UpdateSpecialty(w http.ResponseWriter, r *http.Request) 
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	err = h.services.Specialties.Update(context.TODO(), id, specialty)
+	err = h.services.Specialties.Update(context.TODO(), uint16(id), specialty)
 	if err != nil {
 		zap.S().Error(
 			zap.String("package", "transport/rest/admin"),
@@ -150,7 +150,7 @@ func (h *AdminsHandler) DeleteSpecialty(w http.ResponseWriter, r *http.Request) 
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	if err := h.services.Specialties.Delete(context.TODO(), id); err != nil {
+	if err := h.services.Specialties.Delete(context.TODO(), uint16(id)); err != nil {
 		zap.S().Error(
 			zap.String("package", "transport/rest/admin"),
 			zap.String("file", "admin_specialty.go"),

@@ -16,7 +16,7 @@ const (
 )
 
 type User struct {
-	UserID       int64      `db:"user_id" json:"user_id"`
+	UserID       uint64     `db:"user_id" json:"user_id"`
 	Username     string     `db:"username" json:"username"`
 	Email        string     `db:"email" json:"email"`
 	Password     string     `db:"password" json:"password"`

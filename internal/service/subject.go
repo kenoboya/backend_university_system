@@ -29,13 +29,13 @@ func (s *SubjectsService) Create(ctx context.Context, subject model.CreateSubjec
 func (s *SubjectsService) GetAll(ctx context.Context) ([]model.Subject, error) {
 	return s.repo.GetAll(ctx)
 }
-func (s *SubjectsService) GetById(ctx context.Context, id int64) (model.Subject, error) {
+func (s *SubjectsService) GetById(ctx context.Context, id uint64) (model.Subject, error) {
 	return s.repo.GetById(ctx, id)
 }
-func (s *SubjectsService) Update(ctx context.Context, id int64, subject model.UpdateSubjectInput) error {
+func (s *SubjectsService) Update(ctx context.Context, id uint64, subject model.UpdateSubjectInput) error {
 	return s.repo.Update(ctx, id, subject)
 }
-func (s *SubjectsService) Delete(ctx context.Context, id int64) error {
+func (s *SubjectsService) Delete(ctx context.Context, id uint64) error {
 	return s.repo.Delete(ctx, id)
 }
 
@@ -49,10 +49,10 @@ func (s *LessonsService) Create(ctx context.Context, lesson model.CreateLessonIn
 func (s *LessonsService) GetAll(ctx context.Context) ([]model.Lesson, error) {
 	return s.repo.GetAll(ctx)
 }
-func (s *LessonsService) GetById(ctx context.Context, id int64) (model.Lesson, error) {
+func (s *LessonsService) GetById(ctx context.Context, id uint64) (model.Lesson, error) {
 	return s.repo.GetById(ctx, id)
 }
-func (s *LessonsService) Delete(ctx context.Context, id int64) error {
+func (s *LessonsService) Delete(ctx context.Context, id uint64) error {
 	return s.repo.Delete(ctx, id)
 }
 func (s *LessonsService) StudentSchedule(ctx context.Context, student model.Student) ([]model.Lesson, error) {

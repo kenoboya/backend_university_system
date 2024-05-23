@@ -30,7 +30,7 @@ func (r NewsRepository) GetAll(ctx context.Context) ([]model.News, error) {
 	}
 	return news, nil
 }
-func (r NewsRepository) GetById(ctx context.Context, id int64) (model.News, error) {
+func (r NewsRepository) GetById(ctx context.Context, id uint64) (model.News, error) {
 	var news model.News
 	err := r.db.Get(&news, "SELECT news.*, people.name, people.surname, people.birth_date, people.photo FROM news JOIN people ON news.author_id = people.person_id WHERE news_id = $1", id)
 	if err != nil {
@@ -38,7 +38,7 @@ func (r NewsRepository) GetById(ctx context.Context, id int64) (model.News, erro
 	}
 	return news, nil
 }
-func (r NewsRepository) Update(ctx context.Context, id int64, news model.UpdateNewsInput) error {
+func (r NewsRepository) Update(ctx context.Context, id uint64, news model.UpdateNewsInput) error {
 	_, err := r.db.Exec("UPDATE news SET title = $1, text = $2, title_image = $3, images = $4, links = $5 WHERE news_id = $6",
 		news.Title, news.Text, news.TitleImage, news.Images, news.Links, id)
 	if err != nil {
@@ -46,7 +46,7 @@ func (r NewsRepository) Update(ctx context.Context, id int64, news model.UpdateN
 	}
 	return nil
 }
-func (r NewsRepository) Delete(ctx context.Context, id int64) error {
+func (r NewsRepository) Delete(ctx context.Context, id uint64) error {
 	_, err := r.db.Exec("DELETE FROM news WHERE news_id = $1", id)
 	if err != nil {
 		return err

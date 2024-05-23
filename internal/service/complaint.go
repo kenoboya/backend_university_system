@@ -28,10 +28,10 @@ func (s *ComplaintsService) GetAll(ctx context.Context) ([]model.Complaint, erro
 	return s.repo.GetAll(ctx)
 }
 
-func (s *ComplaintsService) GetById(ctx context.Context, id int64) (model.Complaint, error) {
+func (s *ComplaintsService) GetById(ctx context.Context, id uint64) (model.Complaint, error) {
 	return s.repo.GetById(ctx, id)
 }
 
-func (s *ComplaintsService) Response(ctx context.Context, complaintID int64, response model.ResponseComplaintInput) error {
+func (s *ComplaintsService) Response(ctx context.Context, complaintID uint64, response model.ResponseComplaintInput) error {
 	return s.repo.Response(ctx, complaintID, response.Response)
 }

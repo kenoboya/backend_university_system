@@ -6,3 +6,6 @@ http:
 auth:
   accessTokenTTL: 15m
   refreshTokenTTL: 720h
+stage:
+  accessTokenTTL: 24h
+  refreshTokenTTL: 720h

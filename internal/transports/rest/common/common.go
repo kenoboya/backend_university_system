@@ -8,7 +8,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func GetIdFromRequest(r *http.Request) (int64, error) {
+func GetIdFromRequest(r *http.Request) (uint64, error) {
 	vars := mux.Vars(r)
 	id, err := strconv.ParseInt(vars["id"], 10, 64)
 	if err != nil {
@@ -17,7 +17,7 @@ func GetIdFromRequest(r *http.Request) (int64, error) {
 	if id == 0 {
 		return 0, errors.New("id couldn't be zero")
 	}
-	return id, nil
+	return uint64(id), nil
 }
 
 func GetIdStringFromRequest(r *http.Request, nameID string) (string, error) {

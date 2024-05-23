@@ -53,81 +53,81 @@ func NewServices(deps Deps) *Services {
 type Students interface {
 	Create(ctx context.Context, student model.CreateStudentInput) error
 	GetAll(ctx context.Context) ([]model.Student, error)
-	GetById(ctx context.Context, id int64) (model.Student, error)
-	Update(ctx context.Context, id int64, student model.UpdateStudentInput) error
-	Delete(ctx context.Context, id int64) error
-	GetStudentProfile(ctx context.Context, id int64) (model.StudentBriefInfo, error)
-	GetExtendedStudentProfile(ctx context.Context, id int64) (model.StudentFullInfo, error)
-	GetStudentsAttendance(ctx context.Context, lesson_id int64) ([]model.AttendanceRecord, error)
-	GetStudentsGrades(ctx context.Context, lesson_id int64) ([]model.Grade, error)
+	GetById(ctx context.Context, id uint64) (model.Student, error)
+	Update(ctx context.Context, id uint64, student model.UpdateStudentInput) error
+	Delete(ctx context.Context, id uint64) error
+	GetStudentProfile(ctx context.Context, id uint64) (model.StudentBriefInfo, error)
+	GetExtendedStudentProfile(ctx context.Context, id uint64) (model.StudentFullInfo, error)
+	GetStudentsAttendance(ctx context.Context, lesson_id uint64) ([]model.AttendanceRecord, error)
+	GetStudentsGrades(ctx context.Context, lesson_id uint64) ([]model.Grade, error)
 }
 type Users interface {
 	SignUp(ctx context.Context, input model.UserSignUpInput) error
 	SignIn(ctx context.Context, input model.UserSignInInput) (Tokens, error)
 	Refresh(ctx context.Context, refreshToken string) (Tokens, error)
-	ChangeRole(ctx context.Context, role string, user_id int64) error
+	ChangeRole(ctx context.Context, role string, user_id uint64) error
 }
 type Teachers interface {
 	Create(ctx context.Context, teacher model.CreateTeacherInput) error
 	GetAll(ctx context.Context) ([]model.Teacher, error)
-	GetById(ctx context.Context, id int64) (model.Teacher, error)
-	Update(ctx context.Context, id int64, teacher model.UpdateTeacherInput) error
-	Delete(ctx context.Context, id int64) error
-	GetTeacherProfile(ctx context.Context, id int64) (model.TeacherBriefInfo, error)
-	GetExtendedTeacherProfile(ctx context.Context, id int64) (model.TeacherFullInfo, error)
-	MarkAttendance(ctx context.Context, lesson_id int64, attendanceRecord model.AttendanceRecord) error
-	EvaluteStudent(ctx context.Context, lesson_id int64, grade model.Grade) error
+	GetById(ctx context.Context, id uint64) (model.Teacher, error)
+	Update(ctx context.Context, id uint64, teacher model.UpdateTeacherInput) error
+	Delete(ctx context.Context, id uint64) error
+	GetTeacherProfile(ctx context.Context, id uint64) (model.TeacherBriefInfo, error)
+	GetExtendedTeacherProfile(ctx context.Context, id uint64) (model.TeacherFullInfo, error)
+	MarkAttendance(ctx context.Context, lesson_id uint64, attendanceRecord model.AttendanceRecord) error
+	EvaluteStudent(ctx context.Context, lesson_id uint64, grade model.Grade) error
 }
 
 type People interface {
 	Create(ctx context.Context, person model.CreatePersonInput) error
 	GetAll(ctx context.Context) ([]model.Person, error)
-	GetById(ctx context.Context, id int64) (model.Person, error)
-	Update(ctx context.Context, id int64, person model.UpdatePersonInput) error
-	Delete(ctx context.Context, id int64) error
+	GetById(ctx context.Context, id uint64) (model.Person, error)
+	Update(ctx context.Context, id uint64, person model.UpdatePersonInput) error
+	Delete(ctx context.Context, id uint64) error
 	GetListApplications(ctx context.Context) ([]model.PersonApplication, error)
-	GetApplicationByUserID(ctx context.Context, userID int64) ([]model.PersonApplication, error)
-	GetApplicationByID(ctx context.Context, applicationID int64) (model.PersonApplication, error)
+	GetApplicationByUserID(ctx context.Context, userID uint64) ([]model.PersonApplication, error)
+	GetApplicationByID(ctx context.Context, applicationID uint64) (model.PersonApplication, error)
 	ResponseToApplication(ctx context.Context, response model.PersonApplication) error
 	CreateApplicationPerson(ctx context.Context, person model.CreatePersonInput) error
 }
 type Admins interface {
 	TryBlockUser(ctx context.Context, response model.ResponseComplaintInput) error
-	UnblockUser(ctx context.Context, userID int64) error
+	UnblockUser(ctx context.Context, userID uint64) error
 }
 type News interface {
 	Create(ctx context.Context, news model.CreateNewsInput) error
 	GetList(ctx context.Context) ([]model.News, error)
-	GetNews(ctx context.Context, newsID int64) (model.News, error)
-	Update(ctx context.Context, newsID int64, news model.UpdateNewsInput) error
-	Delete(ctx context.Context, newsID int64) error
+	GetNews(ctx context.Context, newsID uint64) (model.News, error)
+	Update(ctx context.Context, newsID uint64, news model.UpdateNewsInput) error
+	Delete(ctx context.Context, newsID uint64) error
 }
 type Complaints interface {
 	Create(ctx context.Context, complaint model.CreateComplaintInput) error
 	GetAll(ctx context.Context) ([]model.Complaint, error)
-	GetById(ctx context.Context, id int64) (model.Complaint, error)
-	Response(ctx context.Context, complaintID int64, response model.ResponseComplaintInput) error
+	GetById(ctx context.Context, id uint64) (model.Complaint, error)
+	Response(ctx context.Context, complaintID uint64, response model.ResponseComplaintInput) error
 }
 type Employees interface {
 	Create(ctx context.Context, employee model.CreateEmployeeInput) error
 	GetAll(ctx context.Context) ([]model.Employee, error)
-	GetById(ctx context.Context, id int64) (model.Employee, error)
-	Update(ctx context.Context, id int64, teacher model.UpdateEmployeeInput) error
-	Delete(ctx context.Context, id int64) error
+	GetById(ctx context.Context, id uint64) (model.Employee, error)
+	Update(ctx context.Context, id uint64, teacher model.UpdateEmployeeInput) error
+	Delete(ctx context.Context, id uint64) error
 }
 type Subjects interface {
 	Create(ctx context.Context, subject model.CreateSubjectInput) error
 	GetAll(ctx context.Context) ([]model.Subject, error)
-	GetById(ctx context.Context, id int64) (model.Subject, error)
-	Update(ctx context.Context, id int64, subject model.UpdateSubjectInput) error
-	Delete(ctx context.Context, id int64) error
+	GetById(ctx context.Context, id uint64) (model.Subject, error)
+	Update(ctx context.Context, id uint64, subject model.UpdateSubjectInput) error
+	Delete(ctx context.Context, id uint64) error
 	GetStudentSubjects(ctx context.Context, student model.Student) ([]model.Subject, error)
 }
 type Lessons interface {
 	Create(ctx context.Context, lesson model.CreateLessonInput) error
 	GetAll(ctx context.Context) ([]model.Lesson, error)
-	GetById(ctx context.Context, id int64) (model.Lesson, error)
-	Delete(ctx context.Context, id int64) error
+	GetById(ctx context.Context, id uint64) (model.Lesson, error)
+	Delete(ctx context.Context, id uint64) error
 	StudentSchedule(ctx context.Context, student model.Student) ([]model.Lesson, error)
 	TeacherSchedule(ctx context.Context, teacher model.Teacher) ([]model.Lesson, error)
 }
@@ -140,9 +140,9 @@ type Faculties interface {
 type Specialties interface {
 	Create(ctx context.Context, specialty model.CreateSpecialtyInput) error
 	GetAll(ctx context.Context) ([]model.Specialty, error)
-	GetById(ctx context.Context, id int64) (model.Specialty, error)
-	Update(ctx context.Context, id int64, specialty model.UpdateSpecialtyInput) error
-	Delete(ctx context.Context, id int64) error
+	GetById(ctx context.Context, id uint16) (model.Specialty, error)
+	Update(ctx context.Context, id uint16, specialty model.UpdateSpecialtyInput) error
+	Delete(ctx context.Context, id uint16) error
 	GetSpecialtiesByFacultyID(ctx context.Context, faculty_id string) ([]model.Specialty, error)
 }
 type Groups interface {

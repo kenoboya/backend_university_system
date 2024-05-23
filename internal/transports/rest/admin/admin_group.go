@@ -17,8 +17,8 @@ func (h *AdminsHandler) InitAdminGroupsRoutes(admin *mux.Router) {
 	{
 		groups.HandleFunc("", h.CreateGroup).Methods(http.MethodPost)
 		groups.HandleFunc("", h.GetGroups).Methods(http.MethodGet)
-		groups.HandleFunc("/{group_id:[0-9]+}", h.GetGroups).Methods(http.MethodGet)
-		groups.HandleFunc("/{group_id:[0-9]+}", h.DeleteGroup).Methods(http.MethodDelete)
+		groups.HandleFunc("/{group_id}", h.GetGroups).Methods(http.MethodGet)
+		groups.HandleFunc("/{group_id}", h.DeleteGroup).Methods(http.MethodDelete)
 	}
 }
 

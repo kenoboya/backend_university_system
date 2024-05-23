@@ -47,7 +47,7 @@ func (r *UsersRepository) GetByRefreshToken(ctx context.Context, refreshToken st
 	return user, nil
 }
 
-func (r *UsersRepository) SetSession(ctx context.Context, userID int64, session model.Session) error {
+func (r *UsersRepository) SetSession(ctx context.Context, userID uint64, session model.Session) error {
 	_, err := r.db.Exec("DELETE FROM refresh_tokens WHERE user_id=$1", userID)
 	if err != nil {
 		return err
@@ -59,7 +59,7 @@ func (r *UsersRepository) SetSession(ctx context.Context, userID int64, session 
 	return nil
 }
 
-func (r *UsersRepository) UpdateRole(ctx context.Context, role string, user_id int64) error {
+func (r *UsersRepository) UpdateRole(ctx context.Context, role string, user_id uint64) error {
 	_, err := r.db.Exec("UPDATE users SET role=$1 WHERE user_id=$2", role, user_id)
 	if err != nil {
 		return err

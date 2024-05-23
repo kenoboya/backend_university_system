@@ -96,6 +96,6 @@ func (s *UsersService) createSession(ctx context.Context, user *model.User) (Tok
 	err = s.repo.SetSession(ctx, user.UserID, session)
 	return res, err
 }
-func (s *UsersService) ChangeRole(ctx context.Context, role string, user_id int64) error {
+func (s *UsersService) ChangeRole(ctx context.Context, role string, user_id uint64) error {
 	return s.repo.UpdateRole(ctx, role, user_id)
 }

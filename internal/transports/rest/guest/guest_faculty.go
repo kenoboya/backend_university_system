@@ -14,7 +14,7 @@ func (h *GuestsHandler) InitGuestFacultiesRoutes(guest *mux.Router) *mux.Router 
 	faculties := guest.PathPrefix("/faculties").Subrouter()
 	{
 		faculties.HandleFunc("", h.GetFaculties).Methods(http.MethodGet)
-		faculties.HandleFunc("/{id:[0-9]+}", h.GetFaculty).Methods(http.MethodGet)
+		faculties.HandleFunc("/{faculty_id}", h.GetFaculty).Methods(http.MethodGet)
 	}
 	return faculties
 }
@@ -60,11 +60,11 @@ func (h *GuestsHandler) GetFaculties(w http.ResponseWriter, r *http.Request) {
 // @Tags guest-faculties
 // @Accept json
 // @Produce json
-// @Param id path string true "ID for getting faculty"
+// @Param faculty_id path string true "ID for getting faculty"
 // @Success 200 {object} model.Faculty "Accepted"
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /faculties/{id} [get]
+// @Router /faculties/{faculty_id} [get]
 func (h *GuestsHandler) GetFaculty(w http.ResponseWriter, r *http.Request) {
 	id, err := common.GetIdStringFromRequest(r, "faculty_id")
 	if err != nil {
@@ -77,7 +77,6 @@ func (h *GuestsHandler) GetFaculty(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-
 	faculty, err := h.facultiesService.GetById(context.TODO(), id)
 	if err != nil {
 		zap.S().Error(

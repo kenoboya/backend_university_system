@@ -18,9 +18,9 @@ var (
 )
 
 type TokenManager interface {
-	NewJWT(user_ID int64, role string, ttl time.Duration) (string, error)
-	VerifyToken(accessToken string) (int64, error)
-	VerifyTokenByRole(accessToken string, role string) (int64, error)
+	NewJWT(user_ID uint64, role string, ttl time.Duration) (string, error)
+	VerifyToken(accessToken string) (uint64, error)
+	VerifyTokenByRole(accessToken string, role string) (uint64, error)
 	NewRefreshToken() (string, error)
 }
 
@@ -36,7 +36,7 @@ func NewManager(secretKey string) (*Manager, error) {
 		secretKey: secretKey,
 	}, nil
 }
-func (m *Manager) NewJWT(user_ID int64, role string, ttl time.Duration) (string, error) {
+func (m *Manager) NewJWT(user_ID uint64, role string, ttl time.Duration) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"id":   user_ID,
 		"role": role,
@@ -49,37 +49,37 @@ func (m *Manager) NewJWT(user_ID int64, role string, ttl time.Duration) (string,
 	return tokenString, nil
 }
 
-func (m *Manager) VerifyToken(accessToken string) (int64, error) {
+func (m *Manager) VerifyToken(accessToken string) (uint64, error) {
 	claims, err := m.verifyToken(accessToken)
 	if err != nil {
-		return -1, err
+		return 0, err
 	}
 	id, ok := claims["id"].(float64)
 	if !ok {
 		return 0, ErrParseClaims
 	}
-	userID := int64(id)
+	userID := uint64(id)
 	return userID, nil
 }
 
-func (m *Manager) VerifyTokenByRole(accessToken string, role string) (int64, error) {
+func (m *Manager) VerifyTokenByRole(accessToken string, role string) (uint64, error) {
 	claims, err := m.verifyToken(accessToken)
 	if err != nil {
-		return -1, err
+		return 0, err
 	}
 	roleStatus, ok := claims["role"].(string)
 	if !ok {
-		return -1, ErrParseClaims
+		return 0, ErrParseClaims
 	}
 	if roleStatus != role {
-		return -1, ErrProtectedArea
+		return 0, ErrProtectedArea
 	}
 
 	id, ok := claims["id"].(float64)
 	if !ok {
 		return 0, ErrParseClaims
 	}
-	userID := int64(id)
+	userID := uint64(id)
 	return userID, nil
 }
 func (m *Manager) verifyToken(accessToken string) (jwt.MapClaims, error) {

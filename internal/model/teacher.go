@@ -1,8 +1,8 @@
 package model
 
 type Teacher struct {
-	TeacherID int64 `db:"teacher_id" json:"teacher_id"`
-	Employee
+	TeacherID  uint64 `db:"teacher_id" json:"teacher_id"`
+	EmployeeID uint64 `db:"employee_id" json:"employee_id"`
 	// Subjects []Subject
 }
 
@@ -15,13 +15,13 @@ type TeacherFullInfo struct {
 }
 
 type CreateTeacherInput struct {
-	EmployeeID int64 `db:"employee_id" json:"employee_id"`
+	EmployeeID uint64 `db:"employee_id" json:"employee_id"`
 	// SEPARATE TABLE?
-	// Subject_id []int64 `db:"subject_id" json:"subject_id"`
+	// Subject_id []uint64 `db:"subject_id" json:"subject_id"`
 }
 
 type UpdateTeacherInput struct {
-	EmployeeID int64 `db:"employee_id" json:"employee_id"`
+	EmployeeID uint64 `db:"employee_id" json:"employee_id"`
 	// SEPARATE TABLE?
-	// Subject_id []int64 `db:"subject_id" json:"subject_id"`
+	// Subject_id []uint64 `db:"subject_id" json:"subject_id"`
 }

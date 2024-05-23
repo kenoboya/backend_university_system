@@ -9,8 +9,8 @@ const (
 )
 
 type Person struct {
-	PersonID  int64     `db:"person_id" json:"person_id"`
-	UserID    int64     `db:"user_id" json:"user_id"`
+	PersonID  uint64    `db:"person_id" json:"person_id"`
+	UserID    uint64    `db:"user_id" json:"user_id"`
 	Name      string    `db:"name" json:"name"`
 	Surname   string    `db:"surname" json:"surname"`
 	BirthDate time.Time `db:"birth_date" json:"birth_date"`
@@ -34,7 +34,7 @@ type PersonFullInfo struct {
 }
 
 type CreatePersonInput struct {
-	UserID    int64     `db:"user_id" json:"user_id"`
+	UserID    uint64    `db:"user_id" json:"user_id"`
 	Name      string    `db:"name" json:"name"`
 	Surname   string    `db:"surname" json:"surname"`
 	BirthDate time.Time `db:"birth_date" json:"birth_date"`
@@ -52,8 +52,8 @@ type UpdatePersonInput struct {
 }
 
 type PersonApplication struct {
-	ApplicationID int64  `db:"application_id" json:"application_id"`
-	UserID        int64  `db:"user_id" json:"user_id"`
+	ApplicationID uint64 `db:"application_id" json:"application_id"`
+	UserID        uint64 `db:"user_id" json:"user_id"`
 	Role          string `db:"role" json:"role"`
 	Status        string `db:"status" json:"status"`
 }

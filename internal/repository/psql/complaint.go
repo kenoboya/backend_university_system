@@ -32,7 +32,7 @@ func (r *ComplaintsRepository) GetAll(ctx context.Context) ([]model.Complaint, e
 	return complaints, nil
 }
 
-func (r *ComplaintsRepository) GetById(ctx context.Context, id int64) (model.Complaint, error) {
+func (r *ComplaintsRepository) GetById(ctx context.Context, id uint64) (model.Complaint, error) {
 	complaint := model.Complaint{}
 	err := r.db.Get(&complaint, "SELECT * FROM complaints WHERE complaint_id=$1", id)
 	if err != nil {
@@ -41,7 +41,7 @@ func (r *ComplaintsRepository) GetById(ctx context.Context, id int64) (model.Com
 	return complaint, nil
 }
 
-func (r *ComplaintsRepository) Response(ctx context.Context, id int64, response string) error {
+func (r *ComplaintsRepository) Response(ctx context.Context, id uint64, response string) error {
 	_, err := r.db.Exec("UPDATE complaints SET response=$1 WHERE complaint_id=$2", response, id)
 	if err != nil {
 		return err

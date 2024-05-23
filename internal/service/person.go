@@ -20,23 +20,23 @@ func (s *PeopleService) Create(ctx context.Context, person model.CreatePersonInp
 func (s *PeopleService) GetAll(ctx context.Context) ([]model.Person, error) {
 	return s.repo.GetAll(ctx)
 }
-func (s *PeopleService) GetById(ctx context.Context, id int64) (model.Person, error) {
+func (s *PeopleService) GetById(ctx context.Context, id uint64) (model.Person, error) {
 	return s.repo.GetById(ctx, id)
 }
-func (s *PeopleService) Update(ctx context.Context, id int64, person model.UpdatePersonInput) error {
+func (s *PeopleService) Update(ctx context.Context, id uint64, person model.UpdatePersonInput) error {
 	return s.repo.Update(ctx, id, person)
 }
-func (s *PeopleService) Delete(ctx context.Context, id int64) error {
+func (s *PeopleService) Delete(ctx context.Context, id uint64) error {
 	return s.repo.Delete(ctx, id)
 }
 
 func (s *PeopleService) GetListApplications(ctx context.Context) ([]model.PersonApplication, error) {
 	return s.repo.GetAllApplications(ctx)
 }
-func (s *PeopleService) GetApplicationByID(ctx context.Context, applicationID int64) (model.PersonApplication, error) {
+func (s *PeopleService) GetApplicationByID(ctx context.Context, applicationID uint64) (model.PersonApplication, error) {
 	return s.repo.GetApplicationByID(ctx, applicationID)
 }
-func (s *PeopleService) GetApplicationByUserID(ctx context.Context, userID int64) ([]model.PersonApplication, error) {
+func (s *PeopleService) GetApplicationByUserID(ctx context.Context, userID uint64) ([]model.PersonApplication, error) {
 	return s.repo.GetApplicationsByUserID(ctx, userID)
 }
 func (s *PeopleService) ResponseToApplication(ctx context.Context, response model.PersonApplication) error {

@@ -32,7 +32,7 @@ func NewGroupsRepository(db *sqlx.DB) *GroupsRepository {
 }
 
 func (r FacultiesRepository) Create(ctx context.Context, faculty model.CreateFacultyInput) error {
-	_, err := r.db.NamedExec("INSERT INTO faculties(full_name) VALUES(:full_name)", faculty)
+	_, err := r.db.NamedExec("INSERT INTO faculties(faculty_id,full_name) VALUES(:faculty_id, :full_name)", faculty)
 	if err != nil {
 		return err
 	}
@@ -72,7 +72,7 @@ func (r SpecialtiesRepository) Create(ctx context.Context, specialty model.Creat
 }
 func (r SpecialtiesRepository) GetAll(ctx context.Context) ([]model.Specialty, error) {
 	specialties := []model.Specialty{}
-	err := r.db.Select(&specialties, "SELECT * FROM specialties JOIN faculties USING(faculty_id)")
+	err := r.db.Select(&specialties, "SELECT * FROM specialties")
 	if err != nil {
 		return specialties, err
 	}
@@ -80,21 +80,21 @@ func (r SpecialtiesRepository) GetAll(ctx context.Context) ([]model.Specialty, e
 }
 func (r SpecialtiesRepository) GetSpecialtiesByFacultyID(ctx context.Context, faculty_id string) ([]model.Specialty, error) {
 	specialties := []model.Specialty{}
-	err := r.db.Select(&specialties, "SELECT * FROM specialties JOIN faculties USING(faculty_id) WHERE faculty_id=$1", faculty_id)
+	err := r.db.Select(&specialties, "SELECT * FROM specialties WHERE faculty_id=$1", faculty_id)
 	if err != nil {
 		return specialties, err
 	}
 	return specialties, nil
 }
-func (r SpecialtiesRepository) GetById(ctx context.Context, id int64) (model.Specialty, error) {
+func (r SpecialtiesRepository) GetById(ctx context.Context, id uint16) (model.Specialty, error) {
 	var specialty model.Specialty
-	err := r.db.Get(&specialty, "SELECT * FROM specialties JOIN faculties USING(faculty_id) WHERE specialty_id = $1", id)
+	err := r.db.Get(&specialty, "SELECT * FROM specialties WHERE specialty_id = $1", id)
 	if err != nil {
 		return specialty, err
 	}
 	return specialty, nil
 }
-func (r SpecialtiesRepository) Update(ctx context.Context, id int64, specialty model.UpdateSpecialtyInput) error {
+func (r SpecialtiesRepository) Update(ctx context.Context, id uint16, specialty model.UpdateSpecialtyInput) error {
 	_, err := r.db.Exec("UPDATE specialties SET faculty_id = $1, full_name = $2 WHERE employee_id = $3",
 		specialty.FacultyID, specialty.FullName, id)
 	if err != nil {
@@ -102,7 +102,7 @@ func (r SpecialtiesRepository) Update(ctx context.Context, id int64, specialty m
 	}
 	return nil
 }
-func (r SpecialtiesRepository) Delete(ctx context.Context, id int64) error {
+func (r SpecialtiesRepository) Delete(ctx context.Context, id uint16) error {
 	_, err := r.db.Exec("DELETE FROM specialties WHERE specialty_id = $1", id)
 	if err != nil {
 		return err
@@ -110,8 +110,8 @@ func (r SpecialtiesRepository) Delete(ctx context.Context, id int64) error {
 	return nil
 }
 
-func (r GroupsRepository) Create(ctx context.Context, group model.CreateGroupInput) error {
-	_, err := r.db.NamedExec("INSERT INTO groups(specialty_id, full_name, educational_level, start_year, end_year) VALUES(:specialty_id, :full_name, :educational_level, :start_year, :end_year)", group)
+func (r GroupsRepository) Create(ctx context.Context, group model.Group) error {
+	_, err := r.db.NamedExec("INSERT INTO groups(group_id,specialty_id, full_name, educational_level, start_year, end_year) VALUES(:group_id, :specialty_id, :full_name, :educational_level, :start_year, :end_year)", group)
 	if err != nil {
 		return err
 	}
@@ -119,7 +119,7 @@ func (r GroupsRepository) Create(ctx context.Context, group model.CreateGroupInp
 }
 func (r GroupsRepository) GetAll(ctx context.Context) ([]model.Group, error) {
 	groups := []model.Group{}
-	err := r.db.Select(&groups, "SELECT * FROM faculties JOIN specialties USING(specialty_id)")
+	err := r.db.Select(&groups, "SELECT * FROM groups")
 	if err != nil {
 		return groups, err
 	}
@@ -127,7 +127,7 @@ func (r GroupsRepository) GetAll(ctx context.Context) ([]model.Group, error) {
 }
 func (r GroupsRepository) GetById(ctx context.Context, id string) (model.Group, error) {
 	var group model.Group
-	err := r.db.Get(&group, "SELECT * FROM faculties JOIN specialties USING(specialty_id) WHERE group_id = $1", id)
+	err := r.db.Get(&group, "SELECT * FROM groups WHERE group_id = $1", id)
 	if err != nil {
 		return group, err
 	}

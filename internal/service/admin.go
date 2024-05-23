@@ -21,6 +21,6 @@ func (s *AdminsService) TryBlockUser(ctx context.Context, response model.Respons
 	return nil
 }
 
-func (s *AdminsService) UnblockUser(ctx context.Context, userID int64) error {
+func (s *AdminsService) UnblockUser(ctx context.Context, userID uint64) error {
 	return s.repo.UnblockUser(ctx, userID)
 }

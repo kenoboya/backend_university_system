@@ -3,11 +3,11 @@ package model
 import "time"
 
 type Employee struct {
-	EmployeeID int64     `db:"employee_id" json:"employee_id"`
+	EmployeeID uint64    `db:"employee_id" json:"employee_id"`
+	PersonID   uint64    `db:"person_id" json:"person_id"`
 	Title      string    `db:"title" json:"title"`
 	Salary     float64   `db:"salary" json:"salary"`
 	HireDate   time.Time `db:"hire_date" json:"hire_date"`
-	Person
 }
 
 type EmployeeBriefInfo struct {
@@ -16,7 +16,7 @@ type EmployeeBriefInfo struct {
 }
 
 type CreateEmployeeInput struct {
-	PersonID int64     `db:"person_id" json:"person_id"`
+	PersonID uint64    `db:"person_id" json:"person_id"`
 	Title    string    `db:"title" json:"title"`
 	Salary   float64   `db:"salary" json:"salary"`
 	HireDate time.Time `db:"hire_date" json:"hire_date"`

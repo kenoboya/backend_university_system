@@ -2,30 +2,37 @@ package model
 
 import "time"
 
+const (
+	Bachelor = "bachelor"
+	Master   = "Master"
+	Doctor   = "Doctor"
+)
+
 type Faculty struct {
 	FacultyID   string `db:"faculty_id" json:"faculty_id"`
 	FacultyName string `db:"full_name" json:"full_name"`
 }
 type Specialty struct {
-	SpecialtyID   int64  `db:"specialty_id" json:"specialty_id"`
+	SpecialtyID   uint16 `db:"specialty_id" json:"specialty_id"`
+	FacultyID     string `db:"faculty_id" json:"faculty_id"`
 	SpecialtyName string `db:"full_name" json:"full_name"`
-	Faculty
 }
 type Group struct {
 	GroupID          string    `db:"group_id" json:"group_id"`
+	SpecialtyID      uint16    `db:"specialty_id" json:"specialty_id"`
 	GroupName        string    `db:"full_name" json:"full_name"`
 	EducationalLevel string    `db:"educational_level" json:"educational_level"`
 	StartYear        time.Time `db:"start_year" json:"start_year"`
 	EndYear          time.Time `db:"end_year" json:"end_year"`
-	Specialty
 }
 
 type CreateFacultyInput struct {
-	FullName string `db:"full_name" json:"full_name"`
+	FacultyID string `db:"faculty_id" json:"faculty_id"`
+	FullName  string `db:"full_name" json:"full_name"`
 }
 
 type CreateSpecialtyInput struct {
-	SpecialtyID int64  `db:"specialty_id" json:"specialty_id"`
+	SpecialtyID uint16 `db:"specialty_id" json:"specialty_id"`
 	FacultyID   string `db:"faculty_id" json:"faculty_id"`
 	FullName    string `db:"full_name" json:"full_name"`
 }
@@ -35,7 +42,8 @@ type UpdateSpecialtyInput struct {
 }
 
 type CreateGroupInput struct {
-	SpecialtyID      string    `db:"specialty_id" json:"specialty_id"`
+	GroupID          string    `db:"group_id" json:"group_id"`
+	SpecialtyID      uint16    `db:"specialty_id" json:"specialty_id"`
 	FullName         string    `db:"full_name" json:"full_name"`
 	StartYear        time.Time `db:"start_year" json:"start_year"`
 	EducationalLevel string    `db:"educational_level" json:"educational_level"`

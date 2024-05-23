@@ -60,7 +60,8 @@ func unmarshal(config *Config) error {
 	if err := viper.UnmarshalKey("http", &config.HTTP); err != nil {
 		return err
 	}
-	if err := viper.UnmarshalKey("auth", &config.Auth.JWT); err != nil {
+	// AUTH во время дебага
+	if err := viper.UnmarshalKey("stage", &config.Auth.JWT); err != nil {
 		return err
 	}
 	return nil
