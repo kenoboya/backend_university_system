@@ -192,7 +192,7 @@ CREATE TYPE attendance_records_status AS enum
 CREATE TABLE attendance_grades (
     lesson_id INTEGER REFERENCES lessons(lesson_id),
     student_id INTEGER REFERENCES student(student_id),
-	status attendance_records_status NOT NULL,
+	status attendance_records_status DEFAULT 'absent',
 	grade SMALLINT,
     CONSTRAINT ck_teachers_subjects PRIMARY KEY(lesson_id, student_id)
 );

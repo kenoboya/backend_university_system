@@ -84,8 +84,12 @@ func (r *TeachersRepository) UpdateStudentAttendance(ctx context.Context, attend
 }
 
 func (r *TeachersRepository) UpdateStudentMark(ctx context.Context, grade model.Grade) error {
-	_, err := r.db.Exec("UPDATE attendance_grades SET grade=$1 WHERE lesson_id=$2 AND student_id=$3",
-		grade.Grade, grade.LessonID, grade.StudentID)
+	_, err := r.db.Exec(`
+		INSERT INTO attendance_grades (lesson_id, student_id, grade)
+		VALUES ($1, $2, $3)
+		ON CONFLICT (lesson_id, student_id) DO UPDATE
+		SET grade = EXCLUDED.grade`,
+		grade.LessonID, grade.StudentID, grade.Grade)
 	if err != nil {
 		return err
 	}

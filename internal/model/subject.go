@@ -54,12 +54,12 @@ type CreateLessonInput struct {
 
 type AttendanceRecord struct {
 	StudentID uint64 `db:"student_id" json:"student_id"`
-	LessonID  uint64 `db:"lesson_id" json:"lesson_id"`
+	LessonID  uint64 `db:"lesson_id" json:"lesson_id,omitempty"`
 	Status    string `db:"status" json:"status"`
 }
 
 type Grade struct {
 	StudentID uint64 `db:"student_id" json:"student_id"`
-	LessonID  uint64 `db:"lesson_id" json:"lesson_id"`
+	LessonID  uint64 `db:"lesson_id" json:"lesson_id,omitempty"`
 	Grade     uint8  `db:"grade" json:"grade"`
 }

@@ -80,13 +80,9 @@ func (r StudentsRepository) GetStudentsAttendanceByLessonID(ctx context.Context,
 	}
 	return attendanceRecords, nil
 }
-func (r StudentsRepository) GetStudentsGradesByLessonID(ctx context.Context, lessonID uint64) ([]model.Grade, error) {
+func (r StudentsRepository) GetStudentsGradesByLessonID(ctx context.Context, lesson_id uint64) ([]model.Grade, error) {
 	grades := []model.Grade{}
-	err := r.db.Select(&grades, `
-		SELECT student_id, lesson_id, grade 
-		FROM attendance_grades 
-		WHERE lesson_id = $1`,
-		lessonID)
+	err := r.db.Select(&grades, "SELECT student_id, lesson_id, grade FROM attendance_grades WHERE lesson_id = $1", lesson_id)
 	if err != nil {
 		return grades, err
 	}
