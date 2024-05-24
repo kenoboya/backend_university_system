@@ -43,7 +43,15 @@ func (s *SubjectsService) GetStudentSubjects(ctx context.Context, student model.
 	return s.repo.GetSubjectsByStudentID(ctx, student.StudentID)
 }
 
-func (s *LessonsService) Create(ctx context.Context, lesson model.CreateLessonInput) error {
+func (s *LessonsService) Create(ctx context.Context, input model.CreateLessonInput) error {
+	lesson := model.Lesson{
+		SubjectID:   input.SubjectID,
+		TeacherID:   input.TeacherID,
+		LectureRoom: input.LectureRoom,
+		TimeStart:   input.Date,
+		TimeEnd:     input.Date.Add(time.Minute * 45),
+		LessonType:  input.LessonType,
+	}
 	return s.repo.Create(ctx, lesson)
 }
 func (s *LessonsService) GetAll(ctx context.Context) ([]model.Lesson, error) {
@@ -56,7 +64,7 @@ func (s *LessonsService) Delete(ctx context.Context, id uint64) error {
 	return s.repo.Delete(ctx, id)
 }
 func (s *LessonsService) StudentSchedule(ctx context.Context, student model.Student) ([]model.Lesson, error) {
-	return s.repo.GetLessonsByStudentID(ctx, student.StudentID, time.Now())
+	return s.repo.GetLessonsByStudentID(ctx, student.StudentID)
 }
 
 func (s *LessonsService) TeacherSchedule(ctx context.Context, teacher model.Teacher) ([]model.Lesson, error) {

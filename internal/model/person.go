@@ -24,7 +24,7 @@ type PersonBriefInfo struct {
 	Name      string    `db:"name" json:"name"`
 	Surname   string    `db:"surname" json:"surname"`
 	BirthDate time.Time `db:"birth_date" json:"birth_date"`
-	Photo     []byte    `db:"photo" json:"photo"`
+	Photo     *[]byte   `db:"photo" json:"photo"`
 }
 
 type PersonFullInfo struct {

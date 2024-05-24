@@ -1,28 +1,18 @@
 definitions:
   model.AttendanceRecord:
     properties:
-      birth_date:
-        type: string
       lesson_id:
         type: integer
-      name:
-        type: string
-      photo:
-        items:
-          type: integer
-        type: array
       status:
         type: string
       student_id:
         type: integer
-      surname:
-        type: string
     type: object
   model.Complaint:
     properties:
       cause:
         type: string
-      id:
+      complaint_id:
         type: integer
       reported_user_id:
         type: integer
@@ -55,6 +45,8 @@ definitions:
     type: object
   model.CreateFacultyInput:
     properties:
+      faculty_id:
+        type: string
       full_name:
         type: string
     type: object
@@ -64,8 +56,10 @@ definitions:
         type: string
       full_name:
         type: string
-      specialty_id:
+      group_id:
         type: string
+      specialty_id:
+        type: integer
       start_year:
         type: string
     type: object
@@ -109,7 +103,7 @@ definitions:
   model.CreateStudentInput:
     properties:
       group_id:
-        type: integer
+        type: string
       person_id:
         type: integer
     type: object
@@ -118,9 +112,7 @@ definitions:
       name:
         type: string
       semester:
-        items:
-          type: integer
-        type: array
+        type: string
       subject_type:
         type: string
     type: object
@@ -131,34 +123,16 @@ definitions:
     type: object
   model.Employee:
     properties:
-      address:
-        type: string
-      birth_date:
-        type: string
       employee_id:
         type: integer
       hire_date:
         type: string
-      name:
-        type: string
-      notes:
-        type: string
       person_id:
         type: integer
-      phone:
-        type: string
-      photo:
-        items:
-          type: integer
-        type: array
       salary:
         type: number
-      surname:
-        type: string
       title:
         type: string
-      user_id:
-        type: integer
     type: object
   model.Faculty:
     properties:
@@ -173,8 +147,6 @@ definitions:
         type: string
       end_year:
         type: string
-      faculty_id:
-        type: string
       full_name:
         type: string
       group_id:
@@ -186,52 +158,20 @@ definitions:
     type: object
   model.Lesson:
     properties:
-      address:
-        type: string
-      birth_date:
-        type: string
-      date:
-        type: string
-      employee_id:
-        type: integer
-      hire_date:
-        type: string
       lecture_room:
         type: string
       lesson_id:
         type: integer
       lesson_type:
         type: string
-      name:
-        type: string
-      notes:
-        type: string
-      person_id:
-        type: integer
-      phone:
-        type: string
-      photo:
-        items:
-          type: integer
-        type: array
-      salary:
-        type: number
-      semester:
-        items:
-          type: integer
-        type: array
       subject_id:
         type: integer
-      subject_type:
-        type: string
-      surname:
-        type: string
       teacher_id:
         type: integer
-      title:
+      time_end:
         type: string
-      user_id:
-        type: integer
+      time_start:
+        type: string
     type: object
   model.News:
     properties:
@@ -293,12 +233,12 @@ definitions:
     properties:
       application_id:
         type: integer
-      person_id:
-        type: integer
       role:
         type: string
       status:
         type: string
+      user_id:
+        type: integer
     type: object
   model.ResponseComplaintInput:
     properties:
@@ -324,41 +264,11 @@ definitions:
     type: object
   model.Student:
     properties:
-      address:
-        type: string
-      birth_date:
-        type: string
-      educational_level:
-        type: string
-      end_year:
-        type: string
-      faculty_id:
-        type: string
-      full_name:
-        type: string
       group_id:
-        type: string
-      name:
-        type: string
-      notes:
         type: string
       person_id:
         type: integer
-      phone:
-        type: string
-      photo:
-        items:
-          type: integer
-        type: array
-      specialty_id:
-        type: integer
-      start_year:
-        type: string
       student_id:
-        type: integer
-      surname:
-        type: string
-      user_id:
         type: integer
     type: object
   model.StudentBriefInfo:
@@ -371,8 +281,6 @@ definitions:
         items:
           type: integer
         type: array
-      student_id:
-        type: integer
       surname:
         type: string
     type: object
@@ -398,9 +306,7 @@ definitions:
       name:
         type: string
       semester:
-        items:
-          type: integer
-        type: array
+        type: string
       subject_id:
         type: integer
       subject_type:
@@ -408,35 +314,9 @@ definitions:
     type: object
   model.Teacher:
     properties:
-      address:
-        type: string
-      birth_date:
-        type: string
       employee_id:
         type: integer
-      hire_date:
-        type: string
-      name:
-        type: string
-      notes:
-        type: string
-      person_id:
-        type: integer
-      phone:
-        type: string
-      photo:
-        items:
-          type: integer
-        type: array
-      salary:
-        type: number
-      surname:
-        type: string
       teacher_id:
-        type: integer
-      title:
-        type: string
-      user_id:
         type: integer
     type: object
   model.TeacherBriefInfo:
@@ -511,16 +391,14 @@ definitions:
   model.UpdateStudentInput:
     properties:
       group_id:
-        type: integer
+        type: string
     type: object
   model.UpdateSubjectInput:
     properties:
       name:
         type: string
       semester:
-        items:
-          type: integer
-        type: array
+        type: string
       subject_type:
         type: string
     type: object
@@ -596,13 +474,35 @@ paths:
       summary: Get people applications
       tags:
       - admin-applications
+    patch:
+      consumes:
+      - application/json
+      description: Response to application people. Accepted or Denied
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Response to application people
+      tags:
+      - admin-applications
   /admin/hub/applications/people/{id}:
     get:
       consumes:
       - application/json
-      description: receive applications to create a person
+      description: get application
       parameters:
-      - description: Person ID for getting application on person
+      - description: Application ID for getting application on person
         in: path
         name: id
         required: true
@@ -622,20 +522,108 @@ paths:
           description: Internal Server Error
           schema:
             type: string
-      summary: Get person application
+      summary: Get application
       tags:
       - admin-applications
+  /admin/hub/applications/people/user/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get person applications
+      parameters:
+      - description: User ID for getting application on person
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/model.PersonApplication'
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get person applications
+      tags:
+      - admin-applications
+  /admin/hub/complaints:
+    get:
+      consumes:
+      - application/json
+      description: get complaints
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Accepted
+          schema:
+            items:
+              $ref: '#/definitions/model.Complaint'
+            type: array
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get Complaints
+      tags:
+      - admin-complaints
+  /admin/hub/complaints/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get complaint by id
+      parameters:
+      - description: ID for getting complaint
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/model.Complaint'
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get complaint
+      tags:
+      - admin-complaints
     patch:
       consumes:
       - application/json
-      description: Response to application people. Accepted or Denied
+      description: Response to complaint
       parameters:
-      - description: Response to application
+      - description: ID for response complaint
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Response to complaint
         in: body
         name: request
         required: true
         schema:
-          $ref: '#/definitions/model.PersonApplication'
+          $ref: '#/definitions/model.ResponseComplaintInput'
       produces:
       - application/json
       responses:
@@ -651,9 +639,9 @@ paths:
           description: Internal Server Error
           schema:
             type: string
-      summary: Response to application people
+      summary: Response complaint
       tags:
-      - admin-applications
+      - admin-complaints
   /admin/hub/employees:
     get:
       consumes:
@@ -1225,94 +1213,6 @@ paths:
       summary: Update person
       tags:
       - admin-people
-  /admin/hub/requests/complaints:
-    get:
-      consumes:
-      - application/json
-      description: get complaints
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Accepted
-          schema:
-            items:
-              $ref: '#/definitions/model.Complaint'
-            type: array
-        "400":
-          description: Bad request
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      summary: Get Complaints
-      tags:
-      - admin-complaints
-  /admin/hub/requests/complaints/{id}:
-    get:
-      consumes:
-      - application/json
-      description: get complaint by id
-      parameters:
-      - description: ID for getting complaint
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Accepted
-          schema:
-            $ref: '#/definitions/model.Complaint'
-        "400":
-          description: Bad request
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      summary: Get complaint
-      tags:
-      - admin-complaints
-    patch:
-      consumes:
-      - application/json
-      description: Response to complaint
-      parameters:
-      - description: ID for response complaint
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Response to complaint
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/model.ResponseComplaintInput'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-        "400":
-          description: Bad request
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      summary: Response complaint
-      tags:
-      - admin-complaints
   /admin/hub/specialties:
     post:
       consumes:
@@ -1870,6 +1770,35 @@ paths:
     get:
       consumes:
       - application/json
+      description: get faculty by id
+      parameters:
+      - description: ID for getting faculty
+        in: path
+        name: faculty_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/model.Faculty'
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get faculty
+      tags:
+      - guest-faculties
+  /faculties/{faculty_id}/specialties:
+    get:
+      consumes:
+      - application/json
       description: get specialties
       parameters:
       - description: ID for getting faculty
@@ -1897,7 +1826,7 @@ paths:
       summary: Get specialties
       tags:
       - guest-specialties
-  /faculties/{faculty_id}/{specialty_id}:
+  /faculties/{faculty_id}/specialties/{id}:
     get:
       consumes:
       - application/json
@@ -1910,7 +1839,7 @@ paths:
         type: string
       - description: ID for getting specialty
         in: path
-        name: specialty_id
+        name: id
         required: true
         type: integer
       produces:
@@ -1931,35 +1860,6 @@ paths:
       summary: Get specialty
       tags:
       - admin-specialties
-  /faculties/{id}:
-    get:
-      consumes:
-      - application/json
-      description: get faculty by id
-      parameters:
-      - description: ID for getting faculty
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Accepted
-          schema:
-            $ref: '#/definitions/model.Faculty'
-        "400":
-          description: Bad request
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      summary: Get faculty
-      tags:
-      - guest-faculties
   /news:
     get:
       consumes:

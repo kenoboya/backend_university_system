@@ -2,12 +2,11 @@ package model
 
 type Student struct {
 	StudentID uint64 `db:"student_id" json:"student_id"`
-	Person
-	Group
+	PersonID  uint64 `db:"person_id" json:"person_id"`
+	GroupID   string `db:"group_id" json:"group_id"`
 }
 
 type StudentBriefInfo struct {
-	StudentID uint64 `db:"student_id" json:"student_id"`
 	PersonBriefInfo
 }
 type StudentFullInfo struct {
@@ -15,9 +14,9 @@ type StudentFullInfo struct {
 }
 type CreateStudentInput struct {
 	PersonID uint64 `db:"person_id" json:"person_id"`
-	GroupID  uint64 `db:"group_id" json:"group_id"`
+	GroupID  string `db:"group_id" json:"group_id"`
 }
 
 type UpdateStudentInput struct {
-	GroupID uint64 `db:"group_id" json:"group_id"`
+	GroupID string `db:"group_id" json:"group_id"`
 }

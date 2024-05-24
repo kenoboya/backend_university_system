@@ -16,7 +16,7 @@ func (h *AdminsHandler) InitAdminSubjectsRoutes(admin *mux.Router) {
 	subjects := admin.PathPrefix("/subjects").Subrouter()
 	{
 		subjects.HandleFunc("", h.CreateSubject).Methods(http.MethodPost)
-		subjects.HandleFunc("", h.GetSubject).Methods(http.MethodGet)
+		subjects.HandleFunc("", h.GetSubjects).Methods(http.MethodGet)
 		subjects.HandleFunc("/{id:[0-9]+}", h.GetSubject).Methods(http.MethodGet)
 		subjects.HandleFunc("/{id:[0-9]+}", h.UpdateSubject).Methods(http.MethodPatch)
 		subjects.HandleFunc("/{id:[0-9]+}", h.DeleteSubject).Methods(http.MethodDelete)

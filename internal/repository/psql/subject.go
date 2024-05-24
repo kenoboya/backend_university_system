@@ -3,7 +3,6 @@ package psql
 import (
 	"context"
 	"test-crud/internal/model"
-	"time"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -48,7 +47,7 @@ func (r SubjectsRepository) GetById(ctx context.Context, id uint64) (model.Subje
 	return subject, nil
 }
 func (r SubjectsRepository) Update(ctx context.Context, id uint64, subject model.UpdateSubjectInput) error {
-	_, err := r.db.Exec("UPDATE subjects SET name = $1, semester = $2, subject_type = $3, WHERE student_id = $4",
+	_, err := r.db.Exec("UPDATE subjects SET name = $1, semester = $2, subject_type = $3 WHERE subject_id = $4",
 		subject.Name, subject.Semester, subject.SubjectType, id)
 	if err != nil {
 		return err
@@ -72,8 +71,8 @@ func (r SubjectsRepository) GetSubjectsByStudentID(ctx context.Context, student_
 	return subjects, nil
 }
 
-func (r LessonsRepository) Create(ctx context.Context, lesson model.CreateLessonInput) error {
-	_, err := r.db.NamedExec("INSERT INTO lessons(teacher_id, subject_id, lecture_room, date, lesson_type) VALUES(:teacher_id, :subject_id, :lecture_room, :date, :lesson_type)", lesson)
+func (r LessonsRepository) Create(ctx context.Context, lesson model.Lesson) error {
+	_, err := r.db.NamedExec("INSERT INTO lessons(teacher_id, subject_id, lecture_room, time_start, time_end, lesson_type) VALUES(:teacher_id, :subject_id, :lecture_room, :time_start, :time_end, :lesson_type)", lesson)
 	if err != nil {
 		return err
 	}
@@ -81,7 +80,7 @@ func (r LessonsRepository) Create(ctx context.Context, lesson model.CreateLesson
 }
 func (r LessonsRepository) GetAll(ctx context.Context) ([]model.Lesson, error) {
 	lessons := []model.Lesson{}
-	err := r.db.Select(&lessons, "SELECT * FROM lessons JOIN teachers USING(teacher_id) JOIN subjects USING(subject_id)")
+	err := r.db.Select(&lessons, "SELECT * FROM lessons")
 	if err != nil {
 		return lessons, err
 	}
@@ -89,7 +88,7 @@ func (r LessonsRepository) GetAll(ctx context.Context) ([]model.Lesson, error) {
 }
 func (r LessonsRepository) GetById(ctx context.Context, id uint64) (model.Lesson, error) {
 	var lesson model.Lesson
-	err := r.db.Get(&lesson, "SELECT * FROM lessons JOIN teachers USING(teacher_id) JOIN subjects USING(subject_id) WHERE lesson_id = $1", id)
+	err := r.db.Get(&lesson, "SELECT * FROM lessons WHERE lesson_id = $1", id)
 	if err != nil {
 		return lesson, err
 	}
@@ -102,9 +101,9 @@ func (r LessonsRepository) Delete(ctx context.Context, id uint64) error {
 	}
 	return nil
 }
-func (r LessonsRepository) GetLessonsByStudentID(ctx context.Context, student_id uint64, timeNow time.Time) ([]model.Lesson, error) {
+func (r LessonsRepository) GetLessonsByStudentID(ctx context.Context, student_id uint64) ([]model.Lesson, error) {
 	lessons := []model.Lesson{}
-	err := r.db.Select(&lessons, "SELECT lesson_id, subject_id, teacher_id, lecture_room, date, lesson_type FROM lessons JOIN lessons_students USING(lesson_id) JOIN teachers USING(teacher_id) WHERE student_id = $1 AND date > $2", student_id, timeNow)
+	err := r.db.Select(&lessons, "SELECT lesson_id, subject_id, teacher_id, lecture_room, time_start, time_end, lesson_type FROM lessons JOIN subjects USING (subject_id) JOIN students_subjects USING(subject_id) WHERE student_id = $1", student_id)
 	if err != nil {
 		return lessons, err
 	}
@@ -112,7 +111,7 @@ func (r LessonsRepository) GetLessonsByStudentID(ctx context.Context, student_id
 }
 func (r LessonsRepository) GetLessonsByTeacherID(ctx context.Context, teacher_id uint64) ([]model.Lesson, error) {
 	lessons := []model.Lesson{}
-	err := r.db.Select(&lessons, "SELECT lesson_id, subject_id, teacher_id, lecture_room, date, lesson_type FROM lessons JOIN lessons_students USING(lesson_id) JOIN teachers USING(teacher_id) WHERE teacher_id = $1 ", teacher_id)
+	err := r.db.Select(&lessons, "SELECT lesson_id, subject_id, teacher_id, lecture_room, time_start, time_end, lesson_type FROM lessons WHERE teacher_id = $1", teacher_id)
 	if err != nil {
 		return lessons, err
 	}

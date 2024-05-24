@@ -3,7 +3,6 @@ package psql
 import (
 	"context"
 	"test-crud/internal/model"
-	"time"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -106,11 +105,11 @@ type Subjects interface {
 	GetSubjectsByStudentID(ctx context.Context, student_id uint64) ([]model.Subject, error)
 }
 type Lessons interface {
-	Create(ctx context.Context, lesson model.CreateLessonInput) error
+	Create(ctx context.Context, lesson model.Lesson) error
 	GetAll(ctx context.Context) ([]model.Lesson, error)
 	GetById(ctx context.Context, id uint64) (model.Lesson, error)
 	Delete(ctx context.Context, id uint64) error
-	GetLessonsByStudentID(ctx context.Context, student_id uint64, timeNow time.Time) ([]model.Lesson, error)
+	GetLessonsByStudentID(ctx context.Context, student_id uint64) ([]model.Lesson, error)
 	GetLessonsByTeacherID(ctx context.Context, teacher_id uint64) ([]model.Lesson, error)
 }
 type Faculties interface {

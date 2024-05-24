@@ -51,11 +51,9 @@ const docTemplate = `{
                         }
                     }
                 }
-            }
-        },
-        "/admin/hub/applications/people/{id}": {
-            "get": {
-                "description": "receive applications to create a person",
+            },
+            "patch": {
+                "description": "Response to application people. Accepted or Denied",
                 "consumes": [
                     "application/json"
                 ],
@@ -65,11 +63,46 @@ const docTemplate = `{
                 "tags": [
                     "admin-applications"
                 ],
-                "summary": "Get person application",
+                "summary": "Response to application people",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/hub/applications/people/user/{id}": {
+            "get": {
+                "description": "get person applications",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-applications"
+                ],
+                "summary": "Get person applications",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Person ID for getting application on person",
+                        "description": "User ID for getting application on person",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -95,9 +128,11 @@ const docTemplate = `{
                         }
                     }
                 }
-            },
-            "patch": {
-                "description": "Response to application people. Accepted or Denied",
+            }
+        },
+        "/admin/hub/applications/people/{id}": {
+            "get": {
+                "description": "get application",
                 "consumes": [
                     "application/json"
                 ],
@@ -107,15 +142,146 @@ const docTemplate = `{
                 "tags": [
                     "admin-applications"
                 ],
-                "summary": "Response to application people",
+                "summary": "Get application",
                 "parameters": [
                     {
-                        "description": "Response to application",
+                        "type": "integer",
+                        "description": "Application ID for getting application on person",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/model.PersonApplication"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/hub/complaints": {
+            "get": {
+                "description": "get complaints",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-complaints"
+                ],
+                "summary": "Get Complaints",
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Complaint"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/hub/complaints/{id}": {
+            "get": {
+                "description": "get complaint by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-complaints"
+                ],
+                "summary": "Get complaint",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID for getting complaint",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/model.Complaint"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Response to complaint",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin-complaints"
+                ],
+                "summary": "Response complaint",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID for response complaint",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Response to complaint",
                         "name": "request",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.PersonApplication"
+                            "$ref": "#/definitions/model.ResponseComplaintInput"
                         }
                     }
                 ],
@@ -1005,139 +1171,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/admin/hub/requests/complaints": {
-            "get": {
-                "description": "get complaints",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "admin-complaints"
-                ],
-                "summary": "Get Complaints",
-                "responses": {
-                    "200": {
-                        "description": "Accepted",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/model.Complaint"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/hub/requests/complaints/{id}": {
-            "get": {
-                "description": "get complaint by id",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "admin-complaints"
-                ],
-                "summary": "Get complaint",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "ID for getting complaint",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Accepted",
-                        "schema": {
-                            "$ref": "#/definitions/model.Complaint"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "patch": {
-                "description": "Response to complaint",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "admin-complaints"
-                ],
-                "summary": "Response complaint",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "ID for response complaint",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Response to complaint",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.ResponseComplaintInput"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/admin/hub/specialties": {
             "post": {
                 "description": "create specialty",
@@ -1976,6 +2009,50 @@ const docTemplate = `{
         },
         "/faculties/{faculty_id}": {
             "get": {
+                "description": "get faculty by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "guest-faculties"
+                ],
+                "summary": "Get faculty",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID for getting faculty",
+                        "name": "faculty_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/model.Faculty"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/faculties/{faculty_id}/specialties": {
+            "get": {
                 "description": "get specialties",
                 "consumes": [
                     "application/json"
@@ -2021,7 +2098,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/faculties/{faculty_id}/{specialty_id}": {
+        "/faculties/{faculty_id}/specialties/{id}": {
             "get": {
                 "description": "get specialty by id",
                 "consumes": [
@@ -2045,50 +2122,6 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "ID for getting specialty",
-                        "name": "specialty_id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Accepted",
-                        "schema": {
-                            "$ref": "#/definitions/model.Specialty"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/faculties/{id}": {
-            "get": {
-                "description": "get faculty by id",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "guest-faculties"
-                ],
-                "summary": "Get faculty",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "ID for getting faculty",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -2098,7 +2131,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Accepted",
                         "schema": {
-                            "$ref": "#/definitions/model.Faculty"
+                            "$ref": "#/definitions/model.Specialty"
                         }
                     },
                     "400": {
@@ -3026,29 +3059,14 @@ const docTemplate = `{
         "model.AttendanceRecord": {
             "type": "object",
             "properties": {
-                "birth_date": {
-                    "type": "string"
-                },
                 "lesson_id": {
                     "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "photo": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
                 },
                 "status": {
                     "type": "string"
                 },
                 "student_id": {
                     "type": "integer"
-                },
-                "surname": {
-                    "type": "string"
                 }
             }
         },
@@ -3058,7 +3076,7 @@ const docTemplate = `{
                 "cause": {
                     "type": "string"
                 },
-                "id": {
+                "complaint_id": {
                     "type": "integer"
                 },
                 "reported_user_id": {
@@ -3109,6 +3127,9 @@ const docTemplate = `{
         "model.CreateFacultyInput": {
             "type": "object",
             "properties": {
+                "faculty_id": {
+                    "type": "string"
+                },
                 "full_name": {
                     "type": "string"
                 }
@@ -3123,8 +3144,11 @@ const docTemplate = `{
                 "full_name": {
                     "type": "string"
                 },
-                "specialty_id": {
+                "group_id": {
                     "type": "string"
+                },
+                "specialty_id": {
+                    "type": "integer"
                 },
                 "start_year": {
                     "type": "string"
@@ -3192,7 +3216,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "group_id": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "person_id": {
                     "type": "integer"
@@ -3206,10 +3230,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "semester": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
+                    "type": "string"
                 },
                 "subject_type": {
                     "type": "string"
@@ -3227,47 +3248,20 @@ const docTemplate = `{
         "model.Employee": {
             "type": "object",
             "properties": {
-                "address": {
-                    "type": "string"
-                },
-                "birth_date": {
-                    "type": "string"
-                },
                 "employee_id": {
                     "type": "integer"
                 },
                 "hire_date": {
                     "type": "string"
                 },
-                "name": {
-                    "type": "string"
-                },
-                "notes": {
-                    "type": "string"
-                },
                 "person_id": {
                     "type": "integer"
-                },
-                "phone": {
-                    "type": "string"
-                },
-                "photo": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
                 },
                 "salary": {
                     "type": "number"
                 },
-                "surname": {
-                    "type": "string"
-                },
                 "title": {
                     "type": "string"
-                },
-                "user_id": {
-                    "type": "integer"
                 }
             }
         },
@@ -3291,9 +3285,6 @@ const docTemplate = `{
                 "end_year": {
                     "type": "string"
                 },
-                "faculty_id": {
-                    "type": "string"
-                },
                 "full_name": {
                     "type": "string"
                 },
@@ -3311,21 +3302,6 @@ const docTemplate = `{
         "model.Lesson": {
             "type": "object",
             "properties": {
-                "address": {
-                    "type": "string"
-                },
-                "birth_date": {
-                    "type": "string"
-                },
-                "date": {
-                    "type": "string"
-                },
-                "employee_id": {
-                    "type": "integer"
-                },
-                "hire_date": {
-                    "type": "string"
-                },
                 "lecture_room": {
                     "type": "string"
                 },
@@ -3335,50 +3311,17 @@ const docTemplate = `{
                 "lesson_type": {
                     "type": "string"
                 },
-                "name": {
-                    "type": "string"
-                },
-                "notes": {
-                    "type": "string"
-                },
-                "person_id": {
-                    "type": "integer"
-                },
-                "phone": {
-                    "type": "string"
-                },
-                "photo": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "salary": {
-                    "type": "number"
-                },
-                "semester": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
                 "subject_id": {
                     "type": "integer"
-                },
-                "subject_type": {
-                    "type": "string"
-                },
-                "surname": {
-                    "type": "string"
                 },
                 "teacher_id": {
                     "type": "integer"
                 },
-                "title": {
+                "time_end": {
                     "type": "string"
                 },
-                "user_id": {
-                    "type": "integer"
+                "time_start": {
+                    "type": "string"
                 }
             }
         },
@@ -3473,14 +3416,14 @@ const docTemplate = `{
                 "application_id": {
                     "type": "integer"
                 },
-                "person_id": {
-                    "type": "integer"
-                },
                 "role": {
                     "type": "string"
                 },
                 "status": {
                     "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
                 }
             }
         },
@@ -3521,58 +3464,13 @@ const docTemplate = `{
         "model.Student": {
             "type": "object",
             "properties": {
-                "address": {
-                    "type": "string"
-                },
-                "birth_date": {
-                    "type": "string"
-                },
-                "educational_level": {
-                    "type": "string"
-                },
-                "end_year": {
-                    "type": "string"
-                },
-                "faculty_id": {
-                    "type": "string"
-                },
-                "full_name": {
-                    "type": "string"
-                },
                 "group_id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "notes": {
                     "type": "string"
                 },
                 "person_id": {
                     "type": "integer"
                 },
-                "phone": {
-                    "type": "string"
-                },
-                "photo": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "specialty_id": {
-                    "type": "integer"
-                },
-                "start_year": {
-                    "type": "string"
-                },
                 "student_id": {
-                    "type": "integer"
-                },
-                "surname": {
-                    "type": "string"
-                },
-                "user_id": {
                     "type": "integer"
                 }
             }
@@ -3591,9 +3489,6 @@ const docTemplate = `{
                     "items": {
                         "type": "integer"
                     }
-                },
-                "student_id": {
-                    "type": "integer"
                 },
                 "surname": {
                     "type": "string"
@@ -3633,10 +3528,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "semester": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
+                    "type": "string"
                 },
                 "subject_id": {
                     "type": "integer"
@@ -3649,49 +3541,10 @@ const docTemplate = `{
         "model.Teacher": {
             "type": "object",
             "properties": {
-                "address": {
-                    "type": "string"
-                },
-                "birth_date": {
-                    "type": "string"
-                },
                 "employee_id": {
                     "type": "integer"
                 },
-                "hire_date": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "notes": {
-                    "type": "string"
-                },
-                "person_id": {
-                    "type": "integer"
-                },
-                "phone": {
-                    "type": "string"
-                },
-                "photo": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "salary": {
-                    "type": "number"
-                },
-                "surname": {
-                    "type": "string"
-                },
                 "teacher_id": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "user_id": {
                     "type": "integer"
                 }
             }
@@ -3806,7 +3659,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "group_id": {
-                    "type": "integer"
+                    "type": "string"
                 }
             }
         },
@@ -3817,10 +3670,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "semester": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
+                    "type": "string"
                 },
                 "subject_type": {
                     "type": "string"

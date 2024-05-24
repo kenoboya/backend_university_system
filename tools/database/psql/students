@@ -112,7 +112,7 @@ CREATE TYPE subject_type AS ENUM (
 CREATE TABLE subjects (
     subject_id SERIAL PRIMARY KEY,
     name VARCHAR(70) UNIQUE,
-    semester SMALLINT[] NOT NULL,
+    semester VARCHAR(50) NOT NULL,
     subject_type subject_type NOT NULL,
     CONSTRAINT pk_subjects_subject_id PRIMARY KEY(subject_id)
 );
@@ -126,15 +126,13 @@ CREATE TABLE lessons(
 	lesson_id BIGINT GENERATED ALWAYS AS IDENTITY,
 	teacher_id INTEGER NOT NULL,
 	subject_id INTEGER NOT NULL,
-	group_id VARCHAR(25) NOT NULL,
 	lecture_room VARCHAR(25) NOT NULL,
 	time_start TIMESTAMP NOT NULL,
 	time_end TIMESTAMP NOT NULL,
 	lesson_type lesson_type NOT NULL,
 	CONSTRAINT pk_lessons_lesson_id PRIMARY KEY(lesson_id),
 	CONSTRAINT fk_lessons_teachers FOREIGN KEY(teacher_id) REFERENCES teachers(teacher_id),
-	CONSTRAINT fk_lessons_subjects FOREIGN KEY(subject_id) REFERENCES subjects(subject_id),
-	CONSTRAINT fk_lessons_groups FOREIGN KEY(group_id) REFERENCES groups(group_id)
+	CONSTRAINT fk_lessons_subjects FOREIGN KEY(subject_id) REFERENCES subjects(subject_id)
 );
 
 CREATE TABLE faculties_employees(

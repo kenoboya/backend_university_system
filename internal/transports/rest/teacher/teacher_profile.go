@@ -11,8 +11,8 @@ import (
 )
 
 func (h *TeachersHandler) InitTeacherProfileRoutes(hub *mux.Router) {
-	hub.HandleFunc("teachers/profile/{id:[0-9]+}", h.GetTeacherProfile).Methods(http.MethodGet)
-	hub.HandleFunc("students/profile/{id:[0-9]+}", h.GetStudentProfile).Methods(http.MethodGet)
+	hub.HandleFunc("/teachers/profile/{id:[0-9]+}", h.GetTeacherProfile).Methods(http.MethodGet)
+	hub.HandleFunc("/students/profile/{id:[0-9]+}", h.GetStudentProfile).Methods(http.MethodGet)
 }
 
 // @Summary Get teacher profile

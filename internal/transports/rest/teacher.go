@@ -9,6 +9,8 @@ func (h *Handler) initTeachersRoutes(router *mux.Router) {
 		hub := teachers.PathPrefix("/hub").Subrouter()
 		{
 			h.Teachers.InitTeacherProfileRoutes(hub)
+			h.Teachers.InitTeacherScheduleRoutes(hub)
+			h.Teachers.InitTeacherLessonsRoutes(hub)
 		}
 	}
 }
