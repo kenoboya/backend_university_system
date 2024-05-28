@@ -1,0 +1,1785 @@
+{
+	"info": {
+		"_postman_id": "66281e24-46ca-4a91-9c77-6c991aa97749",
+		"name": "backend_university_system",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34534873"
+	},
+	"item": [
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "hub",
+					"item": [
+						{
+							"name": "teachers",
+							"item": [
+								{
+									"name": "GetAll",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmVzQXQiOjE3MTQ1NzE3NDMsInVzZXJfaWQiOjB9.jFPBMSjR7xgPPgGAuCc3oEh0vpSqD2tbJgILujslE68",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/admin/teachers",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"teachers"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);\r",
+													"postman.setEnvironmentVariable(\"teacherID\", jsonData.teacher_id);\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"employee_id\": {{employeeID}}\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/admin/teachers",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"teachers"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetById",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/admin/teachers/{{teacherID}}",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"teachers",
+												"{{teacherID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"employee_id\": {{employeeID}}\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/admin/teachers/{{teacherID}}",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"teachers",
+												"{{teacherID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/admin/teachers/{{teacherID}}",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"teachers",
+												"{{teacherID}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "employees",
+							"item": [
+								{
+									"name": "Create",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);\r",
+													"postman.setEnvironmentVariable(\"employeeID\", jsonData.employee_id);"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"hire_date\": \"string\",\r\n  \"person_id\": {{personID}},\r\n  \"salary\": 0,\r\n  \"title\": \"string\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/admin/employees",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"employees"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetAll",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/admin/employees",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"employees"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetById",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/admin/employees/{{employeeID}}",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"employees",
+												"{{employeeID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"hire_date\": \"string\",\r\n  \"salary\": 0,\r\n  \"title\": \"string\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/admin/employees/{{employeeID}}",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"employees",
+												"{{employeeID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/admin/employees/{{employeeID}}",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"employees",
+												"{{employeeID}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "students",
+							"item": [
+								{
+									"name": "Create",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);\r",
+													"postman.setEnvironmentVariable(\"studentID\", jsonData.student_id);"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"group_id\": {{groupID}},\r\n  \"person_id\": {{personID}}\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/admin/students",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"students"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetAll",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/admin/students",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"students"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetById",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/admin/students/{{studentID}}",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"students",
+												"{{studentID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"group_id\": {{groupID}}\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/admin/students/{{studentID}}",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"students",
+												"{{studentID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/admin/students/{{studentID}}",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"students",
+												"{{studentID}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "subjects",
+							"item": [
+								{
+									"name": "Create",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);\r",
+													"postman.setEnvironmentVariable(\"subjectID\", jsonData.subject_id);"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\": \"string\",\r\n  \"specialty_id\": {{specialtyID}}\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/admin/subjects",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"subjects"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetAll",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/admin/hub/subjects",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"hub",
+												"subjects"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetById",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/admin/subjects/{{subjectID}}",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"subjects",
+												"{{subjectID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\": \"string\",\r\n  \"specialty_id\": {{specialtyID}}\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/admin/subjects/{{subjectID}}",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"subjects",
+												"{{subjectID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/admin/subjects/{{subjectID}}",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"subjects",
+												"{{subjectID}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "lessons",
+							"item": [
+								{
+									"name": "Create",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);\r",
+													"postman.setEnvironmentVariable(\"lessonID\", jsonData.lesson_id);"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"group_id\": {{groupID}},\r\n  \"lecture_room\": \"string\",\r\n  \"lesson_type\": \"string\",\r\n  \"subject_id\": {{subjectID}},\r\n  \"teacher_id\": {{teacherID}},\r\n  \"time_end\": \"string\",\r\n  \"time_start\": \"string\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/admin/lessons",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"lessons"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetAll",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/admin/lessons",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"lessons"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetById",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/admin/lessons/{{lessonID}}",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"lessons",
+												"{{lessonID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/admin/lessons/{{lessonID}}",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"lessons",
+												"{{lessonID}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "faculties",
+							"item": [
+								{
+									"name": "Create",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);\r",
+													"postman.setEnvironmentVariable(\"facultyID\", jsonData.faculty_id);"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"full_name\": \"string\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/admin/faculties",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"faculties"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/admin/faculties/{{facultyID}}",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"faculties",
+												"{{facultyID}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "specialties",
+							"item": [
+								{
+									"name": "Create",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);\r",
+													"postman.setEnvironmentVariable(\"specialtyID\", jsonData.specialty_id);"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"faculty_id\": {{facultyID}},\r\n  \"full_name\": \"string\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/admin/specialties",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"specialties"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"faculty_id\": {{specialtyID}},\r\n  \"full_name\": \"string\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/admin/specialties/{{specialtyID}}",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"specialties",
+												"{{specialtyID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/admin/specialties/{{specialtyID}}",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"specialties",
+												"{{specialtyID}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "groups",
+							"item": [
+								{
+									"name": "Create",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);\r",
+													"postman.setEnvironmentVariable(\"groupID\", jsonData.group_id);"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"group_id\": \"4PI-22B\",\r\n  \"full_name\": \"4 PICHI IKI - 22 Bachelor\",\r\n  \"specialty_id\": 121,\r\n  \"educational_level\": \"bachelor\",\r\n  \"start_year\": \"2022-09-01T15:04:05Z\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/admin/hub/groups",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"hub",
+												"groups"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetAll",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/admin/groups",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"groups"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetById",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/admin/groups/{{groupID}}",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"groups",
+												"{{groupID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/admin/groups/{{groupID}}",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"groups",
+												"{{groupID}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "applications",
+							"item": [
+								{
+									"name": "complaints",
+									"item": [
+										{
+											"name": "GetComplaints",
+											"request": {
+												"method": "GET",
+												"header": []
+											},
+											"response": []
+										},
+										{
+											"name": "GetComplaint",
+											"request": {
+												"method": "GET",
+												"header": []
+											},
+											"response": []
+										},
+										{
+											"name": "ResponseToComplaint",
+											"request": {
+												"method": "PATCH",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"admin_id\": {{userID}},\r\n  \"blocked\": true,\r\n  \"complaint_id\": {{complaintID}},\r\n  \"response\": \"string\",\r\n  \"user_id\": 0\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{host}}/users/admin/hub/applications/complaints/{{complaintID}}",
+													"host": [
+														"{{host}}"
+													],
+													"path": [
+														"users",
+														"admin",
+														"hub",
+														"applications",
+														"complaints",
+														"{{complaintID}}"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "people",
+									"item": [
+										{
+											"name": "Get list",
+											"request": {
+												"method": "GET",
+												"header": []
+											},
+											"response": []
+										},
+										{
+											"name": "GetByUser",
+											"request": {
+												"method": "GET",
+												"header": []
+											},
+											"response": []
+										},
+										{
+											"name": "ResponseTo",
+											"request": {
+												"method": "PATCH",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"accepted\": true,\r\n  \"address\": \"string\",\r\n  \"application_id\": {{applicationID}},\r\n  \"birth_date\": \"string\",\r\n  \"blocked\": true,\r\n  \"email\": \"string\",\r\n  \"last_visit_at\": \"string\",\r\n  \"name\": \"string\",\r\n  \"notes\": \"string\",\r\n  \"password\": \"string\",\r\n  \"person_id\": {{personID}},\r\n  \"phone\": \"string\",\r\n  \"photo\": [\r\n    0\r\n  ],\r\n  \"registered_at\": \"string\",\r\n  \"role\": \"user\",\r\n  \"surname\": \"string\",\r\n  \"user_id\": {{userID}},\r\n  \"username\": \"string\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{host}}/users/admin/hub/applications/people/{{personID}}",
+													"host": [
+														"{{host}}"
+													],
+													"path": [
+														"users",
+														"admin",
+														"hub",
+														"applications",
+														"people",
+														"{{personID}}"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "GetById",
+											"request": {
+												"method": "GET",
+												"header": []
+											},
+											"response": []
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "people",
+							"item": [
+								{
+									"name": "Create",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"birth_date\": \"string\",\r\n  \"name\": \"string\",\r\n  \"phone\": \"string\",\r\n  \"role\": \"user\",\r\n  \"surname\": \"string\",\r\n  \"user_id\": {{userID}}\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/admin/hub/people",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"hub",
+												"people"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetAll",
+									"request": {
+										"method": "GET",
+										"header": []
+									},
+									"response": []
+								},
+								{
+									"name": "GetById",
+									"request": {
+										"method": "GET",
+										"header": []
+									},
+									"response": []
+								},
+								{
+									"name": "Update",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"address\": \"string\",\r\n  \"birth_date\": \"string\",\r\n  \"name\": \"string\",\r\n  \"notes\": \"string\",\r\n  \"phone\": \"string\",\r\n  \"photo\": [\r\n    0\r\n  ],\r\n  \"surname\": \"string\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/admin/hub/people/{{personID}}",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"admin",
+												"hub",
+												"people",
+												"{{personID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete",
+									"request": {
+										"method": "GET",
+										"header": []
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTY1NzM2MjgsImlkIjo1LCJyb2xlIjoiYWRtaW4ifQ.7YW_YtOP_yHu2NUYFln8zKJr4NHXI-cwvQmmq8HS6E8",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Sign-up",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"max@gmail.com\",\r\n  \"password\": \"string\",\r\n  \"username\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/sign-up",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"sign-up"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sign-In",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try {\r",
+									"    var jsonData = JSON.parse(responseBody);\r",
+									"    postman.setEnvironmentVariable(\"accessToken\", jsonData.accessToken);\r",
+									"    postman.setEnvironmentVariable(\"refreshToken\", jsonData.refreshToken);\r",
+									"} catch (error) {\r",
+									"    console.error(\"Ошибка при парсинге JSON:\", error);\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"login\": \"thenous\",\r\n  \"password\": \"qwerty123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/sign-in",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"sign-in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"accessToken\", jsonData.accessToken);\r",
+									"postman.setEnvironmentVariable(\"refreshToken\", jsonData.refreshToken);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/refresh",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "people",
+					"item": [
+						{
+							"name": "Submit person",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTY0NzU4MTUsImlkIjo0LCJyb2xlIjoidXNlciJ9.-kDlW8VvF42Rkkr0SblVqJSgmgOrCfLyyIRC5tO9W7g",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"birth_date\": \"2003-01-02T15:04:05Z\",\r\n  \"name\": \"Alex\",\r\n  \"phone\": \"+380503131516\",\r\n  \"role\": \"admin\",\r\n  \"surname\": \"Maison\",\r\n  \"user_id\": 4\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/users/people",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"users",
+										"people"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "complaints",
+					"item": [
+						{
+							"name": "Submit complaint",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"cause\": \"string\",\r\n  \"reported_user_id\": {{userID}},\r\n  \"reporting_user_id\": 0\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/users/complaints",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"users",
+										"complaints"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTY2NDE0ODcsImlkIjo4LCJyb2xlIjoidXNlciJ9.wnR7u-Bj975tkeP9eckuYUX_n6GoV5S8lGIfHX8e34M",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Guest",
+			"item": [
+				{
+					"name": "News",
+					"item": [
+						{
+							"name": "Get List News",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "Get News",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Faculties",
+					"item": [
+						{
+							"name": "Get List Faculties",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "Get Faculty",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Specialties",
+					"item": [
+						{
+							"name": "Get List Specialties",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "Get specialty",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/faculties/{{facultyID}}/specialties/{{specialtyID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"faculties",
+										"{{facultyID}}",
+										"specialties",
+										"{{specialtyID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Employee",
+			"item": [
+				{
+					"name": "hub",
+					"item": []
+				}
+			]
+		},
+		{
+			"name": "Student",
+			"item": [
+				{
+					"name": "hub",
+					"item": [
+						{
+							"name": "profile",
+							"item": [
+								{
+									"name": "teacher profile",
+									"request": {
+										"method": "GET",
+										"header": []
+									},
+									"response": []
+								},
+								{
+									"name": "student profile",
+									"request": {
+										"method": "GET",
+										"header": []
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "schedule",
+							"item": [
+								{
+									"name": "Schedule",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/student/hub/schedule ",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"student",
+												"hub",
+												"schedule "
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "subjects",
+							"item": [
+								{
+									"name": "Get subjects",
+									"request": {
+										"method": "GET",
+										"header": []
+									},
+									"response": []
+								},
+								{
+									"name": "Get subject",
+									"request": {
+										"method": "GET",
+										"header": []
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTY2NDE5OTMsImlkIjo4LCJyb2xlIjoic3R1ZGVudCJ9.dnodzOohERAdBr1rD69Gh8oooLj7MXDK-TBteHBzDog",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Teacher",
+			"item": [
+				{
+					"name": "hub",
+					"item": [
+						{
+							"name": "profile",
+							"item": [
+								{
+									"name": "student profile",
+									"request": {
+										"method": "GET",
+										"header": []
+									},
+									"response": []
+								},
+								{
+									"name": "teacher profile",
+									"request": {
+										"method": "GET",
+										"header": []
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "schedule",
+							"item": [
+								{
+									"name": "Schedule",
+									"request": {
+										"method": "GET",
+										"header": []
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "lessons",
+							"item": [
+								{
+									"name": "Get lesson",
+									"request": {
+										"method": "GET",
+										"header": []
+									},
+									"response": []
+								},
+								{
+									"name": "Attendance list",
+									"request": {
+										"method": "GET",
+										"header": []
+									},
+									"response": []
+								},
+								{
+									"name": "Grade list",
+									"request": {
+										"method": "GET",
+										"header": []
+									},
+									"response": []
+								},
+								{
+									"name": "MarkAttendance",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"status\": \"present\",\r\n  \"student_id\": 1\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "1/teacher/hub/lessons/4/attendance",
+											"host": [
+												"1"
+											],
+											"path": [
+												"teacher",
+												"hub",
+												"lessons",
+												"4",
+												"attendance"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Evaluate",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"birth_date\": \"string\",\r\n  \"name\": \"string\",\r\n  \"photo\": [\r\n    0\r\n  ],\r\n  \"student_id\": {{studentID}},\r\n  \"surname\": \"string\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/teacher/hub/lessons/{{lessonID}}}/grade",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"teacher",
+												"hub",
+												"lessons",
+												"{{lessonID}}}",
+												"grade"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTY2NDUyNTQsImlkIjo2LCJyb2xlIjoidGVhY2hlciJ9.yZrH0JiJcM1yHhF_TP8ckK8cMCGpVZhUTvmxQFVHilg",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}
