@@ -46,7 +46,7 @@ func Init(configDir string) (*Config, error) {
 }
 
 func setFromEnv(config *Config) error {
-	if err := gotenv.Load("../../.env"); err != nil {
+	if err := gotenv.Load("/root/.env"); err != nil {
 		return err
 	}
 	if err := envconfig.Process("DB", &config.PSQl); err != nil {
